@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect, useState, useCallback } from "react";
 import diljeet1 from "../assets/images/diljeet1.png";
 import diljeet from "../assets/images/diljeet.png";
 import c4 from "../assets/images/c4.png";
@@ -15,17 +16,9 @@ import Swal from "sweetalert2";
 import cf from "../assets/images/cf.jpg";
 import am from "../assets/images/am.jpg";
 import news1 from "../assets/images/news1.jpg";
-import {
-  ChevronDown,
-  ChevronUp,
-  Heart,
-  Share2,
-  Tag,
-  Upload,
-  Users,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Heart, Share2, Tag, Upload, Users } from 'lucide-react';
 
-import { Badge, Button, Drawer, Input, message, Popover, Upload } from "antd";
+import { Badge, Button, Drawer, Input, message, Popover, Upload as AntUpload } from "antd";
 
 import {
   EditOutlined,
@@ -43,6 +36,8 @@ import NewsViews from "../pages/NewsViews";
 import not1 from "../assets/images/not1.png";
 import not2 from "../assets/images/not2.png";
 import apiClient from "../config/apiClient";
+import EntitySelectorPopup from "./EntitySelectorPopup";
+
 
 const Dashboard = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -67,6 +62,10 @@ const Dashboard = () => {
 
   const [commity, setCommity] = useState([]);
 
+  // Entity selector popup state
+  const [isEntitySelectorVisible, setIsEntitySelectorVisible] = useState(false);
+  const [currentAction, setCurrentAction] = useState(null); // 'banner' or 'logo'
+
   const [filteredData, setFilteredData] = useState({
     club: 0,
     community: 0,
@@ -78,21 +77,44 @@ const Dashboard = () => {
     return localStorage.getItem("isLoggedIn") === "true";
   });
 
-  const grtCommitiData = async (regId) => {
+  const grtCommitiData = useCallback(async (regIds) => {
     try {
-      const response = await apiClient.get(
-        `entity-registration-detailed-page/?reg_id=${regId}`
+      const responses = await Promise.all(
+        regIds.map((regId) =>
+          apiClient.get(`entity-registration-detailed-page/?reg_id=${regId}`)
+        )
       );
-      console.log(response, "CCCCCCCC");
-      setCommity(response?.data);
+  
+      // Extract data from responses
+      const commityData = responses.map((response) => response.data);
+  
+      console.log("Fetched Data:", commityData);
+  
+      setCommity(commityData); // Store all responses in state
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching data:", error);
     }
-  };
+  }, []);
+  
+  
 
   useEffect(() => {
-    grtCommitiData(regId);
-  }, [regId]);
+    const storedData = localStorage.getItem("user"); // Replace with actual key
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      console.log("Parsed LocalStorage Data:", parsedData);
+  
+      // Extract reg_id array from secretary_details
+      const regIds = parsedData?.secretary_details?.map((item) => item.reg_id) || [];
+      
+      console.log("Extracted regIds:", regIds); // Debugging
+  
+      if (regIds.length > 0) {
+        setRegId(regIds); // Set the state with extracted reg_id array
+      }
+    }
+  }, []);
+  
 
   const navigate = useNavigate();
 
@@ -114,9 +136,9 @@ const Dashboard = () => {
     setActiveAccordion(activeAccordion === index ? null : index);
   };
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
+  }, [slides.length]);
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
@@ -148,7 +170,7 @@ const Dashboard = () => {
     }
   }, []);
 
-  console.log(userDetails, "UUUU")
+
 
   useEffect(() => {
     dashboardCardCount();
@@ -352,31 +374,24 @@ const Dashboard = () => {
     onCloseDrawer();
   };
 
-  useEffect(() => {
-    const getUserData = () => {
-      try {
-        const userData = localStorage.getItem("user");
-        if (userData) {
-          const parsedUserData = JSON.parse(userData);
-          if (
-            parsedUserData &&
-            parsedUserData.secretary_details &&
-            parsedUserData.secretary_details.reg_id
-          ) {
-            setRegId(parsedUserData.secretary_details.reg_id);
-          } else {
-            throw new Error("reg_id not found in user data");
-          }
-        } else {
-          throw new Error("User data not found in localStorage");
-        }
-      } catch (err) {
-        console.log(`Failed to get user data: ${err.message}`);
-      }
-    };
+  // Function to show the entity selector popup
+  const showEntitySelector = (action) => {
+    setCurrentAction(action);
+    setIsEntitySelectorVisible(true);
+  };
 
-    getUserData();
-  }, []);
+  // Function to handle entity selection from popup
+  const handleEntitySelect = (selectedRegId) => {
+    console.log(`Selected entity with reg_id: ${selectedRegId}`);
+    
+    if (currentAction === 'banner' && bannerFile) {
+      handleBannerUpload(selectedRegId);
+    } else if (currentAction === 'logo' && logoFile) {
+      handleLogoUpload(selectedRegId);
+    } else {
+      message.error("No file selected or action undefined");
+    }
+  };
 
   useEffect(() => {
     if (regId) {
@@ -395,13 +410,103 @@ const Dashboard = () => {
     }
   };
 
+  // Updated to accept regId parameter
+  const handleBannerUpload = async (selectedRegId) => {
+    if (!selectedRegId) {
+      message.error("No entity selected");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("reg_id", selectedRegId);
+
+    if (bannerFile) {
+      formData.append("banner", bannerFile);
+    } else {
+      message.error("No banner file selected");
+      return;
+    }
+
+    try {
+      const response = await apiClient.post(
+        "update_entity_media_banner/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      Swal.fire({
+        title: "Banner updated successfully",
+        icon: "success",
+      });
+      
+      // Refresh media data for the selected entity
+      approvedMedia(selectedRegId);
+      onCloseDrawer();
+    } catch (error) {
+      console.error("Error updating Banner:", error);
+      Swal.fire({
+        title: "An error occurred while updating Banner",
+        icon: "error",
+      });
+    }
+  };
+
+  // Updated to accept regId parameter
+  const handleLogoUpload = async (selectedRegId) => {
+    if (!selectedRegId) {
+      message.error("No entity selected");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("reg_id", selectedRegId);
+
+    if (logoFile) {
+      formData.append("logo", logoFile);
+    } else {
+      message.error("No logo file selected");
+      return;
+    }
+
+    try {
+      const response = await apiClient.post(
+        "update_entity_media_logo/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      Swal.fire({
+        title: "Logo updated successfully",
+        icon: "success",
+      });
+      
+      // Refresh media data for the selected entity
+      approvedMedia(selectedRegId);
+      onCloseDrawer();
+    } catch (error) {
+      console.error("Error updating Logo:", error);
+      Swal.fire({
+        title: "An error occurred while updating Logo",
+        icon: "error",
+      });
+    }
+  };
+
   const renderDrawerContent = () => {
     if (drawerContent === "media") {
       return (
         <>
           <form>
             <h3>Update Banner</h3>
-            <Upload.Dragger
+            <AntUpload.Dragger
               name="banner"
               className="banner-box"
               multiple={false}
@@ -432,9 +537,12 @@ const Dashboard = () => {
               <p className="ant-upload-text">
                 Click or drag file to upload banner
               </p>
-            </Upload.Dragger>
+            </AntUpload.Dragger>
 
-            <Button style={{ marginTop: 16 }} onClick={handleBannerUpload}>
+            <Button 
+              style={{ marginTop: 16 }} 
+              onClick={() => showEntitySelector('banner')}
+            >
               Update Media
             </Button>
           </form>
@@ -445,11 +553,14 @@ const Dashboard = () => {
       case "banner":
         return (
           <>
-            <Upload.Dragger
+            <AntUpload.Dragger
               name="bannerImage"
               className="banner-box"
               multiple={false}
-              action="/api/upload" // Replace with your actual upload API endpoint
+              beforeUpload={(file) => {
+                setBannerFile(file);
+                return false;
+              }}
               onChange={(info) => {
                 const { status } = info.file;
                 if (status === "done") {
@@ -471,8 +582,11 @@ const Dashboard = () => {
                 Support for a single or bulk upload. Strictly prohibit from
                 uploading company data or other sensitive files.
               </p>
-            </Upload.Dragger>
-            <Button style={{ marginTop: 16 }} onClick={handleEditContent}>
+            </AntUpload.Dragger>
+            <Button 
+              style={{ marginTop: 16 }} 
+              onClick={() => showEntitySelector('banner')}
+            >
               Update Banner
             </Button>
           </>
@@ -481,7 +595,7 @@ const Dashboard = () => {
         return (
           <>
             <h3 style={{ marginTop: "20px" }}>Update Logo</h3>
-            <Upload.Dragger
+            <AntUpload.Dragger
               name="logo"
               multiple={false}
               beforeUpload={(file) => {
@@ -511,8 +625,11 @@ const Dashboard = () => {
               <p className="ant-upload-text">
                 Click or drag file to upload logo
               </p>
-            </Upload.Dragger>
-            <Button style={{ marginTop: 16 }} onClick={handleLogoUpload}>
+            </AntUpload.Dragger>
+            <Button 
+              style={{ marginTop: 16 }} 
+              onClick={() => showEntitySelector('logo')}
+            >
               Update Logo
             </Button>
           </>
@@ -590,71 +707,6 @@ const Dashboard = () => {
     }
   };
 
-  const handleBannerUpload = async () => {
-    const formData = new FormData();
-    formData.append("reg_id", userDetails?.secretary_details?.reg_id);
-
-    // Append banner and logo files if they exist
-    if (bannerFile) formData.append("banner", bannerFile);
-
-    try {
-      const response = await apiClient.post(
-        "update_entity_media_banner/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      Swal.fire({
-        title: "Banner updated successfully",
-        icon: "success",
-      });
-      onCloseDrawer();
-    } catch (error) {
-      console.error("Error updating Banner:", error);
-      message.error("An error occurred while updating Banner");
-      Swal.fire({
-        title: "An error occurred while updating Banner",
-        icon: "error",
-      });
-    }
-  };
-  const handleLogoUpload = async () => {
-    const formData = new FormData();
-    formData.append("reg_id", userDetails?.secretary_details?.reg_id);
-
-    // Append banner and logo files if they exist
-
-    if (logoFile) formData.append("logo", logoFile);
-
-    try {
-      const response = await apiClient.post(
-        "update_entity_media_logo/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      Swal.fire({
-        title: "Logo updated successfully",
-        icon: "success",
-      });
-      onCloseDrawer();
-    } catch (error) {
-      console.error("Error updating Logo:", error);
-      Swal.fire({
-        title: "An error occurred while updating Logo",
-        icon: "error",
-      });
-    }
-  };
-
   // carousel button
   const nextSlide1 = () => {
     setCurrentIndex((prevIndex) =>
@@ -673,7 +725,7 @@ const Dashboard = () => {
       nextSlide();
     }, 5000); // Change interval as needed
     return () => clearInterval(interval);
-  }, [currentIndex, carouselImages.length]);
+  }, [nextSlide]);
 
   return (
     <>
@@ -688,8 +740,8 @@ const Dashboard = () => {
                 <h2>Welcome, {userDetails.user_name}!</h2>
                 <span className="role-badge">{userName?.role_name}</span>
               </div>
-              {userDetails?.secretary_details && userDetails?.secretary_details?.map((item , key) => (
-                <div style={{marginTop:"10px"}} className="secretary-details">
+              {userDetails?.secretary_details && userDetails?.secretary_details.map((item, key) => (
+                <div style={{marginTop:"10px"}} className="secretary-details" key={key}>
                 <div className="detail-item">
                   <span className="detail-label">Entity:</span>
                   <span className="detail-value">
@@ -758,7 +810,7 @@ const Dashboard = () => {
                 <div className="details-content">
                   <div className="program-header">
                     <img
-                      src={mediaData?.logo_url}
+                      src={mediaData?.logo_url || "/placeholder.svg"}
                       alt="Program Logo"
                       className="program-logo"
                     />
@@ -924,7 +976,7 @@ const Dashboard = () => {
             {" "}
             <div className="metric-cards-home">
               <div onClick={redirectClubs} className="metric-card-home card1h">
-                <img src={circle} />
+                <img src={circle || "/placeholder.svg"} />
                 <h2 className="cardCount">{filteredData?.club}</h2>
 
                 <div style={{ fontSize: "16px", margin: "10px 0px" }}>
@@ -938,7 +990,7 @@ const Dashboard = () => {
               </div>
 
               <div onClick={redirectComm} className="metric-card-home card4h">
-                <img src={circle} />
+                <img src={circle || "/placeholder.svg"} />
                 <h2 className="cardCount">{filteredData?.community}</h2>
 
                 <div style={{ fontSize: "16px", margin: "10px 0px" }}>
@@ -958,7 +1010,7 @@ const Dashboard = () => {
                 onClick={redirectSociety}
                 className="metric-card-home card2h"
               >
-                <img src={circle} />
+                <img src={circle || "/placeholder.svg"} />
                 <h2 className="cardCount">{filteredData?.departmentSociety}</h2>
 
                 <div style={{ fontSize: "16px", margin: "10px 0px" }}>
@@ -974,7 +1026,7 @@ const Dashboard = () => {
                 </span>
               </div>
               <div onClick={redirectPro} className="metric-card-home card3h">
-                <img src={circle} />
+                <img src={circle || "/placeholder.svg"} />
                 <h2 className="cardCount">
                   {filteredData?.professionalSociety}
                 </h2>
@@ -1016,7 +1068,7 @@ const Dashboard = () => {
                             index === currentIndex ? "active" : ""
                           }`}
                         >
-                          <img src={image.src} alt={image.alt} />
+                          <img src={image.src || "/placeholder.svg"} alt={image.alt} />
                           <div className="carousel-overlay">
                             <span style={{ textTransform: "uppercase" }}>
                               {image.type}
@@ -1245,6 +1297,13 @@ const Dashboard = () => {
       >
         {renderDrawerContent()}
       </Drawer>
+
+      {/* Entity Selector Popup */}
+      <EntitySelectorPopup
+        visible={isEntitySelectorVisible}
+        onClose={() => setIsEntitySelectorVisible(false)}
+        onSelectEntity={handleEntitySelect}
+      />
     </>
   );
 };

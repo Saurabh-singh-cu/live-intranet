@@ -1,189 +1,140 @@
 import React, { useState, useEffect } from "react";
-// import axios from "axios";
-import "./MediaRequest.css";
-import apiClient from "../config/apiClient"; // Adjust path as needed
-
+import apiClient from "../config/apiClient"; // Adjust the path as needed
 import Swal from "sweetalert2";
+import "./MediaRequest.css"; // Import the CSS file
 
-const MediaRequest = () => {
+const MediaApprove = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [regId, setRegId] = useState(null);
 
-  // axios.interceptors.request.use((config) => {
-  //   const user = JSON.parse(localStorage.getItem("user"));
-  //   const token = user?.access;
-  //   if (token) {
-  //     config.headers.Authorization = `Bearer ${token}`;
-  //   }
-  //   return config;
-  // });
-
-  
   useEffect(() => {
-    const getUserData = () => {
-      try {
-        const userData = localStorage.getItem("user");
-        if (userData) {
-          const parsedUserData = JSON.parse(userData);
-          if (
-            parsedUserData &&
-            parsedUserData.faculty_advisory_details &&
-            parsedUserData.faculty_advisory_details.reg_id
-          ) {
-            setRegId(parsedUserData.faculty_advisory_details.reg_id);
-          } else {
-            throw new Error("reg_id not found in user data");
-          }
-        } else {
-          throw new Error("User data not found in localStorage");
-        }
-      } catch (err) {
-        setError(`Failed to get user data: ${err.message}`);
+    const storedData = localStorage.getItem("user");
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      const id =
+        parsedData?.faculty_advisory_details?.map((item) => item.reg_id) || [];
+      console.log(id, "IDDDD");
+      if (id.length > 0) {
+        setRegId(id);
       }
-    };
-
-    getUserData();
+    }
   }, []);
 
+  // Fetch media data when regId is available
   useEffect(() => {
     if (regId) {
+      console.log("Fetching media for regId:", regId); // Debugging
       fetchEntityMedia(regId);
-      console.log(regId, "RRRRRRRRRRRRRRRRRRRRRRRRR");
     }
   }, [regId]);
 
   const fetchEntityMedia = async (regId) => {
     try {
-      const response = await apiClient.get(
-        `entity_media_pending/?reg_id=${regId}`
-      );
-      setRequests(response.data);
-      console.log("Updated data after fetch:", response.data);
+      const response = await apiClient.get(`entity_media_pending/?reg_id=${regId}`);
+      console.log("API Response:", response.data[0].logo_url);
+      setRequests(response.data || []);
     } catch (error) {
-      setError(
-        `Error fetching entity media: ${
-          error.response?.data?.detail || error.message
-        }`
-      );
+      console.error("Error fetching entity media:", error);
+      setError(`Error fetching entity media: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
-  
 
-  const handleStatusChange = async (id, newStatus) => {
+  // Handle Approve Button Click
+  const handleApprove = async (id) => {
     if (!regId) {
-      Swal.fire({
-        title: "Error",
-        text: "Registration ID is not available",
-        icon: "error",
-      });
+      Swal.fire("Error", "Registration ID is missing", "error");
       return;
     }
     try {
       await apiClient.put(
         `entity-media/${id}/update-status/?reg_id=${regId}`,
-        { status: newStatus },
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          status: "Approved",
         }
       );
-      await fetchEntityMedia(regId);
-      Swal.fire({
-        title: "Status Changed",
-        icon: "success",
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000)
-      
-    } catch (err) {
-      const errorMessage = `Failed to update status: ${
-        err.response?.data?.detail || err.message
-      }`;
-      setError(errorMessage);
-      Swal.fire({
-        title: "Status Change Failed",
-        text: errorMessage,
-        icon: "error",
-      });
+      Swal.fire("Approved!", "The media has been approved.", "success");
+      fetchEntityMedia(regId); // Refresh the data after approval
+    } catch (error) {
+      console.error("Approval failed:", error);
+      Swal.fire("Error", "Failed to approve media", "error");
     }
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <div className="loading-container">Loading...</div>;
+
+  if (error) return <div className="error-message">{error}</div>;
+
   return (
-    <div className="media-request-container">
-      <h1>Media Requests</h1>
+    <div className="media-approve-container">
+      <h2>Media Approval</h2>
       {requests.length === 0 ? (
-        <p className="no-requests">No media requests found.</p>
+        <p className="empty-message">No media requests found.</p>
       ) : (
-        <table className="media-request-table">
+        <table className="media-approve-table">
           <thead>
             <tr>
               <th>ID</th>
               <th>Banner</th>
               <th>Logo</th>
-              <th>Status</th>
-              <th>Created At</th>
-              <th>Updated At</th>
+              <th>Secretary Profile</th>
+              <th>Join Secretary Profile</th>
+              <th>Faculty Advisory</th>
+              <th>Co-Advisor</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {requests.map((request) => (
-              <tr key={request.id}>
-                <td>{request.id}</td>
+            {requests.map((request, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
                 <td>
-                  <div className="image-container">
-                    <img
-                      src={request.temp_banner}
-                      alt="Banner"
-                      className="thumbnail"
-                    />
-                    <div className="image-hover">
-                      <img
-                        src={request.temp_banner}
-                        alt="Banner"
-                        className="full-image"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div className="image-container">
+                  {request.temp_logo ? (
                     <img
                       src={request.temp_logo}
                       alt="Logo"
-                      className="thumbnail"
+                      width="100"
+                      height="100"
                     />
-                    <div className="image-hover">
-                      <img
-                        src={request.temp_logo}
-                        alt="Logo"
-                        className="full-image"
-                      />
-                    </div>
-                  </div>
+                  ) : (
+                    "No Logo Available"
+                  )}
                 </td>
-                <td>{request.status}</td>
-                <td>{new Date(request.created_at).toLocaleString()}</td>
-                <td>{new Date(request.updated_at).toLocaleString()}</td>
+
                 <td>
-                  <select
-                    value={request.status}
-                    onChange={(e) =>
-                      handleStatusChange(request.id, e.target.value)
-                    }
-                    className="status-select"
+                  {request.temp_banner ? (
+                    <img
+                      src={request.temp_banner}
+                      alt="Logo"
+                      width="100"
+                      height="100"
+                    />
+                  ) : (
+                    "No Logo Available"
+                  )}
+                </td>
+
+                <td>{(request.secretary_profile_pic_url, "Secretary")}</td>
+                <td>
+                  {(request.join_secretary_profile_pic_url, "Join Secretary")}
+                </td>
+                <td>
+                  {
+                    (request.faculty_advisory_profile_pic_url,
+                    "Faculty Advisory")
+                  }
+                </td>
+                <td>{(request.co_advisor_profile_pic_url, "Co-Advisor")}</td>
+                <td>
+                  <button
+                    className="approve-button"
+                    onClick={() => handleApprove(request.id)}
                   >
-                  <option value="">Request Pending</option>
-                    <option value="Approved">Approved</option>
-                  
-                  </select>
+                    Approve
+                  </button>
                 </td>
               </tr>
             ))}
@@ -194,4 +145,4 @@ const MediaRequest = () => {
   );
 };
 
-export default MediaRequest;
+export default MediaApprove;

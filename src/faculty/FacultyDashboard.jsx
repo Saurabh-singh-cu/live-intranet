@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import "./FacultyDashboard.css";
 import axios from "axios";
@@ -14,6 +14,8 @@ const FacultyDashboard = () => {
   const [regId, setRegId] = useState(null);
   const [mediaData, setMediaData] = useState(null);
   const [commity, setCommity] = useState([]);
+
+    const [isEntitySelectorVisible, setIsEntitySelectorVisible] = useState(false);
 
 
   useEffect(() => {
@@ -33,31 +35,7 @@ const FacultyDashboard = () => {
     { name: "Creative Expression", color: "#9b59b6" },
   ];
 
-  useEffect(() => {
-    const getUserData = () => {
-      try {
-        const userData = localStorage.getItem("user");
-        if (userData) {
-          const parsedUserData = JSON.parse(userData);
-          if (
-            parsedUserData &&
-            parsedUserData.faculty_advisory_details &&
-            parsedUserData.faculty_advisory_details.reg_id
-          ) {
-            setRegId(parsedUserData.faculty_advisory_details.reg_id);
-          } else {
-            throw new Error("reg_id not found in user data");
-          }
-        } else {
-          throw new Error("User data not found in localStorage");
-        }
-      } catch (err) {
-        console.log(`Failed to get user data: ${err.message}`);
-      }
-    };
 
-    getUserData();
-  }, []);
 
   useEffect(() => {
     if (regId) {
@@ -69,28 +47,52 @@ const FacultyDashboard = () => {
   const approvedMedia = async (regId) => {
     try {
       const fetch = await apiClient.get(`entity_media_approved/${regId}/`);
-      setMediaData(fetch?.data[0]);
-      console.log(fetch?.data[0], "FETCH MEDIA");
+      const media = fetch?.data?.length > 0 ? fetch.data[0] : {}; // Ensure it doesn't break if empty
+      setMediaData(media);
+      console.log(media, "FETCH MEDIA");
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching media:", error);
     }
   };
+  
 
-  const grtCommitiData = async (regId) => {
+  const grtCommitiData = useCallback(async (regIds) => {
     try {
-      const response = await apiClient.get(
-        `entity-registration-detailed-page/?reg_id=${regId}`
+      const responses = await Promise.all(
+        regIds.map((regId) =>
+          apiClient.get(`entity-registration-detailed-page/?reg_id=${regId}`)
+        )
       );
-      console.log(response, "CCCCCCCC");
-      setCommity(response?.data);
+  
+      // Extract data from responses
+      const commityData = responses.map((response) => response.data);
+  
+      console.log("Fetched Data:", commityData);
+  
+      setCommity(commityData); // Store all responses in state
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching data:", error);
     }
-  };
+  }, []);
+  
+  
 
   useEffect(() => {
-    grtCommitiData(regId);
-  }, [regId]);
+    const storedData = localStorage.getItem("user"); // Replace with actual key
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      console.log("Parsed LocalStorage Data:", parsedData);
+  
+      // Extract reg_id array from secretary_details
+      const regIds = parsedData?.faculty_advisory_details?.map((item) => item.reg_id) || [];
+      
+      console.log("Extracted regIds:", regIds); // Debugging
+  
+      if (regIds.length > 0) {
+        setRegId(regIds); // Set the state with extracted reg_id array
+      }
+    }
+  }, []);
 
   return (
     <>

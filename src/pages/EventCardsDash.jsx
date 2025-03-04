@@ -27,7 +27,7 @@ const EventCardsDash = ({commity}) => {
   const [currentEvent, setCurrentEvent] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  console.log(commity, "commity")
+  // console.log(commity, "commity")
 
   const selectedSociety = commity;
 
