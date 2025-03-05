@@ -44,7 +44,7 @@ const ProfessionalSociety = () => {
   };
 
   const handleCardClick = (clubSociety) => {
-    navigate("/join-now-detailed-page", { state: { society: clubSociety } });
+    navigate("/join-now-detailed-page", { state: { society: clubSociety, entity_id: 3 } });
   };
 
   const handleBack = () => {

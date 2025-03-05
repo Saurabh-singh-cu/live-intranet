@@ -50,7 +50,7 @@ const ClubList = () => {
 
   const handleCardClick = (clubSociety) => {
     console.log(clubSociety, "DEKH");
-    navigate("/join-now-detailed-page", { state: { society: clubSociety } });
+    navigate("/join-now-detailed-page", { state: { society: clubSociety, entity_id: 1 } });
   };
 
   const handleBack = () => {

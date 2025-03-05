@@ -1,217 +1,98 @@
+"use client"
 
-import React, { useEffect, useState, useCallback } from "react";
-import diljeet1 from "../assets/images/diljeet1.png";
-import diljeet from "../assets/images/diljeet.png";
-import c4 from "../assets/images/c4.png";
+import { useEffect, useState, useCallback } from "react"
+import diljeet1 from "../assets/images/diljeet1.png"
+import diljeet from "../assets/images/diljeet.png"
+import c4 from "../assets/images/c4.png"
 
-import Calendar from "../pages/Calendar";
-import { useNavigate } from "react-router-dom";
-import circle from "../assets/images/circle.svg";
-import { PiFlagBanner } from "react-icons/pi";
-import { FaHouseFlag, FaUnity } from "react-icons/fa6";
-import { BiSolidBuildingHouse } from "react-icons/bi";
+import Calendar from "../pages/Calendar"
+import { useNavigate } from "react-router-dom"
+import circle from "../assets/images/circle.svg"
+import { PiFlagBanner } from "react-icons/pi"
+import { FaHouseFlag, FaUnity } from "react-icons/fa6"
+import { BiSolidBuildingHouse } from "react-icons/bi"
 
-import Swal from "sweetalert2";
+import Swal from "sweetalert2"
 
-import cf from "../assets/images/cf.jpg";
-import am from "../assets/images/am.jpg";
-import news1 from "../assets/images/news1.jpg";
-import { ChevronDown, ChevronUp, Heart, Share2, Tag, Upload, Users } from 'lucide-react';
+import cf from "../assets/images/cf.jpg"
+import am from "../assets/images/am.jpg"
+import news1 from "../assets/images/news1.jpg"
+import { ChevronDown, ChevronUp } from "lucide-react"
 
-import { Badge, Button, Drawer, Input, message, Popover, Upload as AntUpload } from "antd";
+import { Badge, Button, Drawer, Input, message, Upload as AntUpload, Modal, Select } from "antd"
 
 import {
-  EditOutlined,
   InboxOutlined,
   NotificationOutlined,
-} from "@ant-design/icons";
-import Scroller from "../components/Scroller";
-import EventCardsDash from "../pages/EventCardsDash";
+  FileTextOutlined,
+  FileImageOutlined,
+  RadiusUprightOutlined,
+} from "@ant-design/icons"
+import Scroller from "../components/Scroller"
+import EventCardsDash from "../pages/EventCardsDash"
 
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import expo from "../assets/images/expo.jpg";
-import NewsViews from "../pages/NewsViews";
+import ReactQuill from "react-quill"
+import "react-quill/dist/quill.snow.css"
+import expo from "../assets/images/expo.jpg"
+import NewsViews from "../pages/NewsViews"
 
-import not1 from "../assets/images/not1.png";
-import not2 from "../assets/images/not2.png";
-import apiClient from "../config/apiClient";
-import EntitySelectorPopup from "./EntitySelectorPopup";
-
+import not1 from "../assets/images/not1.png"
+import not2 from "../assets/images/not2.png"
+import apiClient from "../config/apiClient"
+import EntitySelectorPopup from "./EntitySelectorPopup"
+import "./Dashboard.css"
+import ProfilePictureCards from "./ProfilePictureCard"
 
 const Dashboard = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [userName, setUserName] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [replyText, setReplyText] = useState("");
-  const [dashboardCount, setDashboardCount] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [activeTab1, setActiveTab1] = useState("Appointment Holder");
-  const [activeAccordion, setActiveAccordion] = useState(null);
-  const [userDetails, setUserDetails] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [userName, setUserName] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [replyText, setReplyText] = useState("")
+  const [dashboardCount, setDashboardCount] = useState([])
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [activeTab1, setActiveTab1] = useState("Appointment Holder")
+  const [activeAccordion, setActiveAccordion] = useState(null)
+  const [userDetails, setUserDetails] = useState(null)
 
-  const [drawerVisible, setDrawerVisible] = useState(false);
-  const [drawerContent, setDrawerContent] = useState(null);
-  const [editContent, setEditContent] = useState("");
+  const [drawerVisible, setDrawerVisible] = useState(false)
+  const [drawerContent, setDrawerContent] = useState(null)
+  const [editContent, setEditContent] = useState("")
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [bannerFile, setBannerFile] = useState(null)
+  const [logoFile, setLogoFile] = useState(null)
 
-  const [bannerFile, setBannerFile] = useState(null);
-  const [logoFile, setLogoFile] = useState(null);
+  const [regId, setRegId] = useState(null)
+  const [mediaData, setMediaData] = useState(null)
 
-  const [regId, setRegId] = useState(null);
-  const [mediaData, setMediaData] = useState(null);
-
-  const [commity, setCommity] = useState([]);
+  const [commity, setCommity] = useState([])
 
   // Entity selector popup state
-  const [isEntitySelectorVisible, setIsEntitySelectorVisible] = useState(false);
-  const [currentAction, setCurrentAction] = useState(null); // 'banner' or 'logo'
+  const [isEntitySelectorVisible, setIsEntitySelectorVisible] = useState(false)
+  const [currentAction, setCurrentAction] = useState(null) // 'banner' or 'logo'
 
+  // New states for update cards and modals
+  const [updateModalVisible, setUpdateModalVisible] = useState(false)
+  const [updateModalType, setUpdateModalType] = useState("")
+  const [selectedEntity, setSelectedEntity] = useState("")
+  const [updateContent, setUpdateContent] = useState("")
+  const [availableEntities, setAvailableEntities] = useState([])
+  const [aboutText, setAboutText] = useState("")
+  const [eligibilityText, setEligibilityText] = useState("")
+  const [categoriesText, setCategoriesText] = useState("") // Added categories state
   const [filteredData, setFilteredData] = useState({
     club: 0,
     community: 0,
     professionalSociety: 0,
     departmentSociety: 0,
     all: 0,
-  });
+  })
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem("isLoggedIn") === "true";
-  });
+    return localStorage.getItem("isLoggedIn") === "true"
+  })
+  const [bannerPreview, setBannerPreview] = useState(null)
+  const [logoPreview, setLogoPreview] = useState(null)
 
-  const grtCommitiData = useCallback(async (regIds) => {
-    try {
-      const responses = await Promise.all(
-        regIds.map((regId) =>
-          apiClient.get(`entity-registration-detailed-page/?reg_id=${regId}`)
-        )
-      );
-  
-      // Extract data from responses
-      const commityData = responses.map((response) => response.data);
-  
-      console.log("Fetched Data:", commityData);
-  
-      setCommity(commityData); // Store all responses in state
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }, []);
-  
-  
-
-  useEffect(() => {
-    const storedData = localStorage.getItem("user"); // Replace with actual key
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      console.log("Parsed LocalStorage Data:", parsedData);
-  
-      // Extract reg_id array from secretary_details
-      const regIds = parsedData?.secretary_details?.map((item) => item.reg_id) || [];
-      
-      console.log("Extracted regIds:", regIds); // Debugging
-  
-      if (regIds.length > 0) {
-        setRegId(regIds); // Set the state with extracted reg_id array
-      }
-    }
-  }, []);
-  
-
-  const navigate = useNavigate();
-
-  const slides = [
-    {
-      title: (
-        <span>
-          Live <span style={{ color: "red" }} className="live-icon"></span>
-        </span>
-      ),
-      image: news1,
-    },
-    { title: "Campus Life", image: diljeet1 },
-    { title: "Student Activities", image: diljeet },
-    { title: "Academic Excellence", image: c4 },
-  ];
-
-  const toggleAccordion = (index) => {
-    setActiveAccordion(activeAccordion === index ? null : index);
-  };
-
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  }, [slides.length]);
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const redirectClubs = () => {
-    navigate("/clubs");
-  };
-
-  const redirectSociety = () => {
-    navigate("/department-society");
-  };
-  const redirectComm = () => {
-    navigate("/communities");
-  };
-  const redirectPro = () => {
-    navigate("/professional-society");
-  };
-
-  useEffect(() => {
-    const getuser = JSON.parse(localStorage.getItem("user"));
-    setUserName(getuser);
-    console.log(getuser, "USER NAME");
-    dashboardCardCount();
-
-    // Check if the user is a Student Secretary
-    if (getuser && getuser.role_name === "Student Secretary") {
-      setUserDetails(getuser);
-    }
-  }, []);
-
-
-
-  useEffect(() => {
-    dashboardCardCount();
-  }, []);
-
-  const dashboardCardCount = async () => {
-    try {
-      const response = await apiClient.get("entity_count/");
-      setDashboardCount(response.data);
-      filterData(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const filterData = (data) => {
-    const filtered = {
-      club: data.find((item) => item.entity_name === "CLUB")?.entity_count || 0,
-      community:
-        data.find((item) => item.entity_name === "COMMUNITY")?.entity_count ||
-        0,
-      professionalSociety:
-        data.find((item) => item.entity_name === "PROFESSIONAL SOCIETY")
-          ?.entity_count || 0,
-      departmentSociety:
-        data.find((item) => item.entity_name === "DEPARTMENT SOCIETY")
-          ?.entity_count || 0,
-      all: data.reduce((sum, item) => sum + item.entity_count, 0),
-    };
-    setFilteredData(filtered);
-  };
-
-  const handleSendClick = () => {
-    Swal.fire({
-      title: "You are not loggedIn",
-      icon: "warning",
-    });
-    setTimeout(() => {
-      navigate("/login");
-    }, 3000);
-  };
+  const navigate = useNavigate()
 
   const carouselImages = [
     {
@@ -256,15 +137,7 @@ const Dashboard = () => {
       type: "UPCOMING UNIVERSITY EVENT",
       title: "Alumni Reunion",
     },
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
-    }, 12000);
-
-    return () => clearInterval(interval);
-  }, [carouselImages.length]);
+  ]
 
   const tabData1 = {
     "Appointment Holder": [
@@ -275,8 +148,7 @@ const Dashboard = () => {
       },
       {
         from: "Student Secretary : CAC",
-        content:
-          "Group Project Discussion going to be held today at 4PM near C3 Block.",
+        content: "Group Project Discussion going to be held today at 4PM near C3 Block.",
         messageTime: "2hr ago",
       },
     ],
@@ -288,21 +160,11 @@ const Dashboard = () => {
       },
       {
         from: "HOD : CSE 3rd Year",
-        content:
-          "Mandatory DCPD workshop going to be organized by Career Department.",
+        content: "Mandatory DCPD workshop going to be organized by Career Department.",
         messageTime: "2hr ago",
       },
     ],
-  };
-
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
+  }
 
   const discussions = [
     {
@@ -315,39 +177,213 @@ const Dashboard = () => {
       title: "Community",
       participants: ["A", "Q", "S"],
       additionalCount: 3,
-      content:
-        "Discussion forum for all Chandigarh University Student Tech Community & Community.",
+      content: "Discussion forum for all Chandigarh University Student Tech Community & Community.",
     },
     {
       title: "Department Society",
       participants: ["C", "D", "P", "J"],
       additionalCount: 2,
-      content:
-        "Discussion forum for all Chandigarh University Student Department Society.",
+      content: "Discussion forum for all Chandigarh University Student Department Society.",
     },
     {
       title: "Professional Society (Student Chapters)",
       participants: ["C", "S"],
       additionalCount: 2,
-      content:
-        "Discussion forum for all Chandigarh University Student Chapters. ",
+      content: "Discussion forum for all Chandigarh University Student Chapters. ",
     },
-  ];
+  ]
 
-  const categories = [
-    { name: "Debate ", color: "#3498db" },
-    { name: "Public Speaking", color: "#e74c3c" },
-    { name: "Writing and Editing", color: "#2ecc71" },
-    { name: "Leadership", color: "#f39c12" },
-    { name: "Creative Expression", color: "#9b59b6" },
-  ];
+
+
+  const slides = [
+    {
+      title: (
+        <span>
+          Live <span style={{ color: "red" }} className="live-icon"></span>
+        </span>
+      ),
+      image: news1,
+    },
+    { title: "Campus Life", image: diljeet1 },
+    { title: "Student Activities", image: diljeet },
+    { title: "Academic Excellence", image: c4 },
+  ]
+
+  // Update cards data
+  const updateCards = [
+    {
+      title: "Update About & Eligibility & Category",
+      icon: <FileTextOutlined />,
+      type: "about_eligibility",
+      description: "Update entity about and eligibility section",
+      color: "#4CAF50",
+    },
+    {
+      title: "Update Commity Profile Pic",
+      icon: <FileTextOutlined />,
+      type: "about_eligibility",
+      description: "Update entity about and eligibility section",
+      color: "#4CAF50",
+    },
+  ]
+
+  const toggleAccordion = (index) => {
+    setActiveAccordion(activeAccordion === index ? null : index)
+  }
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length)
+  }, [slides.length])
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+  }
+
+  const redirectClubs = () => {
+    navigate("/clubs")
+  }
+
+  const redirectSociety = () => {
+    navigate("/department-society")
+  }
+  const redirectComm = () => {
+    navigate("/communities")
+  }
+  const redirectPro = () => {
+    navigate("/professional-society")
+  }
+
+  useEffect(() => {
+    const getuser = JSON.parse(localStorage.getItem("user"))
+    setUserName(getuser)
+    console.log(getuser, "USER NAME")
+    dashboardCardCount()
+
+    // Check if the user is a Student Secretary
+    if (getuser && getuser.role_name === "Student Secretary") {
+      setUserDetails(getuser)
+
+      // If user is a Student Secretary, prepare available entities for selection
+      if (getuser.secretary_details && getuser.secretary_details.length > 0) {
+        const entities = getuser.secretary_details.map((entity) => ({
+          value: entity.reg_id,
+          label: entity.entity_name || entity.registration_name,
+        }))
+        setAvailableEntities(entities)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselImages.length)
+    }, 12000)
+
+    return () => clearInterval(interval)
+  }, [carouselImages.length])
+
+  useEffect(() => {
+    if (regId && regId.length > 0) {
+      approvedMedia(regId)
+      grtCommitiData(regId)
+    }
+  }, [regId])
+
+  useEffect(() => {
+    dashboardCardCount()
+  }, [])
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("user") // Replace with actual key
+    if (storedData) {
+      const parsedData = JSON.parse(storedData)
+      console.log("Parsed LocalStorage Data:", parsedData)
+
+      // Extract reg_id array from secretary_details
+      const regIds = parsedData?.secretary_details?.map((item) => item.reg_id) || []
+
+      console.log("Extracted regIds:", regIds) // Debugging
+
+      if (regIds.length > 0) {
+        setRegId(regIds) // Set the state with extracted reg_id array
+      }
+    }
+  }, [])
+
+  const grtCommitiData = useCallback(
+    async (regIds) => {
+      try {
+        if (!regIds || regIds.length === 0) return // Prevent empty calls
+
+        const allCommityMember = []
+        for (const regId of regIds) {
+          console.log(`Fetching data for reg_id: ${regId}`)
+
+          const response = await apiClient.get(`entity-registration-detailed-page/?reg_id=${regId}`)
+
+          if (response?.data) {
+            allCommityMember.push(response.data)
+          }
+        }
+
+        if (JSON.stringify(allCommityMember) !== JSON.stringify(commity)) {
+          setCommity(allCommityMember) // Only update if data is different
+        }
+
+        console.log(allCommityMember, "[commityMember]")
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    },
+    [commity],
+  ) // Dependency added to avoid unnecessary re-fetches
+
+  const dashboardCardCount = async () => {
+    try {
+      const response = await apiClient.get("entity_count/")
+      setDashboardCount(response.data)
+      filterData(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const filterData = (data) => {
+    const filtered = {
+      club: data.find((item) => item.entity_name === "CLUB")?.entity_count || 0,
+      community: data.find((item) => item.entity_name === "COMMUNITY")?.entity_count || 0,
+      professionalSociety: data.find((item) => item.entity_name === "PROFESSIONAL SOCIETY")?.entity_count || 0,
+      departmentSociety: data.find((item) => item.entity_name === "DEPARTMENT SOCIETY")?.entity_count || 0,
+      all: data.reduce((sum, item) => sum + item.entity_count, 0),
+    }
+    setFilteredData(filtered)
+  }
+
+  const handleSendClick = () => {
+    Swal.fire({
+      title: "You are not loggedIn",
+      icon: "warning",
+    })
+    setTimeout(() => {
+      navigate("/login")
+    }, 3000)
+  }
+
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF"
+    let color = "#"
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)]
+    }
+    return color
+  }
 
   const redirectToLogin = () => {
-    alert("Redirecting you to login page.");
+    alert("Redirecting you to login page.")
     setTimeout(() => {
-      navigate("/login");
-    }, 2000);
-  };
+      navigate("/login")
+    }, 2000)
+  }
 
   const giveWarningPrice = () => {
     Swal.fire({
@@ -355,150 +391,206 @@ const Dashboard = () => {
       text: "Permission required from Admin! ",
       icon: "error",
       footer: '<a href="#">Please contact the Admin!</a>',
-    });
-  };
+    })
+  }
 
   const showDrawer = (content) => {
-    setDrawerContent(content);
-    setDrawerVisible(true);
-  };
+    setDrawerContent(content)
+    setDrawerVisible(true)
+  }
 
   const onCloseDrawer = () => {
-    setDrawerVisible(false);
-    setDrawerContent(null);
-  };
+    setDrawerVisible(false)
+    setDrawerContent(null)
+  }
 
   const handleEditContent = () => {
     // Here you would typically send the editContent to your backend
-    message.success("Content updated successfully");
-    onCloseDrawer();
-  };
+    message.success("Content updated successfully")
+    onCloseDrawer()
+  }
 
   // Function to show the entity selector popup
   const showEntitySelector = (action) => {
-    setCurrentAction(action);
-    setIsEntitySelectorVisible(true);
-  };
+    setCurrentAction(action)
+    setIsEntitySelectorVisible(true)
+  }
 
   // Function to handle entity selection from popup
   const handleEntitySelect = (selectedRegId) => {
-    console.log(`Selected entity with reg_id: ${selectedRegId}`);
-    
-    if (currentAction === 'banner' && bannerFile) {
-      handleBannerUpload(selectedRegId);
-    } else if (currentAction === 'logo' && logoFile) {
-      handleLogoUpload(selectedRegId);
+    console.log(`Selected entity with reg_id: ${selectedRegId}`)
+
+    if (currentAction === "banner" && bannerFile) {
+      handleBannerUpload(selectedRegId)
+    } else if (currentAction === "logo" && logoFile) {
+      handleLogoUpload(selectedRegId)
     } else {
-      message.error("No file selected or action undefined");
+      message.error("No file selected or action undefined")
     }
-  };
+  }
 
-  useEffect(() => {
-    if (regId) {
-      approvedMedia(regId);
-      console.log(regId, "RRRRRRRRRRRRRRRRRRRRRRRRR");
+  // New function to handle opening update modal
+  const openUpdateModal = (type) => {
+    if (type === "about_eligibility") {
+      setIsModalVisible(true)
+      setSelectedEntity("")
+      setAboutText("")
+      setEligibilityText("")
+      setCategoriesText("") // Clear categories text as well
+    } else {
+      // For other card types, you would implement different modals
+      Swal.fire({
+        title: "Feature Coming Soon",
+        text: "This feature is under development",
+        icon: "info",
+      })
     }
-  }, [regId]);
+  }
 
-  const approvedMedia = async (regId) => {
+  // New function to handle update submission
+  const handleUpdateSubmit = async () => {
+    if (!selectedEntity) {
+      message.error("Please select an entity")
+      return
+    }
+
+    if (!aboutText.trim() && !eligibilityText.trim() && !categoriesText.trim()) {
+      message.error("Please enter at least one field to update")
+      return
+    }
+
     try {
-      const fetch = await apiClient.get(`entity_media_approved/${regId}/`);
-      setMediaData(fetch?.data[0]);
-      console.log(fetch?.data[0], "FETCH MEDIA");
+      // Create payload for the API
+      const payload = {
+        about: aboutText,
+        eligibilty: eligibilityText, // Note: This matches the API field name you specified
+        categories: categoriesText, // Add categories to the payload
+      }
+
+      // Make API call to update about and eligibility
+      const response = await apiClient.put(`update_entity_registration_about_eligiblity/${selectedEntity}/`, payload)
+
+      if (response.status === 200 || response.status === 201) {
+        Swal.fire({
+          title: "Update Successful",
+          text: "About, eligibility, and categories information has been updated",
+          icon: "success",
+        })
+
+        setIsModalVisible(false)
+      } else {
+        throw new Error("Update failed")
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error updating about, eligibility, and categories:", error)
+      Swal.fire({
+        title: "Update Failed",
+        text: error.message || "Please try again later",
+        icon: "error",
+      })
     }
-  };
+  }
+
+  const approvedMedia = useCallback(async (regIds) => {
+    try {
+      const allMedia = []
+      for (const regId of regIds) {
+        const response = await apiClient.get(`entity_media_approved/${regId}/`)
+        if (response?.data) {
+          allMedia.push(response?.data)
+        }
+      }
+
+      if (allMedia?.length > 0) {
+        setMediaData((prevData) => (Array.isArray(prevData) ? [...prevData, allMedia] : [allMedia]))
+        console.log(allMedia, "[]")
+      }
+    } catch (error) {
+      console.log(error, "ENTITY MEDIA ERROR")
+    }
+  })
 
   // Updated to accept regId parameter
   const handleBannerUpload = async (selectedRegId) => {
     if (!selectedRegId) {
-      message.error("No entity selected");
-      return;
+      message.error("No entity selected")
+      return
     }
 
-    const formData = new FormData();
-    formData.append("reg_id", selectedRegId);
+    const formData = new FormData()
+    formData.append("reg_id", selectedRegId)
 
     if (bannerFile) {
-      formData.append("banner", bannerFile);
+      formData.append("banner", bannerFile)
     } else {
-      message.error("No banner file selected");
-      return;
+      message.error("No banner file selected")
+      return
     }
 
     try {
-      const response = await apiClient.post(
-        "update_entity_media_banner/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await apiClient.post("update_entity_media_banner/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
 
       Swal.fire({
         title: "Banner updated successfully",
         icon: "success",
-      });
-      
+      })
+
       // Refresh media data for the selected entity
-      approvedMedia(selectedRegId);
-      onCloseDrawer();
+      approvedMedia(selectedRegId)
+      onCloseDrawer()
     } catch (error) {
-      console.error("Error updating Banner:", error);
+      console.error("Error updating Banner:", error)
       Swal.fire({
         title: "An error occurred while updating Banner",
         icon: "error",
-      });
+      })
     }
-  };
+  }
 
   // Updated to accept regId parameter
   const handleLogoUpload = async (selectedRegId) => {
     if (!selectedRegId) {
-      message.error("No entity selected");
-      return;
+      message.error("No entity selected")
+      return
     }
 
-    const formData = new FormData();
-    formData.append("reg_id", selectedRegId);
+    const formData = new FormData()
+    formData.append("reg_id", selectedRegId)
 
     if (logoFile) {
-      formData.append("logo", logoFile);
+      formData.append("logo", logoFile)
     } else {
-      message.error("No logo file selected");
-      return;
+      message.error("No logo file selected")
+      return
     }
 
     try {
-      const response = await apiClient.post(
-        "update_entity_media_logo/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await apiClient.post("update_entity_media_logo/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
 
       Swal.fire({
         title: "Logo updated successfully",
         icon: "success",
-      });
-      
+      })
+
       // Refresh media data for the selected entity
-      approvedMedia(selectedRegId);
-      onCloseDrawer();
+      approvedMedia(selectedRegId)
+      onCloseDrawer()
     } catch (error) {
-      console.error("Error updating Logo:", error);
+      console.error("Error updating Logo:", error)
       Swal.fire({
         title: "An error occurred while updating Logo",
         icon: "error",
-      });
+      })
     }
-  };
+  }
 
   const renderDrawerContent = () => {
     if (drawerContent === "media") {
@@ -510,23 +602,33 @@ const Dashboard = () => {
               name="banner"
               className="banner-box"
               multiple={false}
+              accept="image/jpeg,image/png,image/gif,image/webp"
               beforeUpload={(file) => {
-                setBannerFile(file);
-                return false;
+                const isImage = file.type.startsWith("image/")
+                if (!isImage) {
+                  message.error("You can only upload image files!")
+                  return AntUpload.LIST_IGNORE
+                }
+
+                // Create preview
+                const reader = new FileReader()
+                reader.onload = () => {
+                  setBannerPreview(reader.result)
+                }
+                reader.readAsDataURL(file)
+
+                setBannerFile(file)
+                return false
               }}
               onChange={(info) => {
-                const { status } = info.file;
+                const { status } = info.file
                 if (status !== "uploading") {
-                  console.log(info.file, info.fileList);
+                  console.log(info.file, info.fileList)
                 }
                 if (status === "done") {
-                  message.success(
-                    `${info.file.name} banner file ready for upload.`
-                  );
+                  message.success(`${info.file.name} banner file ready for upload.`)
                 } else if (status === "error") {
-                  message.error(
-                    `${info.file.name} banner file failed to prepare.`
-                  );
+                  message.error(`${info.file.name} banner file failed to prepare.`)
                 }
               }}
               action="/api/upload"
@@ -534,20 +636,27 @@ const Dashboard = () => {
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
-              <p className="ant-upload-text">
-                Click or drag file to upload banner
-              </p>
+              <p className="ant-upload-text">Click or drag file to upload banner</p>
+              <p className="ant-upload-hint">Only JPG, PNG, GIF, and WebP images are allowed</p>
             </AntUpload.Dragger>
 
-            <Button 
-              style={{ marginTop: 16 }} 
-              onClick={() => showEntitySelector('banner')}
-            >
+            {bannerPreview && (
+              <div className="image-preview">
+                <h4>Preview:</h4>
+                <img
+                  src={bannerPreview || "/placeholder.svg"}
+                  alt="Banner preview"
+                  style={{ maxWidth: "100%", maxHeight: "200px", marginTop: "10px" }}
+                />
+              </div>
+            )}
+
+            <Button style={{ marginTop: 16 }} onClick={() => showEntitySelector("banner")}>
               Update Media
             </Button>
           </form>
         </>
-      );
+      )
     }
     switch (drawerContent) {
       case "banner":
@@ -557,40 +666,54 @@ const Dashboard = () => {
               name="bannerImage"
               className="banner-box"
               multiple={false}
+              accept="image/jpeg,image/png,image/gif,image/webp"
               beforeUpload={(file) => {
-                setBannerFile(file);
-                return false;
+                const isImage = file.type.startsWith("image/")
+                if (!isImage) {
+                  message.error("You can only upload image files!")
+                  return AntUpload.LIST_IGNORE
+                }
+
+                // Create preview
+                const reader = new FileReader()
+                reader.onload = () => {
+                  setBannerPreview(reader.result)
+                }
+                reader.readAsDataURL(file)
+
+                setBannerFile(file)
+                return false
               }}
               onChange={(info) => {
-                const { status } = info.file;
+                const { status } = info.file
                 if (status === "done") {
-                  message.success(
-                    `${info.file.name} file uploaded successfully.`
-                  );
+                  message.success(`${info.file.name} file uploaded successfully.`)
                 } else if (status === "error") {
-                  message.error(`${info.file.name} file upload failed.`);
+                  message.error(`${info.file.name} file upload failed.`)
                 }
               }}
             >
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
-              <p className="ant-upload-text">
-                Click or drag file to this area to upload
-              </p>
-              <p className="ant-upload-hint">
-                Support for a single or bulk upload. Strictly prohibit from
-                uploading company data or other sensitive files.
-              </p>
+              <p className="ant-upload-text">Click or drag file to this area to upload</p>
+              <p className="ant-upload-hint">Only JPG, PNG, GIF, and WebP images are allowed</p>
             </AntUpload.Dragger>
-            <Button 
-              style={{ marginTop: 16 }} 
-              onClick={() => showEntitySelector('banner')}
-            >
+            {bannerPreview && (
+              <div className="image-preview">
+                <h4>Preview:</h4>
+                <img
+                  src={bannerPreview || "/placeholder.svg"}
+                  alt="Banner preview"
+                  style={{ maxWidth: "100%", maxHeight: "200px", marginTop: "10px" }}
+                />
+              </div>
+            )}
+            <Button style={{ marginTop: 16 }} onClick={() => showEntitySelector("banner")}>
               Update Banner
             </Button>
           </>
-        );
+        )
       case "logo":
         return (
           <>
@@ -598,23 +721,33 @@ const Dashboard = () => {
             <AntUpload.Dragger
               name="logo"
               multiple={false}
+              accept="image/jpeg,image/png,image/gif,image/webp"
               beforeUpload={(file) => {
-                setLogoFile(file);
-                return false;
+                const isImage = file.type.startsWith("image/")
+                if (!isImage) {
+                  message.error("You can only upload image files!")
+                  return AntUpload.LIST_IGNORE
+                }
+
+                // Create preview
+                const reader = new FileReader()
+                reader.onload = () => {
+                  setLogoPreview(reader.result)
+                }
+                reader.readAsDataURL(file)
+
+                setLogoFile(file)
+                return false
               }}
               onChange={(info) => {
-                const { status } = info.file;
+                const { status } = info.file
                 if (status !== "uploading") {
-                  console.log(info.file, info.fileList);
+                  console.log(info.file, info.fileList)
                 }
                 if (status === "done") {
-                  message.success(
-                    `${info.file.name} logo file ready for upload.`
-                  );
+                  message.success(`${info.file.name} logo file ready for upload.`)
                 } else if (status === "error") {
-                  message.error(
-                    `${info.file.name} logo file failed to prepare.`
-                  );
+                  message.error(`${info.file.name} logo file failed to prepare.`)
                 }
               }}
               action="/api/upload"
@@ -622,18 +755,24 @@ const Dashboard = () => {
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
-              <p className="ant-upload-text">
-                Click or drag file to upload logo
-              </p>
+              <p className="ant-upload-text">Click or drag file to upload logo</p>
+              <p className="ant-upload-hint">Only JPG, PNG, GIF, and WebP images are allowed</p>
             </AntUpload.Dragger>
-            <Button 
-              style={{ marginTop: 16 }} 
-              onClick={() => showEntitySelector('logo')}
-            >
+            {logoPreview && (
+              <div className="image-preview">
+                <h4>Preview:</h4>
+                <img
+                  src={logoPreview || "/placeholder.svg"}
+                  alt="Logo preview"
+                  style={{ maxWidth: "100%", maxHeight: "200px", marginTop: "10px" }}
+                />
+              </div>
+            )}
+            <Button style={{ marginTop: 16 }} onClick={() => showEntitySelector("logo")}>
               Update Logo
             </Button>
           </>
-        );
+        )
       case "description":
         return (
           <>
@@ -645,12 +784,7 @@ const Dashboard = () => {
                 toolbar: [
                   [{ header: [1, 2, false] }],
                   ["bold", "italic", "underline", "strike", "blockquote"],
-                  [
-                    { list: "ordered" },
-                    { list: "bullet" },
-                    { indent: "-1" },
-                    { indent: "+1" },
-                  ],
+                  [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
                   ["link", "image"],
                   ["clean"],
                 ],
@@ -660,7 +794,7 @@ const Dashboard = () => {
               Update Description
             </Button>
           </>
-        );
+        )
       case "categories":
         return (
           <>
@@ -674,7 +808,7 @@ const Dashboard = () => {
               Update Categories
             </Button>
           </>
-        );
+        )
       case "eligibility":
         return (
           <>
@@ -686,12 +820,7 @@ const Dashboard = () => {
                 toolbar: [
                   [{ header: [1, 2, false] }],
                   ["bold", "italic", "underline", "strike", "blockquote"],
-                  [
-                    { list: "ordered" },
-                    { list: "bullet" },
-                    { indent: "-1" },
-                    { indent: "+1" },
-                  ],
+                  [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
                   ["link"],
                   ["clean"],
                 ],
@@ -701,38 +830,45 @@ const Dashboard = () => {
               Update Eligibility
             </Button>
           </>
-        );
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   // carousel button
   const nextSlide1 = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === carouselImages.length - 1 ? 0 : prevIndex + 1
-    );
-  };
+    setCurrentIndex((prevIndex) => (prevIndex === carouselImages.length - 1 ? 0 : prevIndex + 1))
+  }
 
   const prevSlide1 = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? carouselImages.length - 1 : prevIndex - 1
-    );
-  };
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? carouselImages.length - 1 : prevIndex - 1))
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
-      nextSlide();
-    }, 5000); // Change interval as needed
-    return () => clearInterval(interval);
-  }, [nextSlide]);
+      nextSlide()
+    }, 5000) // Change interval as needed
+    return () => clearInterval(interval)
+  }, [nextSlide])
+
+  const fetchEntityDetails = async (regId) => {
+    try {
+      const response = await apiClient.get(`entity-registration-detailed-page/?reg_id=${regId}`)
+      if (response.data) {
+        setAboutText(response.data.about || "")
+        setEligibilityText(response.data.eligibility || "")
+        setCategoriesText(response.data.categories || "")
+      }
+    } catch (error) {
+      console.error("Error fetching entity details:", error)
+      message.error("Failed to fetch entity details")
+    }
+  }
 
   return (
     <>
-      <div
-        style={{ height: "89vh", overflow: "scroll" }}
-        className="dashboard-home"
-      >
+      <div style={{ height: "89vh", overflow: "scroll" }} className="dashboard-home">
         {userDetails && (
           <div className="secretary-info-container">
             <div className="secretary-info">
@@ -740,28 +876,23 @@ const Dashboard = () => {
                 <h2>Welcome, {userDetails.user_name}!</h2>
                 <span className="role-badge">{userName?.role_name}</span>
               </div>
-              {userDetails?.secretary_details && userDetails?.secretary_details.map((item, key) => (
-                <div style={{marginTop:"10px"}} className="secretary-details" key={key}>
-                <div className="detail-item">
-                  <span className="detail-label">Entity:</span>
-                  <span className="detail-value">
-                    {item?.entity_name}
-                  </span>
-                </div>
-                <div className="detail-item">
-                  <span className="detail-label">Registration Code:</span>
-                  <span className="detail-value">
-                    {item?.registration_code}
-                  </span>
-                </div>
-                <div className="detail-item">
-                  <span className="detail-label">Owner:</span>
-                  <span className="detail-value">
-                    {item?.department}
-                  </span>
-                </div>
-              </div>
-              ))}
+              {userDetails?.secretary_details &&
+                userDetails?.secretary_details.map((item, key) => (
+                  <div style={{ marginTop: "10px" }} className="secretary-details" key={key}>
+                    <div className="detail-item">
+                      <span className="detail-label">Entity:</span>
+                      <span className="detail-value">{item?.entity_name}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Registration Code:</span>
+                      <span className="detail-value">{item?.registration_code}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Owner:</span>
+                      <span className="detail-value">{item?.department}</span>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         )}
@@ -769,211 +900,71 @@ const Dashboard = () => {
         {isLoggedIn === true && userName?.role_name === "Student Secretary" ? (
           <>
             <div style={{ marginTop: "-27px" }} className="club-details-page">
-              <div
-                className="hero-section"
-                style={{
-                  backgroundImage: `url(${mediaData?.banner_url})`,
-                  height: "250px",
-                  justifyContent: "space-between",
-                  display: "flex",
-                }}
-              >
-                <div className="hero-content">
-                  <h1 className="hero-title">
-                    {userDetails?.secretary_details?.registration_name}
-                  </h1>
-                  <div className="hero-tagline"></div>
-                  <p className="hero-subtitle"> </p>
-                </div>
-                <div>
-                  {" "}
-                  <Popover
-                    title={`Update Banner and Logo for ${userDetails?.secretary_details?.registration_name}`}
+              <div className="update-cards-container">
+                <h3>Media Update</h3>
+                <div className="update-cards-grid">
+                  <div
+                    onClick={() => showDrawer("media")}
+                    className="update-card"
+                    style={{
+                      borderTop: `4px solid #2196F3`,
+                      cursor: "pointer",
+                    }}
                   >
-                    <button
-                      onClick={() => showDrawer("media")}
-                      className="btn-edit btn-1"
-                    >
-                      Update Banner
-                    </button>
-                  </Popover>
-                  {renderDrawerContent()}
-                </div>
-                <div className="hero-shapes">
-                  <div className="shape shape-1"></div>
-                  <div className="shape shape-2"></div>
-                  <div className="shape shape-3"></div>
-                </div>
-              </div>
-
-              <div className="details-container">
-                <div className="details-content">
-                  <div className="program-header">
-                    <img
-                      src={mediaData?.logo_url || "/placeholder.svg"}
-                      alt="Program Logo"
-                      className="program-logo"
-                    />
-                    <Button
-                      onClick={() => showDrawer("logo")}
-                      className="editIconS"
-                      type="primary"
-                      shape="circle"
-                    >
-                      <Popover
-                        title={`Update/Remove Logo for ${userDetails?.secretary_details?.registration_name}`}
-                      >
-                        {" "}
-                        <EditOutlined />
-                      </Popover>
-                    </Button>
-                    <div className="program-info">
-                      <h2>
-                        {userDetails?.secretary_details?.registration_name}
-                      </h2>
-                      <div className="program-meta">
-                        <span className="online-badge">
-                          {" "}
-                          Registered: {new Date().toLocaleDateString()}
-                        </span>
-                        <span className="tag">
-                          Code :{" "}
-                          {userDetails?.secretary_details?.registration_code}
-                        </span>
-                      </div>
+                    <div className="update-card-icon" style={{ color: "#2196F3" }}>
+                      <FileImageOutlined />
                     </div>
+                    <h4>Update Banner</h4>
+                    <p>Update your entity's banner image</p>
                   </div>
-
-                  <div className="prize-section">
-                    <div className="prize-details">
-                      <div
-                        onClick={() => showDrawer("description")}
-                        style={{ display: "flex" }}
-                        className="prize-label"
-                      >
-                        Connecting All Circles is a vibrant community dedicated
-                        to igniting creativity and encouraging exploration among
-                        students.
-                        <Button
-                          className="editIconS"
-                          type="primary"
-                          shape="circle"
-                        >
-                          <Popover
-                            title={`Update description for ${userDetails?.secretary_details?.registration_name}`}
-                          >
-                            {" "}
-                            <EditOutlined />
-                          </Popover>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="category-tags-container">
-                    <h3 className="category-tags-title">
-                      <Tag className="category-icon" />
-                      Categories{" "}
-                      <Button
-                        onClick={() => showDrawer("categories")}
-                        style={{ marginLeft: "10px" }}
-                        type="primary"
-                        shape="circle"
-                      >
-                        <Popover
-                          title={`Add/Edit Categories for ${userDetails?.secretary_details?.registration_name}`}
-                        >
-                          {" "}
-                          <EditOutlined />
-                        </Popover>
-                      </Button>
-                    </h3>
-
-                    <div className="category-tags">
-                      {categories.map((category, index) => (
-                        <span
-                          key={index}
-                          className="category"
-                          style={{ backgroundColor: category.color }}
-                        >
-                          {category.name}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="details-sidebar">
-                  <div className="price-section">
-                    <span style={{ cursor: "no-drop" }} className="price-1">
-                      ₹ 100/-
-                    </span>
-                    <Button
-                      style={{ backgroundColor: "grey" }}
-                      onClick={giveWarningPrice}
-                      className="editIconS"
-                      type="primary"
-                      shape="circle"
-                    >
-                      <Popover
-                        title={`Update price for ${userDetails?.secretary_details?.registration_name}`}
-                      >
-                        {" "}
-                        <EditOutlined />
-                      </Popover>
-                    </Button>
-                    <div className="action-buttons">
-                      <button className="like-button">
-                        <Heart />
-                      </button>
-                      <button className="share-button">
-                        <Share2 />
-                      </button>
-                    </div>
-                  </div>
-
-                  <button
-                    style={{ display: "none" }}
-                    className="register-button"
+                  <div
+                    onClick={() => showDrawer("logo")}
+                    className="update-card"
+                    style={{
+                      borderTop: `4px solid #E91E63`,
+                      cursor: "pointer",
+                    }}
                   >
-                    Join as a New Member
-                  </button>
-
-                  <div className="stats-list">
-                    <div className="stat-item">
-                      <Users className="stat-icon" />
-                      <div className="stat-details">
-                        <span className="stat-label">Member Registered</span>
-                        <span className="stat-value">230</span>
-                      </div>
+                    <div className="update-card-icon" style={{ color: "#E91E63" }}>
+                      <RadiusUprightOutlined />
                     </div>
-                  </div>
-
-                  <div className="eligibility-section">
-                    <h3>Eligibility</h3>
-                    <p>Open for any Disciplane Students.</p>
-                    <Button
-                      onClick={() => showDrawer("eligibility")}
-                      type="primary"
-                      shape="circle"
-                    >
-                      <Popover
-                        title={`Update the Eligibility for ${userDetails?.secretary_details?.registration_name}`}
-                      >
-                        {" "}
-                        <EditOutlined />
-                      </Popover>
-                    </Button>
+                    <h4>Update Logo</h4>
+                    <p>Update your entity's logo image</p>
                   </div>
                 </div>
               </div>
+              {/* Update Cards Section - Replacing Settings */}
+              <div className="update-cards-container">
+                <h3>Entity Management</h3>
+                <div className="update-cards-grid">
+                  {updateCards.map((card, index) => (
+                    <div
+                      key={index}
+                      className="update-card"
+                      onClick={() => openUpdateModal(card.type)}
+                      style={{
+                        borderTop: `4px solid ${card.color}`,
+                        cursor: "pointer",
+                      }}
+                    >
+                      <div className="update-card-icon" style={{ color: card.color }}>
+                        {card.icon}
+                      </div>
+                      <h4>{card.title}</h4>
+                      <p>{card.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-              <EventCardsDash commity={commity} />
+              <ProfilePictureCards/>
+
+              {userDetails && userDetails?.secretary_details ? null : <EventCardsDash commity={commity} />}
             </div>
           </>
         ) : (
-          <>
-            {" "}
+          (
+            <>
             <div className="metric-cards-home">
               <div onClick={redirectClubs} className="metric-card-home card1h">
                 <img src={circle || "/placeholder.svg"} />
@@ -989,7 +980,8 @@ const Dashboard = () => {
                 </span>
               </div>
 
-              <div onClick={redirectComm} className="metric-card-home card4h">
+              <div onClick={redirectComm} className="metric-card-home card"  >
+             
                 <img src={circle || "/placeholder.svg"} />
                 <h2 className="cardCount">{filteredData?.community}</h2>
 
@@ -1068,7 +1060,10 @@ const Dashboard = () => {
                             index === currentIndex ? "active" : ""
                           }`}
                         >
-                          <img src={image.src || "/placeholder.svg"} alt={image.alt} />
+                          <img
+                            src={image.src || "/placeholder.svg"}
+                            alt={image.alt}
+                          />
                           <div className="carousel-overlay">
                             <span style={{ textTransform: "uppercase" }}>
                               {image.type}
@@ -1251,6 +1246,7 @@ const Dashboard = () => {
               </div>
             </div>
           </>
+          )
         )}
 
         <footer
@@ -1267,10 +1263,7 @@ const Dashboard = () => {
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal-content">
-              <button
-                className="modal-close"
-                onClick={() => setIsModalOpen(false)}
-              >
+              <button className="modal-close" onClick={() => setIsModalOpen(false)}>
                 ×
               </button>
               <h2>Reply to Discussion</h2>
@@ -1288,13 +1281,7 @@ const Dashboard = () => {
         <Scroller />
       </div>
 
-      <Drawer
-        title="Edit Content"
-        placement="right"
-        onClose={onCloseDrawer}
-        visible={drawerVisible}
-        width={400}
-      >
+      <Drawer title="Edit Content" placement="right" onClose={onCloseDrawer} visible={drawerVisible} width={400}>
         {renderDrawerContent()}
       </Drawer>
 
@@ -1304,8 +1291,108 @@ const Dashboard = () => {
         onClose={() => setIsEntitySelectorVisible(false)}
         onSelectEntity={handleEntitySelect}
       />
-    </>
-  );
-};
 
-export default Dashboard;
+      {/* Update Modal */}
+      <Modal
+        title="Update About & Eligibility & Category"
+        open={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setIsModalVisible(false)}>
+            Cancel
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleUpdateSubmit}>
+            Update
+          </Button>,
+        ]}
+        width={800}
+      >
+        <div className="update-modal-content">
+          <div className="entity-selector">
+            <label htmlFor="entity-select">Select Entity:</label>
+            <Select
+              id="entity-select"
+              style={{ width: "100%" }}
+              placeholder="Select an entity"
+              value={selectedEntity}
+              onChange={(value) => {
+                setSelectedEntity(value)
+                fetchEntityDetails(value)
+              }}
+              options={availableEntities}
+            />
+          </div>
+
+          <div className="update-content" style={{ marginTop: "20px" }}>
+            <label htmlFor="about-editor">About:</label>
+            <ReactQuill
+              id="about-editor"
+              theme="snow"
+              value={aboutText}
+              onChange={setAboutText}
+              modules={{
+                toolbar: [
+                  [{ header: [1, 2, 3, false] }],
+                  ["bold", "italic", "underline", "strike"],
+                  [{ color: [] }, { background: [] }],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  ["link"],
+                  ["clean"],
+                ],
+              }}
+              style={{ height: "200px", marginBottom: "40px" }}
+            />
+          </div>
+
+          <div className="update-content" style={{ marginTop: "40px" }}>
+            <label htmlFor="eligibility-editor">Eligibility:</label>
+            <ReactQuill
+              id="eligibility-editor"
+              theme="snow"
+              value={eligibilityText}
+              onChange={setEligibilityText}
+              modules={{
+                toolbar: [
+                  [{ header: [1, 2, 3, false] }],
+                  ["bold", "italic", "underline", "strike"],
+                  [{ color: [] }, { background: [] }],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  ["link"],
+                  ["clean"],
+                ],
+              }}
+              style={{ height: "200px", marginBottom: "40px" }}
+            />
+          </div>
+
+          <div className="update-content" style={{ marginTop: "40px" }}>
+            <label htmlFor="categories-select">Categories:</label>
+            <Select
+              id="categories-select"
+              mode="multiple"
+              style={{ width: "100%" }}
+              placeholder="Select categories"
+              value={categoriesText ? categoriesText.split(",").map((item) => item.trim()) : []}
+              onChange={(values) => setCategoriesText(values.join(","))}
+              options={[
+                { value: "Debate", label: "Debate" },
+                { value: "Public Speaking", label: "Public Speaking" },
+                { value: "Writing and Editing", label: "Writing and Editing" },
+                { value: "Leadership", label: "Leadership" },
+                { value: "Creative Expression", label: "Creative Expression" },
+                { value: "Technology", label: "Technology" },
+                { value: "Arts", label: "Arts" },
+                { value: "Sports", label: "Sports" },
+                { value: "Music", label: "Music" },
+                { value: "Dance", label: "Dance" },
+              ]}
+            />
+          </div>
+        </div>
+      </Modal>
+    </>
+  )
+}
+
+export default Dashboard
+

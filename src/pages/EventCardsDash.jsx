@@ -26,12 +26,14 @@ const EventCardsDash = ({commity}) => {
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [committeeMembers, setCommitteeMembers] = useState([]);
 
   // console.log(commity, "commity")
 
   const selectedSociety = commity;
-
-
+  // if (!Array.isArray(commity) || commity.length === 0) {
+  //   return <div className="no-data">No committee data available</div>;
+  // }
 
   const previousEvents = [
     {
@@ -52,7 +54,7 @@ const EventCardsDash = ({commity}) => {
     },
   ];
 
-  const [committeeMembers, setCommitteeMembers] = useState([]);
+
 
   useEffect(() => {
     if (selectedSociety) {

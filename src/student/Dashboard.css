@@ -365,3 +365,76 @@
 }
 
 
+/* 5 cards  */
+
+/* Update Cards Styling */
+.update-cards-container {
+  /* margin: 20px 0; */
+  padding: 0 15px;
+  margin-top: 40px;
+}
+
+.update-cards-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.update-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.update-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.update-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.update-card-icon {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.update-card h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.update-card p {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Update Modal Styling */
+.update-modal-content {
+  padding: 10px 0;
+}
+
+.entity-selector label,
+.update-content label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .update-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+
+  .update-card {
+    padding: 15px;
+  }
+}
+

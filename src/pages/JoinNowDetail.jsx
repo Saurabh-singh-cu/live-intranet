@@ -40,11 +40,15 @@ const JoinNowDetail = () => {
   const [currentEvent, setCurrentEvent] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const selectedSociety = location.state?.society;
+  const entity_id = location.state || [];
+  const selectedSociety = location.state.society
   const reg_id1 = selectedSociety?.reg_id;
-  console.log(reg_id1, "REG IDDDD");
+  console.log("Entity ID:", entity_id);
+  console.log("Society Data:", selectedSociety);
 
-  console.log(selectedSociety, "SELECTEDDDDDDDDDDDDDDDDDDD");
+
+
+  console.log("PRINT")
 
   const approvedMedia = async () => {
     if (!selectedSociety || !selectedSociety.reg_id) {
@@ -66,7 +70,7 @@ const JoinNowDetail = () => {
   const fetchSocieties = async () => {
     try {
       const response = await apiClient.get(
-        "entity-registration-summary/?entity_id=1"
+        `entity-registration-summary/?entity_id=${entity_id?.entity_id}`
       );
       setSocieties(response.data);
       console.log(response.data, "Fetched Societies");
@@ -126,31 +130,35 @@ const JoinNowDetail = () => {
         {
           name: selectedSociety.Secretary_name,
           position: "Secretary",
-          image: user,  // Replace with dynamic image if available
+          image: selectedSociety.media_details?.secretary_profile_pic_url || user,
           email: selectedSociety.Secretary_email,
         },
         {
           name: selectedSociety.Joint_Secretary_name,
           position: "Joint Secretary",
-          image: user,
+          image: selectedSociety.media_details?.join_secretary_profile_pic_url || user,
           email: selectedSociety.Joint_Secretary_email,
         },
         {
           name: selectedSociety.faculty_advisory_name,
           position: "Faculty Advisor",
-          image: user,
+          image: selectedSociety.media_details?.faculty_advisory_profile_pic_url || user,
           email: selectedSociety.faculty_advisory_email,
         },
         {
           name: selectedSociety.faculty_co_advisory_name,
           position: "Faculty Co-Advisor",
-          image: user,
+          image: selectedSociety.media_details?.co_advisor_profile_pic_url || user,
           email: selectedSociety.faculty_co_advisory_email,
         },
       ];
       setCommitteeMembers(members);
     }
   }, [selectedSociety]);
+  
+
+
+
   const handleEdit = (member) => {
     setEditMember(member);
   };
@@ -159,13 +167,7 @@ const JoinNowDetail = () => {
     setEditMember(null);
   };
 
-  const getRegId = () => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    return (
-      userData?.faculty_advisory_details?.reg_id ||
-      userData?.secretary_details?.reg_id
-    );
-  };
+
 
   // helper function
 
