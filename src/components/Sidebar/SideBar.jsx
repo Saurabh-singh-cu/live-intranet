@@ -135,18 +135,12 @@ const routes = [
     icon: <FaUsers />,
     allowedRoles: ["Student Secretary"],
   },
-  {
-    path: "/proposed-calendarby-secretary",
-    name: "Proposed Calendar",
-    icon: <MdPriceChange />,
-    allowedRoles: ["Student Secretary"],
-  },
-  {
-    path: "/mark-event-attendance",
-    name: "Mark Attendance",
-    icon: <MdQrCodeScanner />,
-    allowedRoles: ["Student Secretary"],
-  },
+  // {
+  //   path: "/proposed-calendarby-secretary",
+  //   name: "Proposed Calendar",
+  //   icon: <MdPriceChange />,
+  //   allowedRoles: ["Student Secretary"],
+  // },
   {
     path: "/EntityRegistrationForm",
     name: "Entity Registration Form",

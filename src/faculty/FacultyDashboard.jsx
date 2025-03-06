@@ -8,24 +8,15 @@ import EventCardsDash from "../pages/EventCardsDash";
 import cc1 from "../assets/images/c3.png";
 import bannerclub from "../assets/images/bannerclub.jpg";
 import apiClient from "../config/apiClient";
+import CommitteeCards from "./CommitteeCards";
 
 const FacultyDashboard = () => {
   const [userDetails, setUserDetails] = useState(null);
   const [regId, setRegId] = useState(null);
   const [mediaData, setMediaData] = useState(null);
   const [commity, setCommity] = useState([]);
-
-    const [isEntitySelectorVisible, setIsEntitySelectorVisible] = useState(false);
-
-
-  useEffect(() => {
-    const getuser = JSON.parse(localStorage.getItem("user"));
-
-    console.log(getuser, "USER NAME");
-    if (getuser && getuser.role_name === "Faculty Advisory") {
-      setUserDetails(getuser);
-    }
-  }, []);
+  const [userName, setUserName] = useState([]);
+  const [availableEntities, setAvailableEntities] = useState([]);
 
   const categories = [
     { name: "Debate ", color: "#3498db" },
@@ -35,12 +26,9 @@ const FacultyDashboard = () => {
     { name: "Creative Expression", color: "#9b59b6" },
   ];
 
-
-
   useEffect(() => {
     if (regId) {
       approvedMedia(regId);
-      console.log(regId, "RRRRRRRRRRRRRRRRRRRRRRRRR");
     }
   }, [regId]);
 
@@ -54,40 +42,77 @@ const FacultyDashboard = () => {
       console.error("Error fetching media:", error);
     }
   };
-  
 
-  const grtCommitiData = useCallback(async (regIds) => {
-    try {
-      const responses = await Promise.all(
-        regIds.map((regId) =>
-          apiClient.get(`entity-registration-detailed-page/?reg_id=${regId}`)
-        )
-      );
-  
-      // Extract data from responses
-      const commityData = responses.map((response) => response.data);
-  
-      console.log("Fetched Data:", commityData);
-  
-      setCommity(commityData); // Store all responses in state
-    } catch (error) {
-      console.error("Error fetching data:", error);
+  useEffect(() => {
+    if (regId && regId.length > 0) {
+      grtCommitiData(regId);
+    }
+  }, [regId]);
+
+  useEffect(() => {
+    const getuser = JSON.parse(localStorage.getItem("user"));
+    setUserName(getuser);
+    console.log(getuser, "USER NAME");
+    // Check if the user is a Student Secretary
+    if (getuser && getuser.role_name === "Faculty Advisory") {
+      setUserDetails(getuser);
+
+      // If user is a Student Secretary, prepare available entities for selection
+      if (
+        getuser.faculty_advisory_details &&
+        getuser.faculty_advisory_details.length > 0
+      ) {
+        const entities = getuser.faculty_advisory_details.map((entity) => ({
+          value: entity.reg_id,
+          label: entity.entity_name || entity.registration_name,
+        }));
+        setAvailableEntities(entities);
+      }
     }
   }, []);
-  
-  
+
+  const grtCommitiData = useCallback(
+    async (regIds) => {
+      try {
+        if (!regIds || regIds.length === 0) return; // Prevent empty calls
+
+        const allCommityMember = [];
+        for (const regId of regIds) {
+          console.log(`Fetching data for reg_id: ${regId}`);
+
+          const response = await apiClient.get(
+            `entity-registration-detailed-page/?reg_id=${regId}`
+          );
+
+          if (response?.data) {
+            allCommityMember.push(response.data);
+          }
+        }
+
+        if (JSON.stringify(allCommityMember) !== JSON.stringify(commity)) {
+          setCommity(allCommityMember); // Only update if data is different
+        }
+
+        console.log(allCommityMember, "[commityMember]");
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    },
+    [commity]
+  ); // Dependency added to avoid unnecessary re-fetches
 
   useEffect(() => {
     const storedData = localStorage.getItem("user"); // Replace with actual key
     if (storedData) {
       const parsedData = JSON.parse(storedData);
       console.log("Parsed LocalStorage Data:", parsedData);
-  
+
       // Extract reg_id array from secretary_details
-      const regIds = parsedData?.faculty_advisory_details?.map((item) => item.reg_id) || [];
-      
+      const regIds =
+        parsedData?.faculty_advisory_details?.map((item) => item.reg_id) || [];
+
       console.log("Extracted regIds:", regIds); // Debugging
-  
+
       if (regIds.length > 0) {
         setRegId(regIds); // Set the state with extracted reg_id array
       }
@@ -104,33 +129,31 @@ const FacultyDashboard = () => {
           <div className="secretary-info">
             <div className="secretary-header">
               <h2>Welcome, {userDetails?.user_name}!</h2>
-
               <span className="role-badge">{userDetails?.role_name}</span>
             </div>
-            <div className="secretary-details">
-              <div className="detail-item">
-                <span className="detail-label">Entity:</span>
-                <span className="detail-value">
-                  {userDetails?.faculty_advisory_details?.entity_name}
-                </span>
+
+            {userDetails?.faculty_advisory_details?.map((detail, index) => (
+              <div key={index} className="secretary-details">
+                <div className="detail-item">
+                  <span className="detail-label">Entity:</span>
+                  <span className="detail-value">{detail.entity_name}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Registration Name:</span>
+                  <span className="detail-value">
+                    {detail.registration_name}
+                  </span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Department:</span>
+                  <span className="detail-value">{detail.department}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Members:</span>
+                  <span className="detail-value">230</span>
+                </div>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Registration Name:</span>
-                <span className="detail-value">
-                  {userDetails?.faculty_advisory_details?.registration_name}
-                </span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Department:</span>
-                <span className="detail-value">
-                  {userDetails?.faculty_advisory_details?.department}
-                </span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Members:</span>
-                <span className="detail-value">230</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -253,7 +276,7 @@ const FacultyDashboard = () => {
             </div>
           </div>
 
-          <EventCardsDash commity={commity} />
+          <CommitteeCards />
         </div>
       </div>
     </>

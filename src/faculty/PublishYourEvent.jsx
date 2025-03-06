@@ -15,7 +15,7 @@ const PublishYourEvent = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [regId, setRegId] = useState(null);
+  const [regIds, setRegIds] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [posterPreview, setPosterPreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -41,12 +41,29 @@ const PublishYourEvent = () => {
         const userData = localStorage.getItem("user");
         if (userData) {
           const parsedUserData = JSON.parse(userData);
+          // Check if faculty_advisory_details is an array
           if (
+            parsedUserData &&
+            parsedUserData.faculty_advisory_details &&
+            Array.isArray(parsedUserData.faculty_advisory_details)
+          ) {
+            // Extract all reg_ids from the array
+            const ids = parsedUserData.faculty_advisory_details.map(
+              (item) => item.reg_id
+            );
+            if (ids.length > 0) {
+              setRegIds(ids);
+            } else {
+              throw new Error("No reg_ids found in user data");
+            }
+          } 
+          // Check if faculty_advisory_details is an object with reg_id
+          else if (
             parsedUserData &&
             parsedUserData.faculty_advisory_details &&
             parsedUserData.faculty_advisory_details.reg_id
           ) {
-            setRegId(parsedUserData.faculty_advisory_details.reg_id);
+            setRegIds([parsedUserData.faculty_advisory_details.reg_id]);
           } else {
             throw new Error("reg_id not found in user data");
           }
@@ -63,25 +80,41 @@ const PublishYourEvent = () => {
   }, []);
 
   useEffect(() => {
-    if (regId) {
-      fetchEntityMedia(regId);
+    if (regIds.length > 0) {
+      fetchEvents();
     }
-  }, [regId]);
+  }, [regIds]);
 
-  const fetchEntityMedia = async (regId) => {
+  const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.get(
-        `event_entry_request_list_for_faculty/?reg_id=${regId}`
-      );
-      setEvents(response.data);
-      // setError(null);
+      setEvents([]); // Reset events when fetching new data
+      
+      for (const regId of regIds) {
+        try {
+          console.log(`Fetching events for reg_id: ${regId}`);
+          const response = await apiClient.get(
+            `event_entry_request_list_for_faculty/?reg_id=${regId}`
+          );
+          
+          if (response?.data) {
+            const dataArray = Array.isArray(response.data)
+              ? response.data
+              : [response.data];
+              
+            // Append new events to existing ones
+            setEvents(prevEvents => [...prevEvents, ...dataArray]);
+          }
+        } catch (error) {
+          console.error(`Error fetching events for reg_id ${regId}:`, error);
+        }
+      }
     } catch (error) {
       const errorMessage = `Error fetching event data: ${
         error.response?.data?.detail || error.message
       }`;
-      // setError(errorMessage);
-      // showNotification("error", errorMessage);
+      setError(errorMessage);
+      showNotification("error", errorMessage);
     } finally {
       setLoading(false);
     }
@@ -182,7 +215,7 @@ const PublishYourEvent = () => {
     }
   };
 
-  const handleSubmit = async (erId) => {
+  const handleSubmit = async (erId, regId) => {
     if (!validateForm()) {
       showNotification(
         "warning",
@@ -213,7 +246,7 @@ const PublishYourEvent = () => {
       showNotification("success", "Event published successfully!");
       console.log("Update successful:", response.data);
 
-     
+      // Reset form after successful submission
       setFormData({
         start_date: "",
         end_date: "",
@@ -225,40 +258,23 @@ const PublishYourEvent = () => {
       });
       setPosterPreview(null);
 
-      
-      fetchEntityMedia(regId);
+      // Refresh events list
+      fetchEvents();
     } catch (error) {
       console.error("Error updating event:", error);
 
       let errorMessage = "Failed to publish event.";
-      // if (error.response) {
-   
-      //   if (error.response.data.detail) {
-      //     errorMessage = error.response.data.detail;
-      //   } else if (error.response.data) {
-          
-      //     const fieldErrors = Object.entries(error.response.data)
-      //       .map(([field, errors]) => `${field}: ${errors.join(", ")}`)
-      //       .join("; ");
-
-      //     if (fieldErrors) {
-      //       errorMessage = `Validation errors: ${fieldErrors}`;
-      //     }
-      //   }
-      // }
-
       showNotification("error", errorMessage);
     } finally {
       setSubmitting(false);
     }
   };
 
-  const confirmSubmit = (erId) => {
+  const confirmSubmit = (erId, regId) => {
     if (!validateForm()) {
       return;
     }
 
-  
     const confirmDialog = document.createElement("div");
     confirmDialog.className = styles.confirmDialog;
     confirmDialog.innerHTML = `
@@ -274,14 +290,13 @@ const PublishYourEvent = () => {
 
     document.body.appendChild(confirmDialog);
 
-  
     document.getElementById("cancelBtn").addEventListener("click", () => {
       document.body.removeChild(confirmDialog);
     });
 
     document.getElementById("confirmBtn").addEventListener("click", () => {
       document.body.removeChild(confirmDialog);
-      handleSubmit(erId);
+      handleSubmit(erId, regId);
     });
   };
 
@@ -387,10 +402,10 @@ const PublishYourEvent = () => {
                           {event.event_name || "Unnamed Event"}
                         </div>
                         <div className={styles.eventDate}>
-                          {`SDP :` + event.start_date_proposed || "No date specified"}
+                          {`SDP: ${event.start_date_proposed || "No date specified"}`}
                         </div>
                         <div className={styles.eventDate}>
-                          {`EDP :` + event.end_date_proposed || "No date specified"}
+                          {`EDP: ${event.end_date_proposed || "No date specified"}`}
                         </div>
                       </td>
                       <td>
@@ -398,7 +413,7 @@ const PublishYourEvent = () => {
                           {event.activity_type || "Not specified"}
                         </div>
                         <div className={styles.organizer}>
-                          {`Limit : ` + event.limit || "Limit"}
+                          {`Limit: ${event.limit || "Not set"}`}
                         </div>
                       </td>
                       <td className={styles.budgetColumn}>
@@ -424,7 +439,7 @@ const PublishYourEvent = () => {
                       </td>
                     </tr>
                     {event.file_status === "Submitted To Department" && (
-                      <tr>
+                      <tr className={styles.expandedRow}>
                         <td colSpan="8">
                           <div className={styles.formContainer}>
                             <h3 className={styles.formTitle}>
@@ -580,18 +595,16 @@ const PublishYourEvent = () => {
                                   />
                                 </div>
                               )}
-                               <div className={styles.formActions}>
-                              <button
-                                className={styles.submitButton}
-                                onClick={() => confirmSubmit(event.er_id)}
-                                disabled={submitting}
-                              >
-                                {submitting ? "Publishing..." : "Publish Event"}
-                              </button>
+                              <div className={styles.formActions}>
+                                <button
+                                  className={styles.submitButton}
+                                  onClick={() => confirmSubmit(event.er_id, event.reg_id)}
+                                  disabled={submitting}
+                                >
+                                  {submitting ? "Publishing..." : "Publish Event"}
+                                </button>
+                              </div>
                             </div>
-                            </div>
-
-                           
                           </div>
                         </td>
                       </tr>

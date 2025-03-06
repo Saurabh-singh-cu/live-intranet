@@ -42,6 +42,7 @@ import apiClient from "../config/apiClient"
 import EntitySelectorPopup from "./EntitySelectorPopup"
 import "./Dashboard.css"
 import ProfilePictureCards from "./ProfilePictureCard"
+import CommitteeCardStudent from "./committeeCardStudent"
 
 const Dashboard = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -385,14 +386,7 @@ const Dashboard = () => {
     }, 2000)
   }
 
-  const giveWarningPrice = () => {
-    Swal.fire({
-      title: "Permission Denied",
-      text: "Permission required from Admin! ",
-      icon: "error",
-      footer: '<a href="#">Please contact the Admin!</a>',
-    })
-  }
+
 
   const showDrawer = (content) => {
     setDrawerContent(content)
@@ -874,7 +868,7 @@ const Dashboard = () => {
             <div className="secretary-info">
               <div className="secretary-header">
                 <h2>Welcome, {userDetails.user_name}!</h2>
-                <span className="role-badge">{userName?.role_name}</span>
+                <span className="role-badge1">{userName?.role_name}</span>
               </div>
               {userDetails?.secretary_details &&
                 userDetails?.secretary_details.map((item, key) => (
@@ -959,7 +953,8 @@ const Dashboard = () => {
 
               <ProfilePictureCards/>
 
-              {userDetails && userDetails?.secretary_details ? null : <EventCardsDash commity={commity} />}
+              {/* {userDetails && userDetails?.secretary_details ? null : <EventCardsDash commity={commity} />} */}
+             <CommitteeCardStudent />
             </div>
           </>
         ) : (
@@ -1336,7 +1331,7 @@ const Dashboard = () => {
                   ["bold", "italic", "underline", "strike"],
                   [{ color: [] }, { background: [] }],
                   [{ list: "ordered" }, { list: "bullet" }],
-                  ["link"],
+                 
                   ["clean"],
                 ],
               }}
@@ -1357,7 +1352,7 @@ const Dashboard = () => {
                   ["bold", "italic", "underline", "strike"],
                   [{ color: [] }, { background: [] }],
                   [{ list: "ordered" }, { list: "bullet" }],
-                  ["link"],
+                 
                   ["clean"],
                 ],
               }}
