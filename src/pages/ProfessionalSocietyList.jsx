@@ -61,11 +61,11 @@ const ProfessionalSociety = () => {
             Join our most active Student Chapters and participate in
             exciting events and activities.
           </p>
-          <div className="club-stats-list">
+          {/* <div className="club-stats-list">
             <div className="stat-item-list">
               <MdGroup style={{ color: "white" }} size={20} />
               <span className="member-list-count">
-                1000 Active Members in Pro. Soc.
+              
               </span>
             </div>
             <div className="stat-item-list">
@@ -76,7 +76,7 @@ const ProfessionalSociety = () => {
               <BsActivity style={{ color: "white" }} size={20} />
               <span>50 Activities</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </aside>
 
@@ -120,7 +120,7 @@ const ProfessionalSociety = () => {
                   <div className="card-stats-list">
                     <div className="stat">
                       <MdGroup size={16} />
-                      <span>66 Registered Member</span>
+                      <span>{clubSociety?.membership_count} Registered Member</span>
                     </div>
                   </div>
                   <div className="tags"></div>

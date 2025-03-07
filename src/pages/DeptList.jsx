@@ -63,11 +63,11 @@ const DeptList = () => {
             Join our most active Department Society and participate in exciting
             events and activities.
           </p>
-          <div className="club-stats-list">
+          {/* <div className="club-stats-list">
             <div className="stat-item-list">
               <MdGroup style={{ color: "white" }} size={20} />
               <span className="member-list-count">
-                6400 Active Members in Dept.Soc.
+             
               </span>
             </div>
             <div className="stat-item-list">
@@ -78,7 +78,7 @@ const DeptList = () => {
               <BsActivity style={{ color: "white" }} size={20} />
               <span>21 Activities</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </aside>
 
@@ -122,7 +122,7 @@ const DeptList = () => {
                   <div className="card-stats-list">
                     <div className="stat">
                       <MdGroup size={16} />
-                      <span>102 Registered Member</span>
+                      <span>{clubSociety?.membership_count} Registered Member</span>
                     </div>
                   </div>
                   <div className="tags"></div>

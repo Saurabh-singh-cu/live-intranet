@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import apiClient from "../config/apiClient";
 import "./ProfilePictureCard.css";
+import Swal from "sweetalert2";
 
 const ProfilePictureCards = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -79,7 +80,12 @@ const ProfilePictureCards = () => {
     const file = e.target.files[0];
     if (file) {
       if (!file.type.startsWith('image/')) {
-        alert('Please select an image file');
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid File',
+          text: 'Please select an image file!',
+        });
+        
         return;
       }
       
@@ -147,14 +153,24 @@ const ProfilePictureCards = () => {
       );
   
       if (response.status === 200 || response.status === 201) {
-        alert(`${selectedRole.title} profile picture updated successfully!`);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: `${selectedRole.title} profile picture updated successfully!`,
+        });
+        
         closeModal();
       } else {
         throw new Error("Update failed");
       }
     } catch (error) {
       console.error(`Error updating ${selectedRole.title} profile picture:`, error);
-      alert(`Failed to update ${selectedRole.title} profile picture. Please try again.`);
+      Swal.fire({
+        icon: 'error',
+        title: 'Update Failed',
+        text: `Failed to update ${selectedRole.title} profile picture. Please try again.`,
+      });
+      
     }
   };
 

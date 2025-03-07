@@ -19,9 +19,7 @@
   padding-right: 20px;
   margin-top: 5rem;
 }
-.error{
 
-}
 .rightColumn {
   width: 60%;
   padding-left: 20px;
@@ -147,7 +145,7 @@
 .error {
   text-align: center;
   font-size: 18px;
-  margin-top: 50px;
+  margin-top: 70px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -292,12 +292,12 @@
    */
 
    /* Main container */
-.registration-container {
+.registration-container-1 {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  padding: 2rem;
+  padding: 6rem;
   background-color: #f5f5f5;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }

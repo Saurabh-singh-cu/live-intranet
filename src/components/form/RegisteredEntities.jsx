@@ -26,17 +26,16 @@ function RegisteredEntities() {
   const [viewMoreDrawerVisible, setViewMoreDrawerVisible] = useState(false);
   const [selectedEntityDetails, setSelectedEntityDetails] = useState(null);
 
-
-
   useEffect(() => {
-    apiClient.get("entity-registration/")
+    apiClient
+      .get("entity-registration/")
       .then((response) => {
         setEntities(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  
+
     const userData = localStorage.getItem("user");
     if (userData) {
       try {
@@ -61,12 +60,25 @@ function RegisteredEntities() {
     [form]
   );
 
-  const handleDelete = useCallback((params) => {
-    console.log("Delete clicked for entity with ID:", params.data.reg_id);
-    setEntities((prevEntities) =>
-      prevEntities.filter((entity) => entity.reg_id !== params.data.reg_id)
-    );
-  }, []);
+  const onFinish = (values) => {
+    if (!editingEntity) return;
+
+    apiClient
+      .put(`update-entity/${editingEntity.reg_id}/`, values)
+      .then((response) => {
+        message.success("Entity updated successfully");
+        setEntities((prevEntities) =>
+          prevEntities.map((entity) =>
+            entity.reg_id === editingEntity.reg_id ? response.data : entity
+          )
+        );
+        onDrawerClose();
+      })
+      .catch((error) => {
+        console.error("Error updating entity:", error);
+        message.error("Failed to update entity");
+      });
+  };
 
   const handleSendMail = useCallback(
     (params) => {
@@ -89,18 +101,6 @@ function RegisteredEntities() {
     setMailDrawerVisible(false);
     mailForm.resetFields();
     setEmails([]);
-  };
-
-  const onFinish = (values) => {
-    console.log("Updated entity:", values);
-    setEntities((prevEntities) =>
-      prevEntities.map((entity) =>
-        entity.reg_id === editingEntity.reg_id
-          ? { ...entity, ...values }
-          : entity
-      )
-    );
-    onDrawerClose();
   };
 
   const onMailFinish = (values) => {
@@ -309,7 +309,7 @@ function RegisteredEntities() {
         {fields.map(([label, key]) => (
           <tr key={key}>
             <td>{label}</td>
-            <td>{selectedEntityDetails[key] || 'N/A'}</td>
+            <td>{selectedEntityDetails[key] || "N/A"}</td>
           </tr>
         ))}
       </>
@@ -324,37 +324,36 @@ function RegisteredEntities() {
             ["Entity", "entity"],
             ["Department", "department"],
             ["Session Code", "session_code"],
-            ["Remarks", "remarks"]
+            ["Remarks", "remarks"],
           ])}
           {renderSection("Faculty Advisor", [
             ["Name", "faculty_advisory_name"],
             ["Email", "faculty_advisory_email"],
             ["Emp Code", "faculty_advisory_empcode"],
-            ["Mobile", "faculty_advisory_mobile"]
+            ["Mobile", "faculty_advisory_mobile"],
           ])}
           {renderSection("Faculty Co-Advisor", [
             ["Name", "faculty_co_advisory_name"],
             ["Email", "faculty_co_advisory_email"],
             ["Emp Code", "faculty_co_advisory_empcode"],
-            ["Mobile", "faculty_co_advisory_mobile"]
+            ["Mobile", "faculty_co_advisory_mobile"],
           ])}
           {renderSection("Secretary", [
             ["Name", "Secretary_name"],
             ["Email", "Secretary_email"],
             ["UID", "Secretary_uid"],
-            ["Mobile", "Secretary_mobile"]
+            ["Mobile", "Secretary_mobile"],
           ])}
           {renderSection("Joint Secretary", [
             ["Name", "Joint_Secretary_name"],
             ["Email", "Joint_Secretary_email"],
             ["UID", "Joint_Secretary_uid"],
-            ["Mobile", "Joint_Secretary_mobile"]
+            ["Mobile", "Joint_Secretary_mobile"],
           ])}
         </tbody>
       </table>
     );
   };
-
 
   return (
     <div className="entity-table-container">
@@ -369,20 +368,20 @@ function RegisteredEntities() {
           <button className="clear-button">Add Entity</button>
         </div>
       </div>
-     <div  style={{ height: "20vh", width: "100%" }}>
-     <div className="ag-theme-alpine">
-        <AgGridReact
-          columnDefs={columnDefs}
-          rowData={entities}
-          onGridReady={onGridReady}
-          pagination={true}
-          paginationPageSize={10}
-          domLayout="autoHeight"
-          suppressHorizontalScroll={false}
-          enableBrowserTooltips={true}
-        />
+      <div style={{ height: "20vh", width: "100%" }}>
+        <div className="ag-theme-alpine">
+          <AgGridReact
+            columnDefs={columnDefs}
+            rowData={entities}
+            onGridReady={onGridReady}
+            pagination={true}
+            paginationPageSize={10}
+            domLayout="autoHeight"
+            suppressHorizontalScroll={false}
+            enableBrowserTooltips={true}
+          />
+        </div>
       </div>
-     </div>
       <Drawer
         title="Edit Entity"
         placement="right"
@@ -403,11 +402,14 @@ function RegisteredEntities() {
           <Form.Item name="registeration_code" label="Registration Code">
             <Input />
           </Form.Item>
-       
+
           <Form.Item name="faculty_advisory_name" label="Faculty Advisor Name">
             <Input />
           </Form.Item>
-          <Form.Item name="faculty_advisory_empcode" label="Faculty Advisor Empcode">
+          <Form.Item
+            name="faculty_advisory_empcode"
+            label="Faculty Advisor Empcode"
+          >
             <Input />
           </Form.Item>
           <Form.Item
@@ -461,7 +463,10 @@ function RegisteredEntities() {
           <Form.Item name="Joint_Secretary_email" label="Joint Secretary Email">
             <Input />
           </Form.Item>
-          <Form.Item name="Joint_Secretary_mobile" label="Joint Secretary Mobile">
+          <Form.Item
+            name="Joint_Secretary_mobile"
+            label="Joint Secretary Mobile"
+          >
             <Input />
           </Form.Item>
           <Form.Item>

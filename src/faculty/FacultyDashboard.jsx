@@ -1,12 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 
 import "./FacultyDashboard.css";
-import axios from "axios";
-import { Tag } from "antd";
-import { Heart, Share2, Users } from "lucide-react";
-import EventCardsDash from "../pages/EventCardsDash";
-import cc1 from "../assets/images/c3.png";
-import bannerclub from "../assets/images/bannerclub.jpg";
+
 import apiClient from "../config/apiClient";
 import CommitteeCards from "./CommitteeCards";
 
@@ -18,13 +13,7 @@ const FacultyDashboard = () => {
   const [userName, setUserName] = useState([]);
   const [availableEntities, setAvailableEntities] = useState([]);
 
-  const categories = [
-    { name: "Debate ", color: "#3498db" },
-    { name: "Public Speaking", color: "#e74c3c" },
-    { name: "Writing and Editing", color: "#2ecc71" },
-    { name: "Leadership", color: "#f39c12" },
-    { name: "Creative Expression", color: "#9b59b6" },
-  ];
+
 
   useEffect(() => {
     if (regId) {
@@ -57,7 +46,7 @@ const FacultyDashboard = () => {
     if (getuser && getuser.role_name === "Faculty Advisory") {
       setUserDetails(getuser);
 
-      // If user is a Student Secretary, prepare available entities for selection
+     
       if (
         getuser.faculty_advisory_details &&
         getuser.faculty_advisory_details.length > 0
@@ -129,7 +118,7 @@ const FacultyDashboard = () => {
           <div className="secretary-info">
             <div className="secretary-header">
               <h2>Welcome, {userDetails?.user_name}!</h2>
-              <span className="role-badge">{userDetails?.role_name}</span>
+              <span className="role-badge1">{userName?.role_name}</span>
             </div>
 
             {userDetails?.faculty_advisory_details?.map((detail, index) => (
@@ -138,6 +127,10 @@ const FacultyDashboard = () => {
                   <span className="detail-label">Entity:</span>
                   <span className="detail-value">{detail.entity_name}</span>
                 </div>
+                <div className="detail-item">
+                      <span className="detail-label">Registration Code:</span>
+                      <span className="detail-value">{detail?.registration_code}</span>
+                    </div>
                 <div className="detail-item">
                   <span className="detail-label">Registration Name:</span>
                   <span className="detail-value">
@@ -148,135 +141,22 @@ const FacultyDashboard = () => {
                   <span className="detail-label">Department:</span>
                   <span className="detail-value">{detail.department}</span>
                 </div>
-                <div className="detail-item">
+                {/* <div className="detail-item">
                   <span className="detail-label">Members:</span>
-                  <span className="detail-value">230</span>
-                </div>
+                  <span className="detail-value">{detail.membership_count}</span>
+                </div> */}
               </div>
             ))}
           </div>
         </div>
 
         <div style={{ marginTop: "-27px" }} className="club-details-page">
-          <div
-            className="hero-section"
-            style={{
-              backgroundImage: `url(${mediaData?.banner_url})`,
-              height: "250px",
-              justifyContent: "space-between",
-              display: "flex",
-            }}
-          >
-            <div className="hero-content">
-              <h1 className="hero-title">
-                {userDetails?.faculty_advisory_details?.registration_name}
-              </h1>
-              <div className="hero-tagline"></div>
-              <p className="hero-subtitle"> </p>
-            </div>
-            <div> </div>
-            <div className="hero-shapes">
-              <div className="shape shape-1"></div>
-              <div className="shape shape-2"></div>
-              <div className="shape shape-3"></div>
-            </div>
-          </div>
+      
 
-          {/* Details Section */}
-          <div className="details-container">
-            <div className="details-content">
-              <div className="program-header">
-                <img
-                  src={mediaData?.logo_url}
-                  alt="Program Logo"
-                  className="program-logo"
-                />
 
-                <div className="program-info">
-                  <h2>
-                    {userDetails?.faculty_advisory_details?.registration_name}
-                  </h2>
-                  <div className="program-meta">
-                    <span className="online-badge">
-                      {" "}
-                      Registered: {new Date().toLocaleDateString()}
-                    </span>
-                    <span className="tag">
-                      Code :{" "}
-                      {userDetails?.faculty_advisory_details?.registration_code}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="prize-section">
-                <div className="prize-details">
-                  <div style={{ display: "flex" }} className="prize-label">
-                    Connecting All Circles is a vibrant community dedicated to
-                    igniting creativity and encouraging exploration among
-                    students.
-                  </div>
-                </div>
-              </div>
-
-              <div className="category-tags-container">
-                <h3 className="category-tags-title">
-                  <Tag className="category-icon" />
-                  Categories{" "}
-                </h3>
-
-                <div className="category-tags">
-                  {categories.map((category, index) => (
-                    <span
-                      key={index}
-                      className="category"
-                      style={{ backgroundColor: category.color }}
-                    >
-                      {category.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="details-sidebar">
-              <div className="price-section">
-                <span style={{ cursor: "no-drop" }} className="price-1">
-                  ₹ 100/-
-                </span>
-
-                <div className="action-buttons">
-                  <button className="like-button">
-                    <Heart />
-                  </button>
-                  <button className="share-button">
-                    <Share2 />
-                  </button>
-                </div>
-              </div>
-
-              <button style={{ display: "none" }} className="register-button">
-                Join as a New Member
-              </button>
-
-              <div className="stats-list">
-                <div className="stat-item">
-                  <Users className="stat-icon" />
-                  <div className="stat-details">
-                    <span className="stat-label">Member Registered</span>
-                    <span className="stat-value">230</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="eligibility-section">
-                <h3>Eligibility</h3>
-                <p>Open for any Disciplane Students.</p>
-              </div>
-            </div>
-          </div>
-
+          <div className="faculty-committee-container">
           <CommitteeCards />
+          </div>
         </div>
       </div>
     </>

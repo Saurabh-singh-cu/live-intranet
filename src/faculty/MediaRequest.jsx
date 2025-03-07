@@ -104,12 +104,12 @@ const MediaApprove = () => {
       ) : (
         Object.entries(groupedRequests).map(([regId, requestsForRegId]) => (
           <div key={regId} className="reg-id-section">
-            <h3>Requests for reg_id: {regId}</h3>
+            {/* <h3>Requests for reg_id: {regId}</h3> */}
             <div className="table-responsive">
               <table className="media-approve-table">
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    {/* <th>ID</th> */}
                     <th>Banner</th>
                     <th>Logo</th>
                     <th>Secretary</th>
@@ -123,7 +123,7 @@ const MediaApprove = () => {
                 <tbody>
                   {requestsForRegId.map((request) => (
                     <tr key={request.id}>
-                      <td className="id-cell">{request.id}</td>
+                      {/* <td className="id-cell">{request.id}</td> */}
                       <td className="image-cell">
                         {request.temp_banner_url ? (
                           <div className="image-container">

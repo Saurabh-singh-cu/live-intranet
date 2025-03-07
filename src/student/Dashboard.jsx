@@ -219,13 +219,7 @@ const Dashboard = () => {
       description: "Update entity about and eligibility section",
       color: "#4CAF50",
     },
-    {
-      title: "Update Commity Profile Pic",
-      icon: <FileTextOutlined />,
-      type: "about_eligibility",
-      description: "Update entity about and eligibility section",
-      color: "#4CAF50",
-    },
+   
   ]
 
   const toggleAccordion = (index) => {
@@ -337,7 +331,7 @@ const Dashboard = () => {
       }
     },
     [commity],
-  ) // Dependency added to avoid unnecessary re-fetches
+  ) 
 
   const dashboardCardCount = async () => {
     try {
@@ -878,6 +872,10 @@ const Dashboard = () => {
                       <span className="detail-value">{item?.entity_name}</span>
                     </div>
                     <div className="detail-item">
+                      <span className="detail-label">Registration Name:</span>
+                      <span className="detail-value">{item?.registration_name}</span>
+                    </div>
+                    <div className="detail-item">
                       <span className="detail-label">Registration Code:</span>
                       <span className="detail-value">{item?.registration_code}</span>
                     </div>
@@ -975,7 +973,7 @@ const Dashboard = () => {
                 </span>
               </div>
 
-              <div onClick={redirectComm} className="metric-card-home card"  >
+              <div onClick={redirectComm} className="metric-card-home card4h"  >
              
                 <img src={circle || "/placeholder.svg"} />
                 <h2 className="cardCount">{filteredData?.community}</h2>

@@ -7,53 +7,22 @@ import Calendar from "./Calendar";
 import { useNavigate } from "react-router-dom";
 import circle from "../assets/images/circle.svg";
 import { PiFlagBanner } from "react-icons/pi";
-import { FaBell, FaHouseFlag, FaRegNewspaper, FaUnity } from "react-icons/fa6";
+import { FaHouseFlag, FaUnity } from "react-icons/fa6";
 import { BiSolidBuildingHouse } from "react-icons/bi";
-import axios from "axios";
-import Swal from "sweetalert2";
-import vv from "../assets/images/vv.png";
-import vvv from "../assets/images/vvv.jpg";
+
 import cf from "../assets/images/cf.jpg";
 import am from "../assets/images/am.jpg";
 import news1 from "../assets/images/news1.jpg";
-import {
-  ChevronDown,
-  ChevronUp,
-  Heart,
-  Share2,
-  Tag,
-  Upload,
-  Users,
-} from "lucide-react";
-import EventsCard from "./EventCards";
-import {
-  Badge,
-  Button,
-  Drawer,
-  Input,
-  message,
-  notification,
-  Popover,
-  Upload,
-  Space,
-} from "antd";
-import Avatar from "antd/es/avatar/avatar";
-import {
-  EditOutlined,
-  InboxOutlined,
-  NotificationOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
-import Scroller from "../components/Scroller";
-import bannerclub from "../assets/images/bannerclub.jpg";
-import EventCardsDash from "./EventCardsDash";
-import cc1 from "../assets/images/c3.png";
-import { MdHeight, MdModeEdit } from "react-icons/md";
-import ReactQuill from "react-quill";
+import { ChevronDown, ChevronUp } from "lucide-react";
+
+import { Badge } from "antd";
+
+import { NotificationOutlined } from "@ant-design/icons";
+
 import "react-quill/dist/quill.snow.css";
 import expo from "../assets/images/expo.jpg";
 import NewsViews from "./NewsViews";
-import FacultyDashboard from "../faculty/FacultyDashboard";
+
 import not1 from "../assets/images/not1.png";
 import not2 from "../assets/images/not2.png";
 import apiClient from "../config/apiClient";
@@ -61,22 +30,13 @@ import apiClient from "../config/apiClient";
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [userName, setUserName] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [replyText, setReplyText] = useState("");
+
   const [dashboardCount, setDashboardCount] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState("generic");
+
   const [activeTab1, setActiveTab1] = useState("Appointment Holder");
   const [activeAccordion, setActiveAccordion] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
-  const [messageApi, contextHolder] = message.useMessage();
-
-  const [drawerVisible, setDrawerVisible] = useState(false);
-  const [drawerContent, setDrawerContent] = useState(null);
-  const [editContent, setEditContent] = useState("");
-
-  const [bannerFile, setBannerFile] = useState(null);
-  const [logoFile, setLogoFile] = useState(null);
 
   const [regId, setRegId] = useState(null);
   const [mediaData, setMediaData] = useState(null);
@@ -89,9 +49,6 @@ const Home = () => {
     professionalSociety: 0,
     departmentSociety: 0,
     all: 0,
-  });
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem("isLoggedIn") === "true";
   });
 
   const navigate = useNavigate();

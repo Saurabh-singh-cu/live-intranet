@@ -63,11 +63,11 @@ const ComList = () => {
             Join our most active Community and participate in exciting events
             and activities.
           </p>
-          <div className="club-stats-list">
+          {/* <div className="club-stats-list">
             <div className="stat-item-list">
               <MdGroup style={{ color: "white" }} size={20} />
               <span className="member-list-count">
-                4000 Active Members in Comm.
+             
               </span>
             </div>
             <div className="stat-item-list">
@@ -78,7 +78,7 @@ const ComList = () => {
               <BsActivity style={{ color: "white" }} size={20} />
               <span>3 Activities</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </aside>
 
@@ -122,7 +122,7 @@ const ComList = () => {
                   <div className="card-stats-list">
                     <div className="stat">
                       <MdGroup size={16} />
-                      <span>71 Registered Member</span>
+                      <span>{clubSociety?.membership_count} Registered Member</span>
                     </div>
                   </div>
                   <div className="tags"></div>

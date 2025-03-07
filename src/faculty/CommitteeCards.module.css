@@ -1,5 +1,5 @@
 .committeeContainer {
-  padding: 30px 15px;
+  padding: 0 15px;
   /* max-width: 1200px; */
   margin: 0 auto;
   background-color: #fafafa;
@@ -271,7 +271,7 @@
 .departmentHeading {
   font-size: 16px;
   font-weight: bold;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
   text-align: center;
   color: #666;
 

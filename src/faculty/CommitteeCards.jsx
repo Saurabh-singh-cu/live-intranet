@@ -1,35 +1,44 @@
-"use client"
+"use client";
 
-import React, { useCallback, useEffect, useState } from "react"
-import { CgMail } from "react-icons/cg"
-import styles from "./CommitteeCards.module.css"
-import apiClient from "../config/apiClient"
+import React, { useCallback, useEffect, useState } from "react";
+import { CgMail } from "react-icons/cg";
+import styles from "../faculty/CommitteeCards.module.css";
+import apiClient from "../config/apiClient";
 
-// Member Card Component for better organization
-const MemberCard = ({ member, role, department, registrationName, profilePic }) => {
-  const defaultProfileImage = "/placeholder.svg?height=100&width=100"
+const MemberCard = ({
+  member,
+  role,
+  department,
+  registrationName,
+  profilePic,
+  email,
+}) => {
+  const defaultProfileImage = "/placeholder.svg?height=100&width=100";
 
-  // Determine badge color based on role
   const getBadgeClass = () => {
     switch (role.toLowerCase()) {
       case "faculty advisor":
-        return styles.badgeBlue
+        return styles.badgeBlue;
       case "faculty co-advisor":
-        return styles.badgePurple
+        return styles.badgePurple;
       case "secretary":
-        return styles.badgeGreen
+        return styles.badgeGreen;
       case "joint secretary":
-        return styles.badgeOrange
+        return styles.badgeOrange;
       default:
-        return styles.badgeGray
+        return styles.badgeGray;
     }
-  }
+  };
 
   return (
     <div className={styles.committeeCard}>
       <div className={styles.cardHeader}>
         <div className={styles.profileImageWrapper}>
-          <img src={profilePic || defaultProfileImage} alt={`${member} profile`} className={styles.profileImage} />
+          <img
+            src={profilePic || defaultProfileImage}
+            alt={`${member}`}
+            className={styles.profileImage}
+          />
         </div>
         <span className={`${styles.roleBadge} ${getBadgeClass()}`}>{role}</span>
       </div>
@@ -39,77 +48,83 @@ const MemberCard = ({ member, role, department, registrationName, profilePic }) 
         <p className={styles.memberDepartment}>{department}</p>
         <p className={styles.registrationName}>{registrationName}</p>
 
-        <div className={styles.contactInfo}>
-          <a href={`mailto:${member.toLowerCase().replace(/\s/g, ".")}@example.com`} className={styles.emailLink}>
-            <CgMail className={styles.emailIcon} />
-            <span className={styles.emailText}>{member.toLowerCase().replace(/\s/g, ".")}@example.com</span>
-          </a>
-        </div>
+        {email && (
+          <div className={styles.contactInfo}>
+            <a href={`mailto:${email}`} className={styles.emailLink}>
+              <CgMail className={styles.emailIcon} />
+              <span className={styles.emailText}>{email}</span>
+            </a>
+          </div>
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 const CommitteeCards = () => {
-  const [registrations, setRegistrations] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [commity, setCommity] = useState([])
-  const [regId, setRegId] = useState(null)
+  const [registrations, setRegistrations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [commity, setCommity] = useState([]);
+  const [regId, setRegId] = useState(null);
 
   const grtCommitiData = useCallback(
     async (regIds) => {
       try {
-        if (!regIds || regIds.length === 0) return
+        if (!regIds || regIds.length === 0) return;
 
-        const allCommityMember = []
+        const allCommityMember = [];
         for (const regId of regIds) {
-          console.log(`Fetching data for reg_id: ${regId}`)
+          console.log(`Fetching data for reg_id: ${regId}`);
 
-          const response = await apiClient.get(`entity-registration-detailed-page/?reg_id=${regId}`)
+          const response = await apiClient.get(
+            `entity-registration-detailed-page/?reg_id=${regId}`
+          );
 
           if (response?.data) {
-            allCommityMember.push(response.data)
+            allCommityMember.push(response.data);
           }
         }
 
         if (JSON.stringify(allCommityMember) !== JSON.stringify(commity)) {
-          setCommity(allCommityMember)
+          setCommity(allCommityMember);
         }
 
-        console.log(allCommityMember, "[commityMember]")
+        console.log(allCommityMember, "[commityMember]");
       } catch (error) {
-        console.error("Error fetching data:", error)
-        setError("Failed to fetch committee data")
+        console.error("Error fetching data:", error);
+        setError("Failed to fetch committee data");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     },
-    [commity],
-  )
+    [commity]
+  );
 
   useEffect(() => {
-    const storedData = localStorage.getItem("user")
+    const storedData = localStorage.getItem("user");
     if (storedData) {
-      const parsedData = JSON.parse(storedData)
-      console.log("Parsed LocalStorage Data:", parsedData)
+      const parsedData = JSON.parse(storedData);
+      console.log("Parsed LocalStorage Data:", parsedData);
 
-      const regIds = parsedData?.faculty_advisory_details?.map((item) => item.reg_id) || []
+      const regIds =
+        parsedData?.faculty_advisory_details
+        ?.map((item) => item.reg_id) || [];
 
-      console.log("Extracted regIds:", regIds)
+      console.log("Extracted regIds:", regIds);
 
       if (regIds.length > 0) {
-        setRegId(regIds)
+        setRegId(regIds);
       }
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (regId && regId.length > 0) {
-      setLoading(true)
-      grtCommitiData(regId)
+      setLoading(true);
+      grtCommitiData(regId);
     }
-  }, [regId, grtCommitiData])
+  }, [regId, grtCommitiData]);
 
   if (loading) {
     return (
@@ -117,11 +132,11 @@ const CommitteeCards = () => {
         <div className={styles.loadingSpinner}></div>
         <p>Loading committee data...</p>
       </div>
-    )
+    );
   }
 
   if (error) {
-    return <div className={styles.errorContainer}>{error}</div>
+    return <div className={styles.errorContainer}>{error}</div>;
   }
 
   return (
@@ -129,17 +144,20 @@ const CommitteeCards = () => {
       <div className={styles.headerSection}>
         <h2 className={styles.committeeHeading}>Core Committee Members</h2>
         <div className={styles.headerUnderline}></div>
-        <p className={styles.committeeSubheading}>Meet the team behind our success</p>
+        <p className={styles.committeeSubheading}>
+          Meet the team behind our success
+        </p>
       </div>
 
       <div className={styles.committeeContainer}>
         {commity &&
           commity.map((registration) => (
             <div key={registration.reg_id} className={styles.departmentSection}>
-            
+              {/* Department Name - Display once per department */}
               <h3 className={styles.departmentHeading}>
                 {registration.dept_name}
               </h3>
+              <div className={styles.headerUnderline}></div>
 
               {/* Cards Container - Display all members horizontally */}
               <div className={styles.committeeCardsRow}>
@@ -152,9 +170,9 @@ const CommitteeCards = () => {
                   profilePic={
                     registration.media_details?.faculty_advisory_profile_pic_url
                   }
+                  email={registration.faculty_advisory_email}
                 />
 
-                {/* Faculty Co-Advisor Card */}
                 <MemberCard
                   member={registration.faculty_co_advisory_name}
                   role="Faculty Co-Advisor"
@@ -163,9 +181,9 @@ const CommitteeCards = () => {
                   profilePic={
                     registration.media_details?.co_advisor_profile_pic_url
                   }
+                  email={registration.faculty_co_advisory_email}
                 />
 
-                {/* Secretary Card */}
                 <MemberCard
                   member={registration.Secretary_name}
                   role="Secretary"
@@ -174,9 +192,9 @@ const CommitteeCards = () => {
                   profilePic={
                     registration.media_details?.secretary_profile_pic_url
                   }
+                  email={registration.Secretary_email}
                 />
 
-                {/* Joint Secretary Card */}
                 <MemberCard
                   member={registration.Joint_Secretary_name}
                   role="Joint Secretary"
@@ -185,13 +203,14 @@ const CommitteeCards = () => {
                   profilePic={
                     registration.media_details?.join_secretary_profile_pic_url
                   }
+                  email={registration.Joint_Secretary_email}
                 />
               </div>
             </div>
           ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CommitteeCards
+export default CommitteeCards;

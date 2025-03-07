@@ -5,17 +5,16 @@ import { CgMail } from "react-icons/cg";
 import styles from "../faculty/CommitteeCards.module.css";
 import apiClient from "../config/apiClient";
 
-// Member Card Component for better organization
 const MemberCard = ({
   member,
   role,
   department,
   registrationName,
   profilePic,
+  email,
 }) => {
   const defaultProfileImage = "/placeholder.svg?height=100&width=100";
 
-  // Determine badge color based on role
   const getBadgeClass = () => {
     switch (role.toLowerCase()) {
       case "faculty advisor":
@@ -37,7 +36,7 @@ const MemberCard = ({
         <div className={styles.profileImageWrapper}>
           <img
             src={profilePic || defaultProfileImage}
-            alt={`${member} profile`}
+            alt={`${member}`}
             className={styles.profileImage}
           />
         </div>
@@ -49,19 +48,14 @@ const MemberCard = ({
         <p className={styles.memberDepartment}>{department}</p>
         <p className={styles.registrationName}>{registrationName}</p>
 
-        <div className={styles.contactInfo}>
-          <a
-            href={`mailto:${member
-              .toLowerCase()
-              .replace(/\s/g, ".")}@example.com`}
-            className={styles.emailLink}
-          >
-            <CgMail className={styles.emailIcon} />
-            <span className={styles.emailText}>
-              {member.toLowerCase().replace(/\s/g, ".")}@example.com
-            </span>
-          </a>
-        </div>
+        {email && (
+          <div className={styles.contactInfo}>
+            <a href={`mailto:${email}`} className={styles.emailLink}>
+              <CgMail className={styles.emailIcon} />
+              <span className={styles.emailText}>{email}</span>
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -162,6 +156,7 @@ const CommitteeCardStudent = () => {
               <h3 className={styles.departmentHeading}>
                 {registration.dept_name}
               </h3>
+              <div className={styles.headerUnderline}></div>
 
               {/* Cards Container - Display all members horizontally */}
               <div className={styles.committeeCardsRow}>
@@ -174,9 +169,9 @@ const CommitteeCardStudent = () => {
                   profilePic={
                     registration.media_details?.faculty_advisory_profile_pic_url
                   }
+                  email={registration.faculty_advisory_email}
                 />
 
-                {/* Faculty Co-Advisor Card */}
                 <MemberCard
                   member={registration.faculty_co_advisory_name}
                   role="Faculty Co-Advisor"
@@ -185,9 +180,9 @@ const CommitteeCardStudent = () => {
                   profilePic={
                     registration.media_details?.co_advisor_profile_pic_url
                   }
+                  email={registration.faculty_co_advisory_email}
                 />
 
-                {/* Secretary Card */}
                 <MemberCard
                   member={registration.Secretary_name}
                   role="Secretary"
@@ -196,9 +191,9 @@ const CommitteeCardStudent = () => {
                   profilePic={
                     registration.media_details?.secretary_profile_pic_url
                   }
+                  email={registration.Secretary_email}
                 />
 
-                {/* Joint Secretary Card */}
                 <MemberCard
                   member={registration.Joint_Secretary_name}
                   role="Joint Secretary"
@@ -207,6 +202,7 @@ const CommitteeCardStudent = () => {
                   profilePic={
                     registration.media_details?.join_secretary_profile_pic_url
                   }
+                  email={registration.Joint_Secretary_email}
                 />
               </div>
             </div>
