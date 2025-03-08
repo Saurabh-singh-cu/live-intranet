@@ -150,7 +150,7 @@ const FacultyDashboard = () => {
           </div>
         </div>
 
-        <div style={{ marginTop: "-27px" }} className="club-details-page">
+        <div style={{ marginTop: "-27px" }} className="club-details-page-1">
       
 
 

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { Drawer, Form, Input, Button, Modal, message, Tag } from "antd";
+import { Drawer, Form, Input, Button, Modal, message, Tag, Select } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +25,8 @@ function RegisteredEntities() {
   const navigate = useNavigate();
   const [viewMoreDrawerVisible, setViewMoreDrawerVisible] = useState(false);
   const [selectedEntityDetails, setSelectedEntityDetails] = useState(null);
+  const [departments, setDepartments] = useState([]);
+  const [entityTypes, setEntityTypes] = useState([])
 
   useEffect(() => {
     apiClient
@@ -41,6 +43,8 @@ function RegisteredEntities() {
       try {
         const parsedUser = JSON.parse(userData);
         setUser(parsedUser);
+        fetchDepartments()
+        fetchEntityTypes()
       } catch (error) {
         console.error("Error parsing user data:", error);
         localStorage.removeItem("user");
@@ -60,25 +64,82 @@ function RegisteredEntities() {
     [form]
   );
 
-  const onFinish = (values) => {
-    if (!editingEntity) return;
+  // const onFinish = (values) => {
+  //   if (!editingEntity) return;
 
-    apiClient
-      .put(`update-entity/${editingEntity.reg_id}/`, values)
-      .then((response) => {
-        message.success("Entity updated successfully");
+  //   apiClient
+  //     .put(`update-entity/${editingEntity.reg_id}/`, values)
+  //     .then((response) => {
+  //       message.success("Entity updated successfully");
+  //       setEntities((prevEntities) =>
+  //         prevEntities.map((entity) =>
+  //           entity.reg_id === editingEntity.reg_id ? response.data : entity
+  //         )
+  //       );
+  //       onDrawerClose();
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error updating entity:", error);
+  //       message.error("Failed to update entity");
+  //     });
+  // };
+  const onFinish = async (values) => {
+  
+    try {
+      // Ensure the date is in 'YYYY-MM-DD' format before sending
+      if (values.proposed_date) {
+        values.proposed_date = values.proposed_date.format("YYYY-MM-DD")
+      }
+
+      // Find the entity and department names for display
+      const selectedEntity = entityTypes.find((entity) => entity.entity_id === values.entity_id)
+      const selectedDepartment = departments.find((dept) => dept.department === values.department)
+
+      // Store the names for display in the table
+      values.entity_name = selectedEntity ? selectedEntity.entity_name : ""
+      values.department_name = selectedDepartment ? selectedDepartment.dept_name : ""
+
+      // Send the request
+      const response = await apiClient.put(`update-entity/${editingEntity.reg_id}/`, values)
+
+      if (response.status === 200) {
+        message.success("Entity updated successfully")
+
         setEntities((prevEntities) =>
           prevEntities.map((entity) =>
-            entity.reg_id === editingEntity.reg_id ? response.data : entity
-          )
-        );
-        onDrawerClose();
-      })
-      .catch((error) => {
-        console.error("Error updating entity:", error);
-        message.error("Failed to update entity");
-      });
+            entity.entcr_id === editingEntity.entcr_id ? { ...entity, ...values } : entity,
+          ),
+        )
+
+        onDrawerClose()
+       
+      } else {
+        message.error("Failed to update entity")
+      }
+    } catch (error) {
+      console.error("Error updating entity:", error)
+      message.error("An error occurred while updating entity")
+    } finally {
+      
+    }
+  }
+  const fetchDepartments = async () => {
+    try {
+      const response = await apiClient.get("departments/");
+      setDepartments(response.data);
+    } catch (error) {
+      console.error("Error fetching departments:", error);
+    }
   };
+
+  const fetchEntityTypes = async () => {
+    try {
+      const response = await apiClient.get("entity-types/")
+      setEntityTypes(response.data)
+    } catch (error) {
+      console.error("Error fetching entity types:", error)
+    }
+  }
 
   const handleSendMail = useCallback(
     (params) => {
@@ -393,8 +454,18 @@ function RegisteredEntities() {
           <Form.Item name="entity_name" label="Entity Name">
             <Input />
           </Form.Item>
-          <Form.Item name="department_name" label="Department Name">
-            <Input />
+          <Form.Item
+            name="department"
+            label="Department Name"
+            style={{ flex: 1 }}
+          >
+            <Select>
+              {departments.map((dept) => (
+                <Select.Option key={dept.department} value={dept.department}>
+                  {dept.dept_name}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item name="registeration_name" label="Registration Name">
             <Input />

@@ -932,7 +932,7 @@ const RegisterNewEntity = () => {
 
                 <div className="form-group">
                   <label className="form-label" htmlFor="department">
-                    Department of proposer{" "}
+                    Owner Of The Entity{" "}
                     <span className="required-star">*</span>
                   </label>
                   <select
@@ -947,7 +947,7 @@ const RegisterNewEntity = () => {
                         : ""
                     }`}
                   >
-                    <option value="">Select Department</option>
+                    <option value="">Select Owner Of The Entity</option>
                     {departments.map((dep) => (
                       <option key={dep.dept_id} value={dep.dept_id}>
                         {dep.dept_name}
