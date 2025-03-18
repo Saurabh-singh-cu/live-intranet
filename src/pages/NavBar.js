@@ -11,13 +11,7 @@ import CreditModal from "../CreditScore/CreditModal";
 import TokenExpireTime from "../tokenExpire/TokenExpireTime";
 
 
-const handleLogout = () => {
-  // setIsLoggedIn(false);
-  // setUser(null);
-  // setExpirationTime(null);
-  localStorage.removeItem("user");
-  window.location.href = "/login";
-};
+
 
 
 
@@ -86,7 +80,7 @@ const NavBar = () => {
     },
     {
       key: "3",
-      label: <TokenExpireTime onLogout={handleLogout} />,
+      label: <TokenExpireTime  />,
       extra: `⌘L`,
     },
     {
@@ -118,7 +112,13 @@ const NavBar = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUser(null);
+    setExpirationTime(null);
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  };
   const handleSearch = (e) => {
     const query = e.target.value;
     setSearchQuery(query);

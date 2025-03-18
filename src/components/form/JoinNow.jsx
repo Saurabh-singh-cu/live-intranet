@@ -608,6 +608,7 @@ const JoinNow = () => {
                       disabled
                      
                     />
+                    <span className="domain">@cuchd.in</span>
                     {isVerified && (
                       <span className="verified-badge">
                         <img style={{ width: "26px" }} src={verified || "/placeholder.svg"} alt="vef" />

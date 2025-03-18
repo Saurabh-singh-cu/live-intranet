@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const TokenExpireTime = ({ onLogout }) => {
   const [timeLeft, setTimeLeft] = useState(null);
+  const [userDataDet, setUserDataDet] = useState([]);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
+    setUserDataDet(userData)
     if (!userData || !userData.token_expiration_time) {
-      onLogout();
+      // onLogout();
       return;
     }
 
@@ -33,7 +36,7 @@ const TokenExpireTime = ({ onLogout }) => {
 
       return () => clearInterval(timer);
     }
-  }, [onLogout]);
+  }, []);
 
   // Convert milliseconds to minutes and seconds
   const formatTime = (ms) => {
@@ -42,7 +45,19 @@ const TokenExpireTime = ({ onLogout }) => {
     return `${minutes}m ${seconds}s`;
   };
 
-  return <div style={{color:"red"}}>Session expires in: {timeLeft ? formatTime(timeLeft) : "Expired"}</div>;
+  return (
+    <div>
+      {userDataDet && userDataDet?.token_expiration_time ? (
+        <>
+          <div style={{ color: "red" }}>
+            Session expires in: {timeLeft ? formatTime(timeLeft) : "Expired"}
+          </div>
+        </>
+      ) : (
+        ""
+      )}
+    </div>
+  );
 };
 
 export default TokenExpireTime;
