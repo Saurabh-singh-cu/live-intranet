@@ -334,7 +334,7 @@ const Home = () => {
   }, [currentIndex, carouselImages.length]);
   return (
     <>
-      <div
+      <div  className="with-login"
         style={{
           marginTop: "77px",
           overflow: "scroll",

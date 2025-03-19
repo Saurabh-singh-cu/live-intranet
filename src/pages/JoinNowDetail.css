@@ -2,7 +2,7 @@
   background: #fafafa;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow: scroll;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 /* Hero Section */
@@ -325,7 +325,7 @@
   cursor: pointer;
   z-index: 999;
   right: 10px;
-  top: 15%;
+  top: 10%;
   font-size: 14px;
   transition: background 0.2s ease;
 }
@@ -673,7 +673,21 @@
   }
 }
 
-@media (max-width: 768px) {
+@media screen and (min-width:300px) and (max-width: 768px) {
+  .events-grid,
+  .committee-grid {
+    max-width: 100% !important;
+  }
+  .program-meta .tag {
+    margin-top: 15px !important;
+    display: block !important;
+}
+.program-meta {
+  display: block !important;
+}
+  .club-details-page {
+    margin-top: 15%;
+}
   .hero-section {
     height: auto;
     padding: 40px 20px;

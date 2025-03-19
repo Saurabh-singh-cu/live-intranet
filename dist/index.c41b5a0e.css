@@ -6,6 +6,10 @@
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
  */
+.merlin-tutorial div#root > div > div {
+  display: block !important;
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -177,6 +181,12 @@ main {
 .cards_item {
   padding: 1rem;
   display: flex;
+}
+
+@media screen and (width >= 200px) and (width <= 767px) {
+  .sidebar {
+    height: 91.6vh !important;
+  }
 }
 
 @media (width >= 40rem) {
@@ -2322,7 +2332,6 @@ main {
   font-weight: 500;
   bottom: -10px;
   left: 50%;
-  transform: translateX(-50%);
   box-shadow: 0 2px 6px #0000001a;
 }
 
@@ -3693,6 +3702,7 @@ main {
   padding: 10px 8px;
   display: flex;
   position: fixed;
+  top: 0;
 }
 
 .navbar-left {
@@ -3930,6 +3940,51 @@ main {
   list-style-type: none;
   box-shadow: 0 6px 16px #00000014, 0 3px 6px -4px #0000001f, 0 9px 28px 8px #0000000d;
   margin-top: -13px !important;
+}
+
+@media only screen and (device-width >= 200px) and (device-width <= 767px) {
+  .logoooo {
+    max-width: 100% !important;
+  }
+
+  .logoooo img {
+    margin-right: 15px;
+    width: 120px !important;
+  }
+
+  .mobile-menu {
+    box-shadow: 0 3px #0000003d;
+  }
+
+  .mobile-menu .icon-button {
+    margin-bottom: 0 !important;
+  }
+
+  .menu-show- {
+    font-size: 16px;
+    margin-bottom: 0 !important;
+  }
+
+  input.search-input-nav {
+    padding: 8px !important;
+    font-size: 12px !important;
+  }
+
+  .navbar-right .nav-button:first-child {
+    color: #000;
+    background: #e0e0e0;
+    border-radius: 5px;
+    padding: 5px 0;
+    margin-right: 0 !important;
+  }
+
+  .navbar-right .nav-button:nth-child(2) {
+    color: #fff;
+    background: #688d47;
+    border-radius: 5px;
+    padding: 5px 0;
+    margin: 0 0 0 5px !important;
+  }
 }
 
 .modal-overlay-credit {
@@ -11672,6 +11727,12 @@ input[class^="ag-"][type="range"]:disabled {
 }
 
 @media (width <= 768px) {
+  .price {
+    max-width: 35% !important;
+    margin: 0 0 5px 10px !important;
+    padding: 4px !important;
+  }
+
   .sidebar-list, .sidebar-list-card4h, .sidebar-list-card2h, .sidebar-list-card3h {
     display: none !important;
   }
@@ -13041,6 +13102,95 @@ input[class^="ag-"][type="range"]:disabled {
   color: #4169e1;
 }
 
+@media screen and (width <= 767px) {
+  .with-login {
+    margin-left: 35px;
+  }
+
+  .metric-cards-home {
+    gap: 10px !important;
+  }
+
+  .metric-card-home p {
+    font-size: 18px !important;
+  }
+
+  .metric-card-home h2 {
+    font-size: 1.9em !important;
+  }
+
+  .banner-image-home .carousel-button.next, .banner-image-home .carousel-button.prev {
+    display: none;
+  }
+
+  .carousel-indicators, .event-indicators {
+    bottom: 5px !important;
+  }
+
+  .event-dot {
+    width: 5px !important;
+    height: 5px !important;
+    margin: 0 2px !important;
+  }
+
+  .calendar-day-header {
+    border-bottom-right-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+    padding: 10px 0 !important;
+  }
+
+  .notification-item .tab {
+    padding: 10px 5px !important;
+  }
+
+  :where(.css-dev-only-do-not-override-nqoqt9).ant-badge .ant-badge-count {
+    min-width: 15px !important;
+    height: 15px !important;
+    line-height: 15px !important;
+  }
+
+  .participant-avatar {
+    width: 25px !important;
+    height: 25px !important;
+    font-size: 12px !important;
+  }
+
+  .accordion-icon svg {
+    width: 15px !important;
+  }
+
+  .accordion-icon {
+    font-size: 0 !important;
+  }
+
+  .card-header-home {
+    padding: 5px 0 !important;
+  }
+
+  .view-more-btn-home {
+    padding: 9px 0 !important;
+  }
+
+  .carousel-item img {
+    border-radius: 0 !important;
+    height: auto !important;
+  }
+
+  .banner-image-home {
+    height: 220px !important;
+  }
+
+  .carousel-overlay h2 {
+    font-size: 18px !important;
+  }
+
+  .carousel-overlay span {
+    margin-bottom: 5px !important;
+    padding: 5px !important;
+    font-size: 10px !important;
+  }
+}
+
 @media (width <= 1024px) {
   .metric-cards-home {
     grid-template-columns: repeat(2, 1fr);
@@ -13060,7 +13210,12 @@ input[class^="ag-"][type="range"]:disabled {
 }
 
 @media (width <= 768px) {
-  .metric-cards-home, .bottom-cards-home {
+  .metric-cards-home {
+    grid-template-columns: 1fr;
+    gap: 10px !important;
+  }
+
+  .bottom-cards-home {
     grid-template-columns: 1fr;
   }
 
@@ -14428,7 +14583,6 @@ input[class^="ag-"][type="range"]:disabled {
 
 .club-details-page {
   background: #fafafa;
-  height: 100vh;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
   overflow: scroll;
 }
@@ -14748,7 +14902,7 @@ input[class^="ag-"][type="range"]:disabled {
   transition: background .2s;
   display: flex;
   position: fixed;
-  top: 15%;
+  top: 10%;
   right: 10px;
 }
 
@@ -15087,7 +15241,24 @@ input[class^="ag-"][type="range"]:disabled {
   }
 }
 
-@media (width <= 768px) {
+@media screen and (width >= 300px) and (width <= 768px) {
+  .events-grid, .committee-grid {
+    max-width: 100% !important;
+  }
+
+  .program-meta .tag {
+    margin-top: 15px !important;
+    display: block !important;
+  }
+
+  .program-meta {
+    display: block !important;
+  }
+
+  .club-details-page {
+    margin-top: 15%;
+  }
+
   .hero-section {
     height: auto;
     padding: 40px 20px;

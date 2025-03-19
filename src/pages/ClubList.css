@@ -484,6 +484,11 @@
 }
 
 @media (max-width: 768px) {
+  .price {
+    margin: 0px 0px 5px 10px !important; 
+    padding: 4px !important;
+    max-width: 35% !important;
+}
   .sidebar-list {
     display: none !important;
   }

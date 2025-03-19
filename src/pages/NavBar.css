@@ -9,6 +9,7 @@
   width: 100%;
   box-sizing: border-box;
   z-index: 999;
+  top: 0;
 }
 
 .navbar-left {
@@ -248,3 +249,49 @@
     0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
   margin-top: -13px !important;
 }
+
+
+
+
+/* mobile view css  */
+/* Portrait and Landscape */
+
+
+@media only screen and (min-device-width: 200px) and (max-device-width:767px) {
+  .logoooo {
+    max-width: 100% !important;
+}
+.logoooo img {  
+  width: 120px !important;
+  margin-right: 15px;
+}
+  .mobile-menu {
+      box-shadow: 0px 3px 0px #0000003d;
+  }
+  
+  .mobile-menu .icon-button {
+      margin-bottom: 0px !important;
+  }
+  .menu-show- {
+      font-size: 16PX;
+      margin-bottom: 0px !important;
+  }
+  input.search-input-nav {
+      padding: 8px 8px !important;
+      font-size: 12px !important;
+  }
+  .navbar-right .nav-button:NTH-CHILD(1) {
+      margin-right: 0px !important;
+      background: #e0e0e0;
+      color: #000;
+      border-radius: 5px;
+      padding: 5px 0px;
+  }
+  .navbar-right .nav-button:nth-child(2) {
+      background: #688d47;
+      padding: 5px 0px;
+      border-radius: 5px;
+      color: #fff;
+      margin: 0px 0px 0px 5px !important;
+  }
+}  

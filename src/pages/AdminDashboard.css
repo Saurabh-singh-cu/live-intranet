@@ -343,6 +343,82 @@
 }
 
 /* Responsive Design */
+@media screen and (max-width: 767px){
+  .with-login {
+    margin-left: 35px;
+}
+  .metric-cards-home {
+    gap: 10px !important;
+}
+.metric-card-home p {
+    font-size: 18px !important;
+}
+.metric-card-home h2 {
+    font-size: 1.9em !important;
+}
+.banner-image-home .carousel-button.next, .banner-image-home .carousel-button.prev {
+    display: none;
+}
+.carousel-indicators {
+    bottom: 5px  !important;
+}
+.event-indicators {
+    bottom: 5px !important;
+}
+.event-dot {
+    width: 5px !important;
+    height: 5px !important;
+    margin: 0 2px !important;
+}
+.calendar-day-header {
+    padding: 10px 0px !important;
+    border-bottom-left-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+}
+.notification-item .tab {
+    padding: 10px 5px !important;
+}
+:where(.css-dev-only-do-not-override-nqoqt9).ant-badge .ant-badge-count{
+	min-width: 15px !important;
+   	height: 15px !important;
+	line-height: 15px !important;
+
+}
+.participant-avatar {
+    width: 25px !important;
+    height: 25px !important;
+    font-size: 12px !important;
+    
+}
+.accordion-icon svg {
+    width: 15px !important;
+}
+.accordion-icon {
+    font-size: 0px !important;
+}
+.card-header-home {
+    padding: 5px 0px !important;
+}
+.view-more-btn-home {
+    padding: 9px 0px !important;
+}
+.carousel-item img {
+    height: auto !important;
+    border-radius: 0px !important;
+}
+.banner-image-home {
+    height: 220px !important;
+}
+.carousel-overlay h2 {
+    font-size: 18px !important;
+}
+.carousel-overlay span {
+    margin-bottom: 5px !important;
+    padding: 5px 5px !important;
+    font-size: 10px !important;
+}
+
+}
 @media (max-width: 1024px) {
   .metric-cards-home {
     grid-template-columns: repeat(2, 1fr);
@@ -364,6 +440,7 @@
 @media (max-width: 768px) {
   .metric-cards-home {
     grid-template-columns: 1fr;
+    gap: 10px !important;
   }
 
   .bottom-cards-home {
