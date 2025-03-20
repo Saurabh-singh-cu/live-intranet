@@ -1,131 +1,172 @@
+/* General Styles */
 .admin-event-approval {
-    padding: 20px;
-    max-width: 1200px;
-padding-top: 6rem;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 66px;
+}
+
+.page-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Search and Download Container */
+.search-download-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.search-container {
+  flex: 1;
+  max-width: 300px;
+  min-width: 200px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.download-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.download-button:hover {
+  background-color: #45a049;
+}
+
+/* Table Styles */
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+  display: block; /* Important for proper scrolling */
+  -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+  max-width: 100%;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.custom-table {
+  width: 100%;
+  min-width: 1000px; /* Ensure table has minimum width to trigger scrolling */
+  border-collapse: collapse;
+  font-size: 14px;
+  table-layout: fixed; /* Helps with column widths */
+}
+
+.custom-table th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: bold;
+  text-align: left;
+  padding: 12px 15px;
+  border-bottom: 2px solid #ddd;
+  white-space: nowrap; /* Prevent header text from wrapping */
+}
+
+.custom-table td {
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+  word-break: break-word; /* Allow text to break to prevent overflow */
+}
+
+.custom-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.custom-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Status Dropdown Styles */
+.status-dropdown {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  padding-right: 30px;
+}
+
+/* Status-specific styling */
+.status-dropdown.active {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+.status-dropdown.inactive {
+  background-color: #fff3cd;
+  color: #856404;
+  border-color: #ffeeba;
+}
+
+/* Loading and Error States */
+.loading-container,
+.error-message {
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.loading-cell,
+.no-data-cell {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+/* Copyable Text */
+.copyable {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.copy-icon {
+  font-size: 16px;
+  color: #666;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.copyable:hover .copy-icon {
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .search-download-container {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .page-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
+
   .search-container {
-    margin-bottom: 20px;
+    max-width: 100%;
+    margin-bottom: 10px;
   }
-  
-  .search-input {
-    padding: 8px 12px;
-    border: 1px solid #d9d9d9;
-    border-radius: 4px;
-    width: 250px;
-    font-size: 14px;
-  }
-  
-  .table-section {
-    margin-bottom: 30px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-  }
-  
-  .table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .reg-id-title {
-    font-size: 18px;
-    color: #333;
-    margin: 0;
-  }
-  
-  .download-button {
-    background-color: #1890ff;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .download-button:hover {
-    background-color: #40a9ff;
-  }
-  
-  .table-container {
-    overflow-x: auto;
-    width: 80vw;
-  }
-  
-  .custom-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .custom-table th,
-  .custom-table td {
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 1px solid #f0f0f0;
-  }
-  
-  .custom-table th {
-    background-color: #fafafa;
-    font-weight: 500;
-    color: #333;
-  }
-  
-  .loading-message,
-  .no-data-message {
-    text-align: center;
-    padding: 30px;
-    color: #666;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-  
-  .no-data-cell {
-    text-align: center;
-    padding: 20px;
-    color: #666;
-  }
-  
-  .copyable {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .copy-icon {
-    color: #1890ff;
-    font-size: 16px;
-  }
-  
-  .status-badge {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
-  }
-  
-  .status-badge.active {
-    background-color: #e6f7ff;
-    color: #1890ff;
-    border: 1px solid #91d5ff;
-  }
-  
-  .status-badge.inactive {
-    background-color: #fff1f0;
-    color: #ff4d4f;
-    border: 1px solid #ffa39e;
-  }
-  
-  
+}
+

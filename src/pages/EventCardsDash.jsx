@@ -191,7 +191,7 @@ const EventCardsDash = ({ commity }) => {
     <div className="events-container">
       <section className="events-section">
         <div className="section-header-detail">
-          <h2>Ongoing Events</h2>
+          <h2>Ongoing Events1</h2>
         </div>
         <div className="cards-grid">
           {currentEvent.map((event, index) => {

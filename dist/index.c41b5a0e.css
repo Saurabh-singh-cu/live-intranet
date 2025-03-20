@@ -19669,8 +19669,10 @@ input[class^="ag-"][type="range"]:disabled {
 }
 
 .admin-event-approval {
-  max-width: 1200px;
-  padding: 6rem 20px 20px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 66px;
+  padding: 20px;
 }
 
 .page-title {
@@ -19679,85 +19681,119 @@ input[class^="ag-"][type="range"]:disabled {
   font-size: 24px;
 }
 
-.search-container {
-  margin-bottom: 20px;
-}
-
-.search-input {
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  width: 250px;
-  padding: 8px 12px;
-  font-size: 14px;
-}
-
-.table-section {
-  background: #fff;
-  border-radius: 8px;
-  margin-bottom: 30px;
-  padding: 20px;
-  box-shadow: 0 1px 3px #0000001a;
-}
-
-.table-header {
+.search-download-container {
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  gap: 10px;
+  margin-bottom: 20px;
   display: flex;
 }
 
-.reg-id-title {
-  color: #333;
-  margin: 0;
-  font-size: 18px;
+.search-container {
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.search-input {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
 }
 
 .download-button {
   color: #fff;
   cursor: pointer;
-  background-color: #1890ff;
+  background-color: #4caf50;
   border: none;
   border-radius: 4px;
   padding: 8px 16px;
   font-size: 14px;
+  transition: background-color .3s;
 }
 
 .download-button:hover {
-  background-color: #40a9ff;
+  background-color: #45a049;
 }
 
 .table-container {
-  width: 80vw;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 100%;
+  display: block;
   overflow-x: auto;
 }
 
 .custom-table {
   border-collapse: collapse;
+  table-layout: fixed;
   width: 100%;
-}
-
-.custom-table th, .custom-table td {
-  text-align: left;
-  border-bottom: 1px solid #f0f0f0;
-  padding: 12px 16px;
+  min-width: 1000px;
+  font-size: 14px;
 }
 
 .custom-table th {
   color: #333;
-  background-color: #fafafa;
-  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  background-color: #f2f2f2;
+  border-bottom: 2px solid #ddd;
+  padding: 12px 15px;
+  font-weight: bold;
 }
 
-.loading-message, .no-data-message {
+.custom-table td {
+  word-break: break-word;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 15px;
+}
+
+.custom-table tr:nth-child(2n) {
+  background-color: #f9f9f9;
+}
+
+.custom-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.status-dropdown {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  padding: 6px 30px 6px 10px;
+  font-size: 14px;
+}
+
+.status-dropdown.active {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.status-dropdown.inactive {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+
+.loading-container, .error-message {
   text-align: center;
-  color: #666;
-  background: #fff;
-  border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 1px 3px #0000001a;
+  padding: 20px;
+  font-size: 16px;
 }
 
-.no-data-cell {
+.loading-cell, .no-data-cell {
   text-align: center;
   color: #666;
   padding: 20px;
@@ -19771,27 +19807,25 @@ input[class^="ag-"][type="range"]:disabled {
 }
 
 .copy-icon {
-  color: #1890ff;
+  color: #666;
+  opacity: .6;
   font-size: 16px;
+  transition: opacity .3s;
 }
 
-.status-badge {
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 12px;
-  font-weight: 500;
-  display: inline-block;
+.copyable:hover .copy-icon {
+  opacity: 1;
 }
 
-.status-badge.active {
-  color: #1890ff;
-  background-color: #e6f7ff;
-  border: 1px solid #91d5ff;
-}
+@media screen and (width <= 768px) {
+  .search-download-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-.status-badge.inactive {
-  color: #ff4d4f;
-  background-color: #fff1f0;
-  border: 1px solid #ffa39e;
+  .search-container {
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
 }
 /*# sourceMappingURL=index.c41b5a0e.css.map */

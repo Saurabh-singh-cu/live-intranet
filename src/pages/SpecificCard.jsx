@@ -177,20 +177,7 @@ const SpecificCard = () => {
       <div className="ongoing-events">
         <h3>Ongoing Events</h3>
         <div className="events-grid">
-          {ongoingEvents.map((event) => (
-            <div key={event.id} className="event-card">
-              <img
-                src={event.image}
-                alt={event.title}
-                className="event-image"
-              />
-              <div className="event-details">
-                <div className="event-title">{event.title}</div>
-                <div className="event-date">{event.date}</div>
-                <button className="invite-button">Invite</button>
-              </div>
-            </div>
-          ))}
+         <p>No Event Found</p>
         </div>
       </div>
     </div>

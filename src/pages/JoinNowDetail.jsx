@@ -184,9 +184,9 @@ const JoinNowDetail = () => {
       const reg_id = getEffectiveRegId(reg_id1);
       const response = await apiClient.get(`published-events/${reg_id}/`);
       setCurrentEvent(response?.data);
-      console.log(response, "RRRRR");
+      console.log(response, "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
     } catch (error) {
-      console.log(error);
+      console.log(error, "EEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRR");
     }
   };
 
@@ -269,9 +269,7 @@ const JoinNowDetail = () => {
         <div className="hero-content">
           <h1 className="hero-title">{selectedSociety.registration_name}</h1>
           <div className="hero-tagline">
-            <span>Nurturing</span> Excellence,
-            <br />
-            Strengthening <span>Talent.</span>
+          
           </div>
           <p className="hero-subtitle">Owner : {selectedSociety.dept_name}</p>
         </div>

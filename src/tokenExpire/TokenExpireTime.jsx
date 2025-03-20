@@ -19,7 +19,15 @@ const TokenExpireTime = ({ onLogout }) => {
     const timeRemaining = expirationTime - currentTime;
 
     if (timeRemaining <= 0) {
-      onLogout();
+      window.location.href = "/login"
+      localStorage.clear();
+      Swal.fire({
+        title: "Session Expired",
+        text: "Your session has expired. Please login again.",
+        icon: "warning",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      });
     } else {
       setTimeLeft(timeRemaining);
 
