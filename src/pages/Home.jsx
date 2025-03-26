@@ -26,6 +26,7 @@ import NewsViews from "./NewsViews";
 import not1 from "../assets/images/not1.png";
 import not2 from "../assets/images/not2.png";
 import apiClient from "../config/apiClient";
+import UpdatedCarousel from "../student/drawerNotification/UpdatedCarousel";
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -334,7 +335,8 @@ const Home = () => {
   }, [currentIndex, carouselImages.length]);
   return (
     <>
-      <div  className="with-login"
+      <div
+        className="with-login"
         style={{
           marginTop: "77px",
           overflow: "scroll",
@@ -408,56 +410,10 @@ const Home = () => {
         <div className="content-columns-home">
           <div className="left-column-home">
             <div className="announcement-card-home">
-              <div
-                style={{
-                  justifyContent: "center",
-                  padding: "5px",
-                  marginBottom: "0px",
-                }}
-                className="card-header-home"
-              >
-                <h4 style={{ fontWeight: "bold", fontSize: "22px" }}>
-                  {carouselImages[currentIndex].title}
-                </h4>
+              <div className="content-section">
+                <UpdatedCarousel images={carouselImages} />
               </div>
-              <div className="banner-image-home">
-                <div className="carousel">
-                  {carouselImages.map((image, index) => (
-                    <div
-                      key={index}
-                      className={`carousel-item ${
-                        index === currentIndex ? "active" : ""
-                      }`}
-                    >
-                      <img src={image.src} alt={image.alt} />
-                      <div className="carousel-overlay">
-                        <span style={{ textTransform: "uppercase" }}>
-                          {image.type}
-                        </span>
-                        <h2>{image.title}</h2>
-                      </div>
-                    </div>
-                  ))}
-                  <button onClick={prevSlide1} className="carousel-button prev">
-                    ❮
-                  </button>
-                  <button onClick={nextSlide1} className="carousel-button next">
-                    ❯
-                  </button>
-                  <div className="carousel-indicators">
-                    {carouselImages.map((_, index) => (
-                      <span
-                        key={index}
-                        className={`indicator ${
-                          index === currentIndex ? "active" : ""
-                        }`}
-                        onClick={() => setCurrentIndex(index)}
-                      ></span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="announcement-list-home"></div>
+              {/* <div className="announcement-list-home"></div> */}
             </div>
           </div>
 

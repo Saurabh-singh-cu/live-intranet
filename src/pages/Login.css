@@ -177,7 +177,7 @@
 
 /* Styles for the Ant Design Drawer */
 .ant-drawer-content-wrapper {
-  width: 400px !important;
+  width: 400px;
 }
 
 .ant-drawer-header {

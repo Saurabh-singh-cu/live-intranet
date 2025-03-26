@@ -73,7 +73,7 @@
   display: flex;
   align-items: normal;
   position: absolute;
-  bottom: 11px;
+  bottom: 3px;
 }
 
 .calendar-day:hover {
