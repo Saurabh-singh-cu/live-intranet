@@ -8,8 +8,8 @@ const TokenExpireTime = ({ onLogout }) => {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     setUserDataDet(userData)
-    if (!userData || !userData.token_expiration_time) {
-      // onLogout();
+    if (!userData && !userData.token_expiration_time) {
+      onLogout();
       return;
     }
 
@@ -36,7 +36,7 @@ const TokenExpireTime = ({ onLogout }) => {
         const newTimeLeft = expirationTime - new Date().getTime();
         if (newTimeLeft <= 0) {
           clearInterval(timer);
-          onLogout();
+          // onLogout();
         } else {
           setTimeLeft(newTimeLeft);
         }

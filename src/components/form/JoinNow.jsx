@@ -145,7 +145,7 @@ const JoinNow = () => {
       setIsFormDisabled(true);
       const response = await apiClient.post("send_otp_email/", {
         member_name: name,
-        member_email: `${email.toLowerCase()}@cumail.in`,
+        member_email: `${email.toLowerCase()}@cuchd.in`,
         dept_id: department,
         entity_id: entity,
         reg_id: entityType,
@@ -621,7 +621,7 @@ const JoinNow = () => {
                           className={styles.formInput}
                           disabled
                         />
-                        <span className={styles.domain}>@cumail.in</span>
+                        <span className={styles.domain}>@cuchd.in</span>
                        
                       </div>
                     </div>

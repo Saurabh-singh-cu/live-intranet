@@ -52,6 +52,8 @@ import "./Dashboard.css";
 import ProfilePictureCards from "./ProfilePictureCard";
 import CommitteeCardStudent from "./committeeCardStudent";
 import UpdatedCarousel from "./drawerNotification/UpdatedCarousel";
+import InfoCard from "./InfoCard";
+import ActivityBarGraph from "./ActivityBarGraph";
 
 const Dashboard = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -253,6 +255,24 @@ const Dashboard = () => {
       color: "#4CAF50",
     },
   ];
+
+  const activityData = {
+    iic: {
+      members: 2,
+      active: 1,
+      inactive: 1,
+    },
+    mic: {
+      announced: 4,
+      active: 1,
+      inactive: 0,
+    },
+    self: {
+      members: 1,
+      active: 1,
+      inactive: 0,
+    },
+  }
 
   const toggleAccordion = (index) => {
     setActiveAccordion(activeAccordion === index ? null : index);
@@ -1030,9 +1050,15 @@ const Dashboard = () => {
             </div>
           )}
 
+
+
           {isLoggedIn === true &&
           userName?.role_name === "Student Secretary" ? (
             <>
+            <InfoCard />
+            <div className="graphContainer">
+            <ActivityBarGraph data={activityData} />
+          </div>
               <div className="club-details-page-1">
                 <div className="update-cards-container">
                   <h3>Media Update || Entity Management</h3>

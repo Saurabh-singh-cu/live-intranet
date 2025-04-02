@@ -117,6 +117,7 @@ const NavBar = () => {
     setUser(null);
     setExpirationTime(null);
     localStorage.removeItem("user");
+    localStorage.clear("user");
     window.location.href = "/login";
   };
   const handleSearch = (e) => {
