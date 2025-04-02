@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Spin } from "antd";
 import styles from "./JoinNow.module.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import apiClient from "../../config/apiClient";
 import verified from "../../assets/images/verified.png";
 import barcode from "../../assets/images/barcode.png";
@@ -64,9 +64,36 @@ const JoinNow = () => {
 
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [loadingOtp, setLoadingOtp] = useState(false);
-  const navigate = useNavigate();
+  const [dataLoading, setDataLoading] = useState(false);
 
-  // Show custom alert with 10 second duration
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const society = location.state?.society;
+  console.log(society, "DEKH @");
+
+  useEffect(() => {
+    if (society) {
+      setDataLoading(true);
+      if (society?.entity_type_id) {
+        setEntity(society?.entity_type_id);
+      }
+
+      if (society?.dept_id) {
+        setDepartment(society?.dept_id);
+      }
+
+      if (society?.reg_id) {
+        setTimeout(() => {
+          setEntityType(society.reg_id);
+          setDataLoading(false);
+        }, 2000);
+      } else {
+        setDataLoading(false);
+      }
+    }
+  }, [society]);
+
   const showAlert = (type, message, duration = 10000) => {
     setAlert({ type, message });
     if (duration) {
@@ -75,8 +102,6 @@ const JoinNow = () => {
       }, duration);
     }
   };
-
-
 
   const formateTimer = (seconds) => {
     const min = Math.floor(seconds / 60);
@@ -359,13 +384,17 @@ const JoinNow = () => {
         <div className={styles.successIcon}>✓</div>
         <h2>Registration Successful!</h2>
         <p>
-          Membership registration successful, Membership activation upon approval.
-          Thank you for joining CU-Intranet.
+          Membership registration successful, Membership activation upon
+          approval. Thank you for joining CU-Intranet.
         </p>
         <div className={styles.progressBar}>
           <div className={styles.progressFill}></div>
         </div>
-        <button style={{marginTop:"13px"}} className={styles.actionButton} onClick={() => navigate("/")}>
+        <button
+          style={{ marginTop: "13px" }}
+          className={styles.actionButton}
+          onClick={() => navigate("/")}
+        >
           Go To Home
         </button>
       </div>
@@ -605,14 +634,17 @@ const JoinNow = () => {
                   <h3>Email Verification</h3>
                   <div className={styles.verificationRow}>
                     <div className={styles.verificationCol}>
-                      <label>Your Email  {isVerified && (
+                      <label>
+                        Your Email{" "}
+                        {isVerified && (
                           <span className={styles.verifiedBadge}>
                             <img
                               src={verified || "/placeholder.svg"}
                               alt="Verified"
                             />
                           </span>
-                        )}</label>
+                        )}
+                      </label>
                       <div className={styles.emailField}>
                         <input
                           type="text"
@@ -622,7 +654,6 @@ const JoinNow = () => {
                           disabled
                         />
                         <span className={styles.domain}>@cuchd.in</span>
-                       
                       </div>
                     </div>
                     <button
@@ -725,8 +756,6 @@ const JoinNow = () => {
                   complete your registration
                 </p>
 
-         
-
                 <div className={styles.qrCodeWrapper}>
                   <img
                     src={barcode || "/placeholder.svg?height=200&width=200"}
@@ -734,7 +763,6 @@ const JoinNow = () => {
                     className={styles.qrCode}
                   />
                 </div>
-
 
                 <form className={styles.paymentForm} onSubmit={handleSubmit}>
                   <div className={styles.paymentRow}>
@@ -752,7 +780,6 @@ const JoinNow = () => {
                           setTransactionIdError("");
                         }}
                         placeholder="Enter Transaction ID"
-                        
                       />
                     </div>
 
@@ -774,8 +801,6 @@ const JoinNow = () => {
                         placeholder="Confirm the Transaction ID"
                       />
                     </div>
-
-                  
                   </div>
 
                   {transactionIdError && (
@@ -807,21 +832,21 @@ const JoinNow = () => {
                     </label>
                   </div>
                   <div className={styles.paymentCol}>
-                      <label>&nbsp;</label>
-                      <button
-                        type="submit"
-                        className={styles.paymentSubmitButton}
-                        disabled={
-                          timeLeft <= 0 ||
-                          loading ||
-                          !acknowledgeTerms ||
-                          !transactionId ||
-                          !confirmTransactionId
-                        }
-                      >
-                        {loading ? <Spin size="small" /> : "Submit"}
-                      </button>
-                    </div>
+                    <label>&nbsp;</label>
+                    <button
+                      type="submit"
+                      className={styles.paymentSubmitButton}
+                      disabled={
+                        timeLeft <= 0 ||
+                        loading ||
+                        !acknowledgeTerms ||
+                        !transactionId ||
+                        !confirmTransactionId
+                      }
+                    >
+                      {loading ? <Spin size="small" /> : "Submit"}
+                    </button>
+                  </div>
                 </form>
 
                 <div className={styles.securePayment}>

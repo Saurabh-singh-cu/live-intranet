@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Search, Users, Building, BookOpen, Clock, Eye } from "lucide-react";
+import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import cc1 from "../assets/images/hackthon.jpg";
-import cc2 from "../assets/images/c3.png";
+
 import "./ClubList.css";
 import {
   MdGroup,
   MdOutlineArrowBack,
-  MdOutlineOutlinedFlag,
+
 } from "react-icons/md";
-import { BsActivity } from "react-icons/bs";
+
 import Scroller from "../components/Scroller";
 import Footer from "../components/Footer";
 
@@ -29,7 +28,7 @@ const ClubList = () => {
   const fetchSocieties = async () => {
     try {
       const response = await fetch(
-        "https://api.cuintranet.in/intranetapp/entity-registration-summary/?entity_id=1"
+        "http://172.17.2.247:8080/intranetapp/entity-registration-summary/?entity_id=1"
       );
       const data = await response.json();
       setSocieties(data);
@@ -93,7 +92,7 @@ const ClubList = () => {
   const approvedMedia = async (regId) => {
     try {
       const fetch = await axios.get(
-        `https://api.cuintranet.in/intranetapp/entity_media_approved/${regId}/`
+        `http://172.17.2.247:8080/intranetapp/entity_media_approved/${regId}/`
       );
       setMediaData(fetch?.data[0]);
       console.log(fetch?.data[0], "FETCH MEDIA");

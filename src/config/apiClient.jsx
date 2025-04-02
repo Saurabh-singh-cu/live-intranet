@@ -3,7 +3,7 @@
 
 
 // const apiClient = axios.create({
-//   baseURL: "https://api.cuintranet.in/intranetapp/",
+//   baseURL: "http://172.17.2.247:8080/intranetapp/",
 //   headers: {
 //     "Content-Type": "application/json",
 //   },
@@ -47,7 +47,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 const apiClient = axios.create({
-  baseURL: "https://api.cuintranet.in/intranetapp/",
+  baseURL: "http://172.17.2.247:8080/intranetapp/",
   headers: {
     "Content-Type": "application/json",
   },

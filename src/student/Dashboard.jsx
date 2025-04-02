@@ -54,6 +54,7 @@ import CommitteeCardStudent from "./committeeCardStudent";
 import UpdatedCarousel from "./drawerNotification/UpdatedCarousel";
 import InfoCard from "./InfoCard";
 import ActivityBarGraph from "./ActivityBarGraph";
+import ActivityPieChart from "./ActivityPieChart";
 
 const Dashboard = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -272,7 +273,7 @@ const Dashboard = () => {
       active: 1,
       inactive: 0,
     },
-  }
+  };
 
   const toggleAccordion = (index) => {
     setActiveAccordion(activeAccordion === index ? null : index);
@@ -1050,15 +1051,16 @@ const Dashboard = () => {
             </div>
           )}
 
-
-
           {isLoggedIn === true &&
           userName?.role_name === "Student Secretary" ? (
             <>
-            <InfoCard />
-            <div className="graphContainer">
-            <ActivityBarGraph data={activityData} />
-          </div>
+              <InfoCard />
+              <div className="charts-container">
+                <div className="chart-row">
+                  <ActivityPieChart />
+                  <ActivityBarGraph />
+                </div>
+              </div>
               <div className="club-details-page-1">
                 <div className="update-cards-container">
                   <h3>Media Update || Entity Management</h3>

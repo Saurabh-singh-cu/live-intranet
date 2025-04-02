@@ -449,7 +449,16 @@
   }
 }
 
-.graphContainer {
-  margin-bottom: 20px;
-  /* height: 250px; */
+
+
+.charts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.chart-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 24px;
 }
