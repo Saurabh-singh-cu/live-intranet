@@ -599,7 +599,7 @@ const Dashboard = () => {
       );
 
       Swal.fire({
-        title: "Banner updated successfully",
+        title: "Banner updated Request Sent",
         icon: "success",
       });
 
@@ -644,7 +644,7 @@ const Dashboard = () => {
       );
 
       Swal.fire({
-        title: "Logo updated successfully",
+        title: "Logo Update Request Sent",
         icon: "success",
       });
 
@@ -1063,69 +1063,10 @@ const Dashboard = () => {
               </div>
               <div className="club-details-page-1">
                 <div className="update-cards-container">
-                  <h3>Media Update || Entity Management</h3>
-                  <div className="update-cards-grid">
-                    <div
-                      onClick={() => showDrawer("media")}
-                      className="update-card"
-                      style={{
-                        borderTop: `4px solid #2196F3`,
-                        cursor: "pointer",
-                      }}
-                    >
-                      <div
-                        className="update-card-icon"
-                        style={{ color: "#2196F3" }}
-                      >
-                        <FileImageOutlined />
-                      </div>
-                      <h4>Update Banner</h4>
-                      <p>Update your entity's banner image</p>
-                    </div>
-                    <div
-                      onClick={() => showDrawer("logo")}
-                      className="update-card"
-                      style={{
-                        borderTop: `4px solid #E91E63`,
-                        cursor: "pointer",
-                      }}
-                    >
-                      <div
-                        className="update-card-icon"
-                        style={{ color: "#E91E63" }}
-                      >
-                        <RadiusUprightOutlined />
-                      </div>
-                      <h4>Update Logo</h4>
-                      <p>Update your entity's logo image</p>
-                    </div>
-                    {updateCards.map((card, index) => (
-                      <div
-                        key={index}
-                        className="update-card"
-                        onClick={() => openUpdateModal(card.type)}
-                        style={{
-                          borderTop: `4px solid ${card.color}`,
-                          cursor: "pointer",
-                        }}
-                      >
-                        <div
-                          className="update-card-icon"
-                          style={{ color: card.color }}
-                        >
-                          {card.icon}
-                        </div>
-                        <h4>{card.title}</h4>
-                        <p>{card.description}</p>
-                      </div>
-                    ))}
-                  </div>
+             
                 </div>
 
-                <ProfilePictureCards />
-
-                {/* {userDetails && userDetails?.secretary_details ? null : <EventCardsDash commity={commity} />} */}
-                <CommitteeCardStudent />
+    
               </div>
             </>
           ) : (

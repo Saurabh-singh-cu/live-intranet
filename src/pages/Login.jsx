@@ -1,23 +1,34 @@
+"use client"
+
 import React, { useState, useRef } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from "react-router-dom";
-import { notification, Drawer } from "antd";
-import Swal from "sweetalert2";
-import logo from "../assets/images/logo.png";
-import circle from "../assets/images/intralogonew.jpeg";
-import "./Login.css";
+import { Modal, notification } from "antd";
+import styles from "./Login.module.css";
+import { 
+  FiMail, 
+  FiLock, 
+  FiEye, 
+  FiEyeOff, 
+  FiArrowRight, 
+  FiHome,
+  FiUser
+} from "react-icons/fi";
 import apiClient from "../config/apiClient";
+import logoCu from "../assets/images/intralogonew.jpeg"
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [recaptchaValue, setRecaptchaValue] = useState(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [isResetting, setIsResetting] = useState(false);
+  const [resetStep, setResetStep] = useState(1);
+  const [resetCode, setResetCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-  const recaptchaRef = useRef();
 
   const openNotification = (type, message, description) => {
     notification[type]({
@@ -30,6 +41,11 @@ const Login = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!email || !password) {
+      openNotification("error", "Validation Error", "Please fill in all fields");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -39,11 +55,6 @@ const Login = ({ onLogin }) => {
       });
 
       const data = response?.data;
-      console.log(data, "USER GET");
-
-      // if (!response.ok) {
-      //   throw new Error(data.message || "An error occurred during login");
-      // }
 
       localStorage.setItem("user", JSON.stringify(data));
 
@@ -64,11 +75,9 @@ const Login = ({ onLogin }) => {
           window.location.href = "/faculty-advisory-dashboard";
         } else if (role.includes("Co Curricular Coordinator")) {
           window.location.href = "/Co-Curricular-Coordinator-dashboard";
-
         } else if (role.includes("Faculty Advisory" && "Co Curricular Coordinator")) {
-          window.location.href = "/faculty-advisory-dashboard"
-        }
-         else {
+          window.location.href = "/faculty-advisory-dashboard";
+        } else {
           switch (role) {
             case "Admin":
               window.location.href = "/admin-dashboard";
@@ -86,162 +95,232 @@ const Login = ({ onLogin }) => {
           }
         }
       }
-      
-
-      console.log("Login successful", data);
     } catch (err) {
-      console.log(err, "ERRRRR")
-      openNotification("error", "Login Failed", err.response?.data?.message);
+      openNotification("error", "Login Failed", err.response?.data?.message || "Invalid credentials");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleRecaptchaChange = (value) => {
-    setRecaptchaValue(value);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleForgotPassword = () => {
-    setIsDrawerOpen(true);
+    setIsModalOpen(true);
+    setResetStep(1);
+    setResetEmail("");
   };
 
   const handleResetPassword = async () => {
+    if (!resetEmail) {
+      openNotification("error", "Validation Error", "Please enter your email");
+      return;
+    }
+
     setIsResetting(true);
     try {
       const response = await apiClient.put(
         `password_reset/${resetEmail.toLowerCase()}/`,
       );
 
-      if (!response.status === 200) {
+      if (response.status === 200) {
+        openNotification(
+          "success", 
+          "Password Reset Email Sent", 
+          "Check your email for the auto-generated password and log in."
+        );
+        setIsModalOpen(false);
+      } else {
         throw new Error("Failed to reset password");
       }
-
-      Swal.fire({
-        icon: "success",
-        title: "Password Reset",
-        text: "Check your email for the auto-generated password and log in.",
-      });
-
-      setIsDrawerOpen(false);
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: error.message,
-      });
+      openNotification(
+        "error",
+        "Reset Failed",
+        error.message || "Failed to reset password"
+      );
     } finally {
       setIsResetting(false);
     }
   };
 
-  return (
-    <div className="login-container">
-      <div className="login-form-container">
-        <div className="login-form-wrapper">
-          <div className="logo-container">
-            <img style={{ width: "230px" }} src={circle} alt="Logo" />
-          </div>
-          <h2 className="login-title">Welcome back</h2>
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div style={{ marginBottom: "0px" }} className="form-group">
-              <label htmlFor="email" className="form-label">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="form-input"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div style={{ marginBottom: "0px" }} className="form-group">
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="form-input"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <p className="forgot-password-link">
-              <a href="#" onClick={handleForgotPassword}>
-                Forgot Password?
-              </a>
-            </p>
-            {/* <div className="recaptcha-container">
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                sitekey="6LeComoqAAAAAM7fMSrGeagGkmaDdtqdt12MzRjE"
-                onChange={handleRecaptchaChange}
-              />
-            </div> */}
-            <button
-              type="submit"
-              className="submit-button"
-              disabled={isLoading}
-            >
-              {isLoading ? "Signing in..." : "Sign in"}
-            </button>
-          </form>
-
-          <p className="sign-in-link">
-            Back to home page{" "}
-            <a href="/" className="sign-in-anchor">
-              Home
-            </a>
-          </p>
-        </div>
-      </div>
-      <div className="login-image-container">
-        <div className="login-image-overlay">
-          <h1 className="image-title">Welcome to Cu-Intranet</h1>
-          <p className="typewriter">
-            Discover amazing features and boost your productivity
-          </p>
-        </div>
-      </div>
-      <Drawer
-        title="Forgot Password"
-        placement="right"
-        onClose={() => setIsDrawerOpen(false)}
-        open={isDrawerOpen}
-        width={400}
-      >
-        <div className="forgot-password-form">
-          <p>Enter your email address to reset your password.</p>
-          <div className="form-group">
-            <label htmlFor="reset-email">Email address</label>
+  const renderModalContent = () => {
+    return (
+      <div className={styles.forgotPasswordForm}>
+        <h3 className={styles.modalTitle}>Reset Your Password</h3>
+        <p className={styles.modalDescription}>
+          Enter your email address and we'll send you instructions to reset your password.
+        </p>
+        <div className={styles.formGroup}>
+          <div className={styles.inputWrapper}>
+            <FiMail className={styles.inputIcon} />
             <input
-              id="reset-email"
               type="email"
               value={resetEmail}
               onChange={(e) => setResetEmail(e.target.value)}
               required
               placeholder="Enter your email"
-              className="form-input"
+              className={styles.formInput}
             />
           </div>
-          <button
-            onClick={handleResetPassword}
-            disabled={isResetting}
-            className="submit-button"
-          >
-            {isResetting ? "Sending..." : "Send Mail"}
-          </button>
         </div>
-      </Drawer>
+        <button
+          onClick={handleResetPassword}
+          disabled={isResetting}
+          className={styles.resetButton}
+        >
+          {isResetting ? (
+            <span className={styles.loadingSpinner}></span>
+          ) : (
+            "Send Reset Link"
+          )}
+        </button>
+      </div>
+    );
+  };
+
+  return (
+    <div className={styles.loginContainer}>
+      <div className={styles.loginFormContainer}>
+        <div className={styles.loginFormWrapper}>
+          <div className={styles.logoContainer}>
+            <img 
+              src={logoCu} 
+              alt="Logo" 
+              className={styles.logo} 
+            />
+          </div>
+          
+          <div className={styles.formHeader}>
+            <h2 className={styles.loginTitle}>Welcome Back</h2>
+            <p className={styles.loginSubtitle}>Sign in to continue to your account</p>
+          </div>
+          
+          <form className={styles.loginForm} onSubmit={handleSubmit}>
+            <div className={styles.formGroup}>
+              <label htmlFor="email" className={styles.formLabel}>
+                Email address
+              </label>
+              <div className={styles.inputWrapper}>
+                <FiMail className={styles.inputIcon} />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className={styles.formInput}
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+            </div>
+            
+            <div className={styles.formGroup}>
+              <div className={styles.passwordHeader}>
+                <label htmlFor="password" className={styles.formLabel}>
+                  Password
+                </label>
+                <button 
+                  type="button" 
+                  className={styles.forgotPasswordLink}
+                  onClick={handleForgotPassword}
+                >
+                  Forgot Password?
+                </button>
+              </div>
+              <div className={styles.inputWrapper}>
+                <FiLock className={styles.inputIcon} />
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  required
+                  className={styles.formInput}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button 
+                  type="button"
+                  className={styles.passwordToggle}
+                  onClick={togglePasswordVisibility}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                </button>
+              </div>
+            </div>
+            
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <span className={styles.loadingSpinner}></span>
+              ) : (
+                <>
+                  Sign in
+                  <FiArrowRight className={styles.buttonIcon} />
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className={styles.formFooter}>
+            <a href="/" className={styles.homeLink}>
+              <FiHome className={styles.homeLinkIcon} />
+              Back to home page
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div className={styles.loginImageContainer}>
+        <div className={styles.loginImageOverlay}>
+          <div className={styles.imageContent}>
+            <h1 className={styles.imageTitle}>Welcome to Cu-Intranet</h1>
+            <p className={styles.imageSubtitle}>
+              Discover amazing features and boost your productivity
+            </p>
+            <div className={styles.features}>
+              <div className={styles.featureItem}>
+                <div className={styles.featureIcon}>
+                  <FiUser />
+                </div>
+                <div className={styles.featureText}>
+                  <h3>Personalized Dashboard</h3>
+                  <p>Access all your tools in one place</p>
+                </div>
+              </div>
+              <div className={styles.featureItem}>
+                <div className={styles.featureIcon}>
+                  <FiMail />
+                </div>
+                <div className={styles.featureText}>
+                  <h3>Seamless Communication</h3>
+                  <p>Connect with your team instantly</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <Modal
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={null}
+        centered
+        className={styles.forgotPasswordModal}
+        width={400}
+      >
+        {renderModalContent()}
+      </Modal>
     </div>
   );
 };

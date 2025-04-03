@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import SideBar from "./components/Sidebar/SideBar";
+
 import {
   BrowserRouter as Router,
   Route,
@@ -54,6 +54,8 @@ import ExecutiveDashboard from "./officeExecutive/ExecutiveDashboard";
 import AddEvent from "./officeExecutive/AddEvent";
 import PublishYourEvent from "./faculty/PublishYourEvent";
 import RegisteredMemberList from "./student/RegisteredMemberList";
+import ProfilePictureCards from "./student/ProfilePictureCard";
+import SideBar from "./components/Sidebar/SideBar";
 
 function AppContent() {
   const location = useLocation();
@@ -69,6 +71,7 @@ function AppContent() {
   const [user, setUser] = useState([]);
   const [tokenExpire, setTokenExpire] = useState(false);
   const [expirationTime, setExpirationTime] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const handleLogin = () => {
     console.log("Login success");
@@ -160,7 +163,7 @@ function AppContent() {
   return (
     <div>
       {!isLoginPage && (
-        <NavBar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+        <NavBar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} isLoggedIn={isLoggedIn} onLogout={handleLogout} />
       )}
 
       <div style={{ display: "flex" }}>
@@ -169,7 +172,7 @@ function AppContent() {
             isStudentSecretary ||
             isFaculty ||
             isCo ||
-            isExecutive) && <SideBar />}
+            isExecutive) && <SideBar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />}
         <div style={{ flex: 1 }}>
           <Routes>
             <Route
@@ -336,6 +339,10 @@ function AppContent() {
             <Route
               path="/student-secretary-dashboard"
               element={<Dashboard onShowLogin={handleShowLogin} />}
+            />
+            <Route
+              path="/media-update-request"
+              element={<ProfilePictureCards onShowLogin={handleShowLogin} />}
             />
             <Route
               path="/faculty-advisory-dashboard"

@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Tooltip } from "antd";
 import {
   FaBars,
   FaTimes,
@@ -7,7 +9,9 @@ import {
   FaUsers,
   FaChevronDown,
   FaRegListAlt,
+  FaWpforms,
 } from "react-icons/fa";
+
 import {
   MdChecklist,
   MdCloudUpload,
@@ -15,16 +19,19 @@ import {
   MdEmojiEvents,
   MdEventNote,
   MdOutlineDashboardCustomize,
+  MdOutlinePermMedia,
   MdPriceChange,
   MdQrCodeScanner,
+  MdSpaceDashboard,
 } from "react-icons/md";
 import { AiTwotoneFileExclamation } from "react-icons/ai";
-import { FaWpforms, FaCodePullRequest } from "react-icons/fa6";
-import { motion, AnimatePresence } from "framer-motion";
-import { BsCurrencyRupee, BsExplicitFill, BsFillCCircleFill, BsFillExplicitFill } from "react-icons/bs";
-import { MdSpaceDashboard } from "react-icons/md";
-import "./Sidebar.css";
-import { Tooltip } from "antd";
+import {
+  BsCurrencyRupee,
+  BsExplicitFill,
+  BsFillCCircleFill,
+  BsFillExplicitFill,
+} from "react-icons/bs";
+import styles from "./Sidebar.module.css";
 
 const routes = [
   {
@@ -78,7 +85,6 @@ const routes = [
     icon: <BsFillExplicitFill />,
     allowedRoles: ["Event Data Manager"],
     subRoutes: [
-  
       {
         path: "/event-data-manager-dashboard",
         name: "Dashboard",
@@ -91,7 +97,6 @@ const routes = [
       },
     ],
   },
-
   {
     path: "/email/email-service",
     name: "Email",
@@ -122,7 +127,6 @@ const routes = [
     icon: <FaWpforms />,
     allowedRoles: ["Faculty Advisory"],
   },
- 
   {
     path: "/publishEvent",
     name: "Publish Your Event",
@@ -130,17 +134,17 @@ const routes = [
     allowedRoles: ["Faculty Advisory"],
   },
   {
+    path: "/media-update-request",
+    name: "Media Update",
+    icon: <MdOutlinePermMedia />,
+    allowedRoles: ["Student Secretary"],
+  },
+  {
     path: "/registered-members-list",
     name: "Registered Members",
     icon: <FaUsers />,
     allowedRoles: ["Student Secretary"],
   },
-  // {
-  //   path: "/proposed-calendarby-secretary",
-  //   name: "Proposed Calendar",
-  //   icon: <MdPriceChange />,
-  //   allowedRoles: ["Student Secretary"],
-  // },
   {
     path: "/EntityRegistrationForm",
     name: "Entity Registration Form",
@@ -150,13 +154,13 @@ const routes = [
   {
     path: "/entityTable",
     name: "Entity Request",
-    icon: <FaCodePullRequest />,
+    icon: <FaWpforms />,
     allowedRoles: ["Admin"],
   },
   {
     path: "/registered-entities",
     name: "Registered Entities",
-    icon: <FaCodePullRequest />,
+    icon: <FaWpforms />,
     allowedRoles: ["Admin"],
   },
   {
@@ -165,11 +169,6 @@ const routes = [
     icon: <AiTwotoneFileExclamation />,
     allowedRoles: ["Admin"],
     subRoutes: [
-      // {
-      //   path: "/event-approval-request",
-      //   name: "Event Approval Request",
-      //   icon: <MdEventNote />,
-      // },
       {
         path: "/event-published-request",
         name: "Event Published Request",
@@ -179,47 +178,53 @@ const routes = [
   },
 ];
 
-const SidebarMenu = ({ route, isOpen, setIsOpen }) => {
+const SidebarMenu = ({ route, isOpen, setIsOpen, isMobile = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
- 
-  
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    setIsOpen(true);
+    if (!isMobile) {
+      setIsOpen(true);
+    }
   };
 
-
-
   useEffect(() => {
-    if (!isOpen) {
+    if (!isOpen && !isMobile) {
       setIsMenuOpen(false);
     }
-  }, [isOpen]);
+  }, [isOpen, isMobile]);
 
   return (
-    <>
-      <div className="menu" onClick={toggleMenu}>
-        <div className="icon">{route.icon}</div>
+    <div className={isMobile ? styles.mobileMenuWrapper : styles.menuWrapper}>
+      <div
+        className={`${isMobile ? styles.mobileMenuItem : styles.menuItem} ${
+          isMenuOpen ? styles.active : ""
+        }`}
+        onClick={toggleMenu}
+      >
+        <div className={styles.menuItemContent}>
+          <div className={styles.iconWrapper}>{route.icon}</div>
+          <AnimatePresence>
+            {(isOpen || isMobile) && (
+              <motion.div
+                className={styles.linkText}
+                initial={{ opacity: 0, width: 0 }}
+                animate={{ opacity: 1, width: "auto" }}
+                exit={{ opacity: 0, width: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {route.name}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
         <AnimatePresence>
-          {isOpen && (
+          {(isOpen || isMobile) && (
             <motion.div
-              className="link_text"
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: "auto" }}
-              exit={{ opacity: 0, width: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              {route.name}
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              className={`arrow-icon ${isMenuOpen ? "open" : ""}`}
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: "auto" }}
-              exit={{ opacity: 0, width: 0 }}
+              className={`${styles.arrowIcon} ${isMenuOpen ? styles.open : ""}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
               <FaChevronDown />
@@ -227,47 +232,42 @@ const SidebarMenu = ({ route, isOpen, setIsOpen }) => {
           )}
         </AnimatePresence>
       </div>
+
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="menu_container"
+            className={isMobile ? styles.mobileSubMenu : styles.subMenu}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             {route.subRoutes.map((subRoute, i) => (
-              <NavLink key={i} to={subRoute.path} className="link sub_item">
-                <div className="icon">{subRoute.icon}</div>
-                <div className="link_text">{subRoute.name}</div>
+              <NavLink
+                key={i}
+                to={subRoute.path}
+                className={({ isActive }) =>
+                  `${
+                    isMobile ? styles.mobileSubMenuItem : styles.subMenuItem
+                  } ${isActive ? styles.activeSubItem : ""}`
+                }
+              >
+                <div className={styles.subMenuIcon}>{subRoute.icon}</div>
+                <div className={styles.subMenuText}>{subRoute.name}</div>
               </NavLink>
             ))}
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 };
 
-const Sidebar = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+// This function returns the sidebar menu items for use in the mobile menu
+export const getSidebarItems = () => {
   const [userRole, setUserRole] = useState("");
   const [isCoordinatorActive, setIsCoordinatorActive] = useState(false);
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-    if (user?.role_name) {
-      setUserRole(user.role_name);
-    }
-
-    // Check if is_cordinator is "active"
-    if (user?.is_cordinator === "active") {
-      setIsCoordinatorActive(true);
-    }
-  }, []);
-
-
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -275,51 +275,149 @@ const Sidebar = ({ children }) => {
     setIsCoordinatorActive(user?.is_cordinator === "active");
   }, []);
 
-
-
   const updatedRoutes = routes.map((route) => {
     if (route.path === "/COORD") {
-      // If the user is a Faculty Advisory with is_cordinator active, modify allowedRoles
       if (userRole === "Faculty Advisory" && isCoordinatorActive) {
         return {
           ...route,
-          allowedRoles: [...route.allowedRoles, "Faculty Advisory"], // Add Faculty Advisory
+          allowedRoles: [...route.allowedRoles, "Faculty Advisory"],
           subRoutes: route.subRoutes.map((subRoute) => ({
             ...subRoute,
-            allowedRoles: [...(subRoute.allowedRoles || []), "Faculty Advisory"], // Ensure subRoutes also get access
+            allowedRoles: [
+              ...(subRoute.allowedRoles || []),
+              "Faculty Advisory",
+            ],
           })),
         };
       }
     }
     return route;
   });
-  
-  // Now, filter the routes as usual
-  const filteredRoutes = updatedRoutes.filter((route) => route.allowedRoles?.includes(userRole));
-  
 
+  const filteredRoutes = updatedRoutes.filter((route) =>
+    route.allowedRoles?.includes(userRole)
+  );
 
+  return filteredRoutes.map((route, index) => {
+    if (route.subRoutes) {
+      return (
+        <SidebarMenu
+          key={index}
+          setIsOpen={setIsOpen}
+          route={route}
+          isOpen={true}
+          isMobile={true}
+        />
+      );
+    }
+
+    return (
+      <NavLink
+        to={route.path}
+        key={index}
+        className={({ isActive }) =>
+          `${styles.mobileNavLink} ${isActive ? styles.activeLink : ""}`
+        }
+      >
+        <div className={styles.iconWrapper}>{route.icon}</div>
+        <div className={styles.linkText}>{route.name}</div>
+      </NavLink>
+    );
+  });
+};
+
+const SideBar = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [userRole, setUserRole] = useState("");
+  const [isCoordinatorActive, setIsCoordinatorActive] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    setUserRole(user?.role_name || "");
+    setIsCoordinatorActive(user?.is_cordinator === "active");
+
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const updatedRoutes = routes.map((route) => {
+    if (route.path === "/COORD") {
+      if (userRole === "Faculty Advisory" && isCoordinatorActive) {
+        return {
+          ...route,
+          allowedRoles: [...route.allowedRoles, "Faculty Advisory"],
+          subRoutes: route.subRoutes.map((subRoute) => ({
+            ...subRoute,
+            allowedRoles: [
+              ...(subRoute.allowedRoles || []),
+              "Faculty Advisory",
+            ],
+          })),
+        };
+      }
+    }
+    return route;
+  });
+
+  const filteredRoutes = updatedRoutes.filter((route) =>
+    route.allowedRoles?.includes(userRole)
+  );
 
   const toggle = () => setIsOpen(!isOpen);
-  return (
 
-    <div className="main-container">
+  // If on mobile, don't render the sidebar
+  if (isMobile) {
+    return null;
+  }
+
+  return (
+    <div className={styles.mainContainer}>
       <motion.div
-        className={`sidebar ${isOpen ? "open" : ""}`}
-        animate={{ width: isOpen ? 240 : 43 }}
-        transition={{ duration: 0.3, type: "spring", damping: 10 }}
+        className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}
+        animate={{
+          width: isOpen ? 260 : 70,
+          boxShadow: isOpen
+            ? "10px 0 25px rgba(0,0,0,0.05)"
+            : "5px 0 15px rgba(0,0,0,0.03)",
+        }}
+        transition={{
+          duration: 0.3,
+          type: "spring",
+          damping: 18,
+          stiffness: 120,
+        }}
       >
-        <div className="top_section_sidebar">
+        <div className={styles.sidebarHeader}>
+          <div className={styles.logoContainer}>
+            {isOpen && (
+              <motion.div
+                className={styles.logoText}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 0.1, duration: 0.3 }}
+              ></motion.div>
+            )}
+          </div>
           <motion.div
-            className="bars"
-            initial={false}
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
+            className={styles.toggleButton}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={toggle}
           >
-            {isOpen ? <FaTimes onClick={toggle} /> : <FaBars onClick={toggle} />}
+            {isOpen ? <FaTimes /> : <FaBars />}
           </motion.div>
         </div>
-        <div className="routes">
+
+        <div className={styles.routesContainer}>
           {filteredRoutes.map((route, index) => {
             if (route.subRoutes) {
               return (
@@ -333,16 +431,41 @@ const Sidebar = ({ children }) => {
             }
 
             return (
-              <Tooltip title={!isOpen ? route.name : ""} placement="right" key={index}>
-                <NavLink to={route.path} className="link" activeClassName="active">
-                  <div className="icon">{route.icon}</div>
+              <Tooltip
+                title={!isOpen ? route.name : ""}
+                placement="right"
+                key={index}
+              >
+                <NavLink
+                  to={route.path}
+                  className={({ isActive }) =>
+                    `${styles.navLink} ${isActive ? styles.activeLink : ""}`
+                  }
+                  onMouseEnter={() => setHoveredItem(index)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                >
+                  <div className={styles.iconWrapper}>
+                    {route.icon}
+                    {!isOpen && hoveredItem === index && (
+                      <motion.div
+                        className={styles.iconPing}
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1.5, opacity: 0 }}
+                        transition={{
+                          repeat: Infinity,
+                          duration: 1.5,
+                          ease: "easeOut",
+                        }}
+                      />
+                    )}
+                  </div>
                   <AnimatePresence>
                     {isOpen && (
                       <motion.div
-                        className="link_text"
-                        initial={{ opacity: 0, width: 0 }}
-                        animate={{ opacity: 1, width: "auto" }}
-                        exit={{ opacity: 0, width: 0 }}
+                        className={styles.linkText}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
                         transition={{ duration: 0.2 }}
                       >
                         {route.name}
@@ -354,10 +477,24 @@ const Sidebar = ({ children }) => {
             );
           })}
         </div>
+
+        <div className={styles.sidebarFooter}>
+          {isOpen && (
+            <motion.div
+              className={styles.userInfo}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className={styles.userRole}>{userRole}</div>
+            </motion.div>
+          )}
+        </div>
       </motion.div>
-      <main>{children}</main>
+      <main className={styles.mainContent}>{children}</main>
     </div>
   );
 };
 
-export default Sidebar;
+export default SideBar;

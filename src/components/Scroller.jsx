@@ -51,18 +51,7 @@ const Scroller = () => {
   };
 
   return (
-    <div className="scroller-container">
-      {scrollDirection === "down" && (
-        <div className="scroll-button scroll-to-bottom" onClick={scrollToBottom}>
-          <FaArrowDown />
-        </div>
-      )}
-      {scrollDirection === "up" && (
-        <div className="scroll-button scroll-to-top" onClick={scrollToTop}>
-          <FaArrowUp />
-        </div>
-      )}
-    </div>
+   <></>
   );
 };
 

@@ -3,9 +3,9 @@ import styles from "./ActivityPieChart.module.css"
 
 const ActivityPieChart = () => {
   const data = [
-    { name: "Hackthon", value: 10, color: "#f4984e" },
-    { name: "TechActhon", value: 10, color: "#4a6da7" },
-    { name: "Tech Veer", value: 10, color: "#6a9de3" },
+    { name: "Hackthon", value: 1, color: "#f4984e" },
+    { name: "TechActhon", value: 1, color: "#4a6da7" },
+    { name: "Tech Veer", value: 1, color: "#6a9de3" },
 
   ]
 
