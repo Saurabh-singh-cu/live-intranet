@@ -1,0 +1,304 @@
+.formWrapper {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+  border-radius: 16px;
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.formHeader {
+  margin-bottom: 2.5rem;
+}
+
+.formTitle {
+  font-size: 2.25rem;
+  color: #1a365d;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.formTitle::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #4299e1, #63b3ed);
+  border-radius: 2px;
+}
+
+.progressContainer {
+  margin: 2rem 0;
+}
+
+.progressBar {
+  height: 8px;
+  background-color: #e2e8f0;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #4299e1, #63b3ed);
+  transition: width 0.3s ease;
+}
+
+.progressSteps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.progressStep {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #718096;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.activeStep {
+  background-color: #4299e1;
+  color: white;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
+}
+
+.progressLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #718096;
+}
+
+.progressLabels span {
+  text-align: center;
+  width: 20%;
+}
+
+.requiredLegend {
+  text-align: right;
+  color: #e53e3e;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.formSection {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+  position: relative;
+}
+
+.sectionTitle::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background-color: #4299e1;
+}
+
+.formRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.formGroup {
+  flex: 1 1 calc(50% - 0.75rem);
+  min-width: 250px;
+}
+
+.fullWidth {
+  flex: 0 0 100%;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.required {
+  color: #e53e3e;
+  margin-left: 2px;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  font-size: 1rem;
+  color: #2d3748;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+  background-color: white;
+}
+
+.input::placeholder {
+  color: #a0aec0;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.formNavigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.prevButton,
+.nextButton,
+.submitButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.prevButton {
+  background-color: #e2e8f0;
+  color: #4a5568;
+}
+
+.prevButton:hover {
+  background-color: #cbd5e0;
+}
+
+.nextButton {
+  background-color: #4299e1;
+  color: white;
+}
+
+.nextButton:hover:not(:disabled) {
+  background-color: #3182ce;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(66, 153, 225, 0.2);
+}
+
+.submitButton {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  color: white;
+  padding: 0.75rem 2rem;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #38a169, #2f855a);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(56, 161, 105, 0.2);
+}
+
+.prevButton:disabled,
+.nextButton:disabled,
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.confirmButton {
+  background-color: #48bb78 !important;
+  border-color: #48bb78 !important;
+}
+
+.cancelButton {
+  background-color: #e53e3e !important;
+  border-color: #e53e3e !important;
+  color: white !important;
+}
+
+.successNotification {
+  background-color: #f0fff4 !important;
+  border-left: 4px solid #48bb78 !important;
+}
+
+.errorNotification {
+  background-color: #fff5f5 !important;
+  border-left: 4px solid #e53e3e !important;
+}
+
+@media (max-width: 768px) {
+  .formWrapper {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .formTitle {
+    font-size: 1.75rem;
+  }
+
+  .formSection {
+    padding: 1.5rem;
+  }
+
+  .formGroup {
+    flex: 1 1 100%;
+  }
+
+  .progressLabels {
+    display: none;
+  }
+
+  .progressStep {
+    width: 24px;
+    height: 24px;
+    font-size: 0.75rem;
+  }
+}
+

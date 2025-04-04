@@ -24,7 +24,7 @@ import {
   MdQrCodeScanner,
   MdSpaceDashboard,
 } from "react-icons/md";
-import { AiTwotoneFileExclamation } from "react-icons/ai";
+import { AiFillNotification, AiTwotoneFileExclamation } from "react-icons/ai";
 import {
   BsCurrencyRupee,
   BsExplicitFill,
@@ -101,6 +101,12 @@ const routes = [
     path: "/email/email-service",
     name: "Email",
     icon: <MdEmail />,
+    allowedRoles: ["Admin"],
+  },
+  {
+    path: "/push-notification",
+    name: "Push Notification",
+    icon: <AiFillNotification />,
     allowedRoles: ["Admin"],
   },
   {

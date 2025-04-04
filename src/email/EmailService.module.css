@@ -1,0 +1,593 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"); */
+
+.emailServiceContainer {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+  font-family: "Inter", sans-serif;
+}
+
+.emailServiceContent {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  gap: 2rem;
+  padding-top: 5rem;
+}
+
+.emailFormColumn {
+  flex: 3;
+  min-width: 0;
+}
+
+.validationColumn {
+  flex: 1;
+  min-width: 300px;
+}
+
+.emailServiceCard,
+.validationCard {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.emailServiceCard:hover,
+.validationCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.emailServiceTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+}
+
+.emailServiceTitle::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 2px;
+}
+
+.validationTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #4b5563;
+  text-align: center;
+  position: relative;
+}
+
+.validationTitle::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: #6366f1;
+  border-radius: 2px;
+}
+
+.emailForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+
+.emailInputContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  min-height: 3rem;
+  align-items: center;
+  background-color: #f9fafb;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.emailInputContainer:focus-within {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  background-color: white;
+}
+
+.emailInput {
+  flex: 1;
+  min-width: 150px;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  padding: 0.25rem;
+  background: transparent;
+}
+
+.emailTag {
+  background-color: #ede9fe;
+  color: #6366f1;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  margin: 0.15rem;
+  animation: fadeIn 0.3s ease;
+  transition: background-color 0.2s ease;
+}
+
+.emailTag:hover {
+  background-color: #ddd6fe;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.removeEmail {
+  background: none;
+  border: none;
+  color: #6366f1;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin-left: 0.25rem;
+  padding: 0 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.removeEmail:hover {
+  color: #4f46e5;
+}
+
+.emailCount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  padding: 0 0.25rem;
+}
+
+.bulkUploadContainer {
+  position: relative;
+}
+
+.bulkUploadButton {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bulkUploadButton:hover:not(:disabled) {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.bulkUploadButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fileInput {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+.uploadP{
+  font-weight: bold;
+  color: white;
+}
+.uploadStats {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #8f8f8f;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #4b5563;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.uploadStats p {
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+
+.uploadStats ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.textInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: #f9fafb;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.textInput:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  outline: none;
+  background-color: white;
+}
+
+.richTextEditor {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.richTextEditor:focus-within {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.editorToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.toolbarGroup {
+  display: flex;
+  gap: 0.25rem;
+  padding-right: 0.5rem;
+  margin-right: 0.5rem;
+  border-right: 1px solid #e5e7eb;
+}
+
+.toolbarGroup:last-child {
+  border-right: none;
+}
+
+.toolbarButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toolbarButton:hover {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.toolbarButton.active {
+  background-color: #ede9fe;
+  color: #6366f1;
+}
+
+.fontSelect {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  background-color: white;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.colorPickerContainer {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.colorPicker {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.colorIcon {
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.editorContent {
+  min-height: 200px;
+  padding: 1rem;
+  outline: none;
+  background-color: white;
+  overflow-y: auto;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.submitButton {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.85rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.submitButton:disabled {
+  background: linear-gradient(135deg, #a5a6f6, #c4b8f3);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.loader {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.validationSection {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.validationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.validationSubtitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin: 0;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: #6366f1;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.clearButton:hover {
+  background-color: #ede9fe;
+}
+
+.validationList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.validationItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.invalidEmail {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.duplicateEmail {
+  color: #f59e0b;
+  font-weight: 500;
+}
+
+.fixButton {
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fixButton:hover {
+  background-color: #ede9fe;
+  color: #6366f1;
+  border-color: #c7d2fe;
+}
+
+.emptyMessage {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  font-style: italic;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.guidelinesSection {
+  margin-top: 1.5rem;
+}
+
+.guidelinesList {
+  padding-left: 1.5rem;
+  margin: 0.75rem 0 0 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.guidelinesList li {
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+  .emailServiceContent {
+    flex-direction: column;
+  }
+
+  .validationColumn {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .emailServiceContainer {
+    padding: 1rem;
+  }
+
+  .emailServiceCard,
+  .validationCard {
+    padding: 1.5rem;
+  }
+
+  .emailServiceTitle {
+    font-size: 1.75rem;
+  }
+
+  .editorToolbar {
+    gap: 0.25rem;
+    padding: 0.5rem;
+  }
+
+  .toolbarGroup {
+    padding-right: 0.25rem;
+    margin-right: 0.25rem;
+  }
+
+  .toolbarButton {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .emailServiceContainer {
+    padding: 0.5rem;
+  }
+
+  .emailServiceCard,
+  .validationCard {
+    padding: 1rem;
+  }
+
+  .emailServiceTitle {
+    font-size: 1.5rem;
+  }
+
+  .validationTitle {
+    font-size: 1.25rem;
+  }
+
+  .editorToolbar {
+    overflow-x: auto;
+    padding: 0.5rem;
+  }
+}
+

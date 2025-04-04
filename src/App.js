@@ -56,6 +56,7 @@ import PublishYourEvent from "./faculty/PublishYourEvent";
 import RegisteredMemberList from "./student/RegisteredMemberList";
 import ProfilePictureCards from "./student/ProfilePictureCard";
 import SideBar from "./components/Sidebar/SideBar";
+import PushNotification from "./pages/PushNotification";
 
 function AppContent() {
   const location = useLocation();
@@ -258,6 +259,14 @@ function AppContent() {
               element={
                 <ProtectedRoute allowedRoles={["Admin"]} user={user}>
                   <EmailService />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/push-notification"
+              element={
+                <ProtectedRoute allowedRoles={["Admin"]} user={user}>
+                  <PushNotification />
                 </ProtectedRoute>
               }
             />
