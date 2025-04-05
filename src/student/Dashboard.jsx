@@ -104,6 +104,8 @@ const Dashboard = () => {
   const [bannerPreview, setBannerPreview] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
 
+
+
   // Ref for the scrollable content
   const contentRef = useRef(null);
   // State to track scroll position
@@ -246,34 +248,9 @@ const Dashboard = () => {
     { title: "Academic Excellence", image: c4 },
   ];
 
-  // Update cards data
-  const updateCards = [
-    {
-      title: "Update About & Eligibility & Category",
-      icon: <FileTextOutlined />,
-      type: "about_eligibility",
-      description: "Update entity about and eligibility section",
-      color: "#4CAF50",
-    },
-  ];
 
-  const activityData = {
-    iic: {
-      members: 2,
-      active: 1,
-      inactive: 1,
-    },
-    mic: {
-      announced: 4,
-      active: 1,
-      inactive: 0,
-    },
-    self: {
-      members: 1,
-      active: 1,
-      inactive: 0,
-    },
-  };
+
+
 
   const toggleAccordion = (index) => {
     setActiveAccordion(activeAccordion === index ? null : index);
@@ -351,7 +328,10 @@ const Dashboard = () => {
       const regIds =
         parsedData?.secretary_details?.map((item) => item.reg_id) || [];
 
+      const userRoleId = parsedData?.user_role_id;
+
       console.log("Extracted regIds:", regIds); // Debugging
+      console.log("Extracted userRoleId:", userRoleId); // Debugging
 
       if (regIds.length > 0) {
         setRegId(regIds); // Set the state with extracted reg_id array
@@ -442,10 +422,7 @@ const Dashboard = () => {
     }, 2000);
   };
 
-  const showDrawer = (content) => {
-    setDrawerContent(content);
-    setDrawerVisible(true);
-  };
+
 
   const onCloseDrawer = () => {
     setDrawerVisible(false);
@@ -477,23 +454,7 @@ const Dashboard = () => {
     }
   };
 
-  // New function to handle opening update modal
-  const openUpdateModal = (type) => {
-    if (type === "about_eligibility") {
-      setIsModalVisible(true);
-      setSelectedEntity("");
-      setAboutText("");
-      setEligibilityText("");
-      setCategoriesText(""); // Clear categories text as well
-    } else {
-      // For other card types, you would implement different modals
-      Swal.fire({
-        title: "Feature Coming Soon",
-        text: "This feature is under development",
-        icon: "info",
-      });
-    }
-  };
+
 
   // New function to handle update submission
   const handleUpdateSubmit = async () => {
@@ -957,18 +918,7 @@ const Dashboard = () => {
     }
   };
 
-  // carousel button
-  const nextSlide1 = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === carouselImages.length - 1 ? 0 : prevIndex + 1
-    );
-  };
 
-  const prevSlide1 = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? carouselImages.length - 1 : prevIndex - 1
-    );
-  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -1000,6 +950,7 @@ const Dashboard = () => {
       message.error("Failed to fetch entity details");
     }
   };
+
 
   return (
     <>

@@ -10,6 +10,7 @@ import {
   FaChevronDown,
   FaRegListAlt,
   FaWpforms,
+  FaDatabase,
 } from "react-icons/fa";
 
 import {
@@ -20,6 +21,7 @@ import {
   MdEventNote,
   MdOutlineDashboardCustomize,
   MdOutlinePermMedia,
+  MdOutlineSettings,
   MdPriceChange,
   MdQrCodeScanner,
   MdSpaceDashboard,
@@ -35,12 +37,6 @@ import styles from "./Sidebar.module.css";
 
 const routes = [
   {
-    path: "/admin-dashboard",
-    name: "Dashboard",
-    icon: <MdOutlineDashboardCustomize />,
-    allowedRoles: ["Admin"],
-  },
-  {
     path: "/home",
     name: "Home",
     icon: <FaHome />,
@@ -51,6 +47,13 @@ const routes = [
       "Co Curricular Coordinator",
     ],
   },
+  {
+    path: "/admin-dashboard",
+    name: "Dashboard",
+    icon: <MdOutlineDashboardCustomize />,
+    allowedRoles: ["Admin"],
+  },
+ 
   {
     path: "/COORD",
     name: "COORD",
@@ -124,7 +127,7 @@ const routes = [
   {
     path: "/configuration",
     name: "Configuration",
-    icon: <FaWpforms />,
+    icon: <MdOutlineSettings  />,
     allowedRoles: ["Admin"],
   },
   {
@@ -160,13 +163,13 @@ const routes = [
   {
     path: "/entityTable",
     name: "Entity Request",
-    icon: <FaWpforms />,
+    icon: <FaDatabase  />,
     allowedRoles: ["Admin"],
   },
   {
     path: "/registered-entities",
     name: "Registered Entities",
-    icon: <FaWpforms />,
+    icon: <FaDatabase  />,
     allowedRoles: ["Admin"],
   },
   {

@@ -1,3 +1,4 @@
+/* Main container */
 .infoCardsContainer {
   display: flex;
   justify-content: space-between;
@@ -6,6 +7,7 @@
   width: 100%;
 }
 
+/* Card styling */
 .infoCard {
   flex: 1;
   background-color: #ffffff;
@@ -16,7 +18,7 @@
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  height: 300px; /* Reduced height */
+  height: 300px;
 }
 
 .infoCard:hover {
@@ -24,6 +26,7 @@
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
 }
 
+/* Card header */
 .cardHeader {
   display: flex;
   align-items: center;
@@ -52,6 +55,7 @@
   background-size: contain;
 }
 
+/* Icon styles */
 .activityIcon::before {
   content: "";
   display: inline-block;
@@ -134,14 +138,15 @@
   margin: 0;
 }
 
+/* Card content */
 .cardContent {
   flex: 1;
   padding: 15px;
-  overflow-y: auto; /* Scroll added */
-  max-height: 180px; /* Height limit for scrolling */
+  overflow-y: auto;
+  max-height: 180px;
 }
 
-/* Scrollbar Styling */
+/* Scrollbar styling */
 .cardContent::-webkit-scrollbar {
   width: 6px;
 }
@@ -155,14 +160,7 @@
   border-radius: 10px;
 }
 
-.graphContainer {
-  margin-bottom: 20px;
-  height: 180px;
-}
-.inprogress {
-  font-size: 12px;
-  color: red;
-}
+/* Lists */
 .activityList,
 .notificationList,
 .newsList {
@@ -180,6 +178,7 @@
   transition: background-color 0.2s;
   border-radius: 6px;
   padding-left: 10px;
+  position: relative;
 }
 
 .activityList li:hover,
@@ -198,11 +197,6 @@
   color: #555;
 }
 
-.dividerLine {
-  border-bottom: 1px solid rgba(139, 0, 0, 0.1);
-  margin: 8px 0;
-}
-
 .arrow {
   color: #8b0000;
   margin-right: 8px;
@@ -213,20 +207,16 @@
   height: 24px;
 }
 
-.newsItem {
-  position: relative;
-}
-
-.newsBadge {
+/* Notification unread indicator */
+.unreadDot {
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
   background-color: #8b0000;
-  color: white;
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: 50%;
   animation: pulse 2s infinite;
 }
 
@@ -242,6 +232,7 @@
   }
 }
 
+/* Card footer */
 .cardFooter {
   padding: 15px;
   border-top: 1px solid rgba(139, 0, 0, 0.1);
@@ -279,6 +270,171 @@
   transform: translateX(4px);
 }
 
+/* Category tabs */
+.categoryTabs {
+  display: flex;
+  overflow-x: auto;
+  padding: 0 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.categoryTabs::-webkit-scrollbar {
+  height: 3px;
+}
+
+.categoryTabs::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.categoryTabs::-webkit-scrollbar-thumb {
+  background: #8b0000;
+  border-radius: 10px;
+}
+
+.categoryTab {
+  padding: 5px 10px;
+  margin-right: 8px;
+  border-radius: 15px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  background-color: #f5f5f5;
+  transition: all 0.2s;
+}
+
+.categoryTab:hover {
+  background-color: rgba(139, 0, 0, 0.1);
+}
+
+.activeTab {
+  background-color: rgba(139, 0, 0, 0.2);
+  color: #8b0000;
+  font-weight: bold;
+}
+
+.emptyNotification {
+  color: #999;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Modal styling */
+.modalHeader {
+  display: flex;
+  align-items: center;
+}
+
+.modalIconContainer {
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: rgba(139, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Global styles for notification timeline */
+:global(.notification-timeline) {
+  padding: 20px 0;
+}
+
+:global(.date-group) {
+  margin-bottom: 30px;
+}
+
+:global(.date-header) {
+  font-size: 16px;
+  font-weight: 600;
+  color: #8b0000;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(139, 0, 0, 0.1);
+}
+
+:global(.notification-item) {
+  margin-bottom: 15px;
+}
+
+:global(.notification-content) {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+:global(.notification-message) {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+}
+
+:global(.notification-meta) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #666;
+}
+
+:global(.notification-time) {
+  font-style: italic;
+}
+
+:global(.notification-categories) {
+  display: flex;
+  gap: 8px;
+}
+
+:global(.ant-badge) {
+  margin-right: 0;
+}
+
+/* Ant Design overrides */
+:global(.ant-modal-content) {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+:global(.ant-modal-header) {
+  border-bottom: 1px solid rgba(139, 0, 0, 0.1);
+  padding: 16px 24px;
+}
+
+:global(.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn) {
+  color: #8b0000;
+}
+
+:global(.ant-tabs-ink-bar) {
+  background: #8b0000;
+}
+
+:global(.ant-tabs-tab:hover) {
+  color: #a00;
+}
+
+:global(.ant-timeline-item-tail) {
+  border-left: 2px solid rgba(139, 0, 0, 0.2);
+}
+
+:global(.ant-timeline-item-head-blue) {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+:global(.ant-timeline-item-head-red) {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+:global(.ant-timeline-item-head-orange) {
+  color: #fa8c16;
+  border-color: #fa8c16;
+}
+
+/* Responsive styles */
 @media (max-width: 768px) {
   .infoCardsContainer {
     flex-direction: column;
@@ -287,6 +443,12 @@
   .infoCard {
     margin-bottom: 20px;
     height: 350px; /* Slightly larger on small screens */
+  }
+
+  :global(.notification-meta) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
   }
 }
 
