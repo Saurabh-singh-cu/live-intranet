@@ -1,6 +1,5 @@
 import styles from "./InfoCard.module.css";
-import ActivityBarGraph from "./ActivityBarGraph";
-import { Popover, Modal, Tabs, Badge, Empty, Timeline } from "antd";
+import { Modal, Tabs, Badge, Empty, Timeline } from "antd";
 import { useEffect, useState } from "react";
 import apiClient from "../config/apiClient";
 
@@ -13,27 +12,39 @@ const InfoCard = () => {
   const getNotification = async () => {
     try {
       const userData = JSON.parse(localStorage.getItem("user"));
+
+      // Extract role_id and entity_type_id from localStorage structure
       const userRoleId = userData?.user_role_id;
-      const entId = userData?.secretary_details[0]?.entity_id;
-      const response = await apiClient.get(
-        `/get-push-notifications/?role_id=${userRoleId}&entity_type_id=${entId}`
-      );
+      const entId = userData?.secretary_details?.[0]?.entity_id;
+
+      if (!userRoleId || !entId) {
+        console.warn("Missing user role or entity ID");
+        return;
+      }
+
+      // Send as a POST request in the body
+      const response = await apiClient.post("/get-push-notifications/", {
+        role_id: [userRoleId],
+        entity_type_id: [entId],
+      });
+
       console.log(response?.data, "NOTIFICATION DATA");
       setNotificationData(response?.data);
-      
+
       // Extract unique categories
       const allCategories = response?.data.reduce((acc, item) => {
         if (item.category) {
-          const cats = item.category.split(',');
-          cats.forEach(cat => {
-            if (!acc.includes(cat.trim())) {
-              acc.push(cat.trim());
+          const cats = item.category.split(",");
+          cats.forEach((cat) => {
+            const trimmed = cat.trim();
+            if (!acc.includes(trimmed)) {
+              acc.push(trimmed);
             }
           });
         }
         return acc;
       }, []);
-      
+
       setCategories(allCategories);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -59,15 +70,15 @@ const InfoCard = () => {
   // Group notifications by date
   const groupByDate = (notifications) => {
     const grouped = {};
-    
-    notifications.forEach(notification => {
+
+    notifications.forEach((notification) => {
       const date = new Date(notification.created_at).toLocaleDateString();
       if (!grouped[date]) {
         grouped[date] = [];
       }
       grouped[date].push(notification);
     });
-    
+
     return grouped;
   };
 
@@ -76,9 +87,14 @@ const InfoCard = () => {
     if (category === "all") {
       return notificationData;
     }
-    
-    return notificationData.filter(notification => 
-      notification.category && notification.category.split(',').map(cat => cat.trim()).includes(category)
+
+    return notificationData.filter(
+      (notification) =>
+        notification.category &&
+        notification.category
+          .split(",")
+          .map((cat) => cat.trim())
+          .includes(category)
     );
   };
 
@@ -132,19 +148,24 @@ const InfoCard = () => {
         </div>
         <div className={styles.cardDivider}></div>
         <div className={styles.categoryTabs}>
-          <span 
-            className={`${styles.categoryTab} ${activeCategory === 'all' ? styles.activeTab : ''}`}
-            onClick={() => handleCategoryClick('all')}
+          <span
+            className={`${styles.categoryTab} ${
+              activeCategory === "all" ? styles.activeTab : ""
+            }`}
+            onClick={() => handleCategoryClick("all")}
           >
             All ({notificationData.length})
           </span>
           {categories.map((category) => (
-            <span 
+            <span
               key={category}
-              className={`${styles.categoryTab} ${activeCategory === category ? styles.activeTab : ''}`}
+              className={`${styles.categoryTab} ${
+                activeCategory === category ? styles.activeTab : ""
+              }`}
               onClick={() => handleCategoryClick(category)}
             >
-              {category.charAt(0).toUpperCase() + category.slice(1)} ({getNotificationCount(category)})
+              {category.charAt(0).toUpperCase() + category.slice(1)} (
+              {getNotificationCount(category)})
             </span>
           ))}
         </div>
@@ -153,13 +174,15 @@ const InfoCard = () => {
             {getDisplayNotifications().length > 0 ? (
               getDisplayNotifications().map((item) => (
                 <li key={item.id}>
-                  <span className={styles.arrow}>▸</span> 
-                  {item?.message}
+                  <span className={styles.arrow}>▸</span>
+                  {item?.message?.slice(0, 40)}{"..."}
                   {!item.is_read && <span className={styles.unreadDot}></span>}
                 </li>
               ))
             ) : (
-              <li className={styles.emptyNotification}>No notifications found</li>
+              <li className={styles.emptyNotification}>
+                No notifications found
+              </li>
             )}
           </ul>
         </div>
@@ -214,15 +237,23 @@ const InfoCard = () => {
           defaultActiveKey="all"
           items={[
             {
-              key: 'all',
+              key: "all",
               label: `All (${notificationData.length})`,
-              children: <NotificationTimeline notifications={notificationData} />,
+              children: (
+                <NotificationTimeline notifications={notificationData} />
+              ),
             },
-            ...categories.map(category => ({
+            ...categories.map((category) => ({
               key: category,
-              label: `${category.charAt(0).toUpperCase() + category.slice(1)} (${getNotificationCount(category)})`,
-              children: <NotificationTimeline notifications={getFilteredNotifications(category)} />,
-            }))
+              label: `${
+                category.charAt(0).toUpperCase() + category.slice(1)
+              } (${getNotificationCount(category)})`,
+              children: (
+                <NotificationTimeline
+                  notifications={getFilteredNotifications(category)}
+                />
+              ),
+            })),
           ]}
         />
       </Modal>
@@ -233,9 +264,9 @@ const InfoCard = () => {
 // Component to display notifications in a timeline
 const NotificationTimeline = ({ notifications }) => {
   const groupedNotifications = {};
-  
+
   // Group by date
-  notifications.forEach(notification => {
+  notifications.forEach((notification) => {
     const date = new Date(notification.created_at).toLocaleDateString();
     if (!groupedNotifications[date]) {
       groupedNotifications[date] = [];
@@ -244,8 +275,8 @@ const NotificationTimeline = ({ notifications }) => {
   });
 
   // Sort dates in descending order
-  const sortedDates = Object.keys(groupedNotifications).sort((a, b) => 
-    new Date(b) - new Date(a)
+  const sortedDates = Object.keys(groupedNotifications).sort(
+    (a, b) => new Date(b) - new Date(a)
   );
 
   if (notifications.length === 0) {
@@ -254,34 +285,46 @@ const NotificationTimeline = ({ notifications }) => {
 
   return (
     <div className="notification-timeline">
-      {sortedDates.map(date => (
+      {sortedDates.map((date) => (
         <div key={date} className="date-group">
           <h3 className="date-header">{date}</h3>
           <Timeline>
-            {groupedNotifications[date].map(notification => {
+            {groupedNotifications[date].map((notification) => {
               // Determine color based on category
               let color = "blue";
               if (notification.category) {
                 if (notification.category.includes("urgent")) color = "red";
-                else if (notification.category.includes("deadline")) color = "orange";
+                else if (notification.category.includes("deadline"))
+                  color = "orange";
               }
-              
+
               return (
                 <Timeline.Item key={notification.id} color={color}>
                   <div className="notification-item">
                     <div className="notification-content">
-                      <p className="notification-message">{notification.message}</p>
+                      <p className="notification-message">
+                        {notification.message}
+                      </p>
                       <div className="notification-meta">
                         <span className="notification-time">
-                          {new Date(notification.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          {new Date(notification.created_at).toLocaleTimeString(
+                            [],
+                            { hour: "2-digit", minute: "2-digit" }
+                          )}
                         </span>
                         {notification.category && (
                           <div className="notification-categories">
-                            {notification.category.split(',').map(cat => (
-                              <Badge 
-                                key={cat} 
-                                status={cat.trim() === 'urgent' ? 'error' : cat.trim() === 'deadline' ? 'warning' : 'processing'} 
-                                text={cat.trim()} 
+                            {notification.category.split(",").map((cat) => (
+                              <Badge
+                                key={cat}
+                                status={
+                                  cat.trim() === "urgent"
+                                    ? "error"
+                                    : cat.trim() === "deadline"
+                                    ? "warning"
+                                    : "processing"
+                                }
+                                text={cat.trim()}
                               />
                             ))}
                           </div>

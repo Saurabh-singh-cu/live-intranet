@@ -1,0 +1,1033 @@
+/* App Container with Sidebar */
+.appContainer {
+  display: flex;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+    padding-top: 4rem;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 280px;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+}
+
+.sidebarHeader {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebarHeader h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.sidebarContent {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sidebarSection {
+  margin-bottom: 30px;
+}
+
+.sidebarSection h3 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #bdc3c7;
+  font-weight: 500;
+}
+
+.teamList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.teamItem {
+  padding: 12px 15px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.teamItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.activeTeam {
+  background-color: rgba(52, 152, 219, 0.3);
+  border-left: 3px solid #3498db;
+}
+
+.teamItemHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.teamItemName {
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.teamItemDept {
+  font-size: 12px;
+  color: #bdc3c7;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.teamItemStats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #95a5a6;
+}
+
+.sidebarFooter {
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.addTeamSidebarBtn {
+  width: 100%;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.addTeamSidebarBtn:hover {
+  background-color: #2980b9;
+}
+
+/* Add Team Button in Preview Section */
+.addTeamBtn {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-left: 15px;
+}
+
+.addTeamBtn:hover {
+  background-color: #219653;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.addTeamBtn:active {
+  transform: translateY(0);
+}
+
+/* Main Container */
+.dprContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+  color: #333;
+  padding-top: 2rem;
+  position: relative;
+  flex: 1;
+}
+
+/* Title Styles */
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #2c3e50;
+  text-align: center;
+  border-bottom: 2px solid #eaeaea;
+  padding-bottom: 15px;
+}
+
+.sectionTitle {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.teamTitle {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  color: #3498db;
+}
+
+.verificationTitle {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 20px 0 15px;
+  color: #2c3e50;
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+/* Section Containers */
+.sectionContainer {
+  margin-bottom: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sectionContainer:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.teamsContainer {
+  margin-bottom: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.teamContent {
+  padding: 20px;
+}
+
+.employeesSection,
+.verificationSection,
+.levelSection,
+.summarySection {
+  margin-bottom: 25px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.levelSection {
+  margin-top: 15px;
+  border-left: 3px solid #3498db;
+}
+
+/* Form Elements */
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.select,
+.input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.select:focus,
+.input:focus,
+.tableInput:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.select:hover,
+.input:hover,
+.tableInput:hover {
+  border-color: #3498db;
+}
+
+.select:disabled,
+.input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.addTeamContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.addTeamContainer .input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* Buttons */
+.primaryButton {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.primaryButton:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.primaryButton:active {
+  transform: translateY(0);
+}
+
+.primaryButton:disabled {
+  background-color: #a0c4de;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.secondaryButton {
+  background-color: #f1f1f1;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.secondaryButton:hover {
+  background-color: #e5e5e5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.secondaryButton:active {
+  transform: translateY(0);
+}
+
+.addButton {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  margin: 0 auto;
+}
+
+.addButton:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.addButton:active {
+  transform: translateY(0);
+}
+
+.deleteButton {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteButton:hover {
+  background-color: #c0392b;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.deleteButton:active {
+  transform: translateY(0);
+}
+
+.submitButton {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px auto 0;
+  min-width: 180px;
+}
+
+.submitButton:hover {
+  background-color: #219653;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+.submitButton:disabled {
+  background-color: #a3d9b8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.previewButton {
+  background-color: #9b59b6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto;
+  min-width: 180px;
+}
+
+.previewButton:hover {
+  background-color: #8e44ad;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.previewButton:active {
+  transform: translateY(0);
+}
+
+.uploadButton {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.uploadButton:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.buttonIcon {
+  margin-right: 4px;
+}
+
+/* Team Tabs */
+.teamsTabs {
+  display: flex;
+  overflow-x: auto;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.teamTab {
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 15px;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.teamTab:hover {
+  background-color: #e9e9e9;
+}
+
+.activeTab {
+  border-bottom-color: #3498db;
+  font-weight: 500;
+  color: #3498db;
+}
+
+/* Section Headers */
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.sectionHeader h4,
+.sectionHeader h5 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Tables */
+.tableContainer {
+  overflow-x: auto;
+  margin-bottom: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.dataTable th {
+  position: sticky;
+  top: 0;
+  background-color: #f1f3f4;
+  z-index: 10;
+  font-weight: 500;
+  color: #5f6368;
+  padding: 12px 8px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dataTable td {
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  vertical-align: middle;
+  position: relative;
+}
+
+.tableInput {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: transparent;
+  transition: all 0.3s;
+}
+
+.tableInput:hover {
+  border-color: #dadce0;
+  background-color: #f9f9f9;
+}
+
+.tableInput:focus {
+  border-color: #4285f4;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+}
+
+.emptyMessage {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  padding: 15px 0;
+}
+
+/* File Upload */
+.uploadContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fileInput {
+  display: none;
+}
+
+.fileName {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.instructions {
+  margin-bottom: 15px;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Error Styles */
+.errorRow {
+  background-color: #fff8f8;
+}
+
+.errorCell {
+  position: relative;
+}
+
+.errorInput {
+  border-color: #e74c3c !important;
+  background-color: #fff8f8 !important;
+}
+
+.errorMessage {
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  background-color: #e74c3c;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  z-index: 20;
+  white-space: nowrap;
+}
+
+.errorSummary {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #fff8f8;
+  border-left: 3px solid #e74c3c;
+  color: #e74c3c;
+  font-size: 14px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.errorIcon {
+  font-size: 18px;
+}
+
+/* Verification Level Styles */
+.verificationButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.previewButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.verificationLevelsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.verificationLevelItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border-left: 3px solid #3498db;
+  transition: all 0.3s ease;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.verificationLevelItem:hover {
+  background-color: #edf2f7;
+  transform: translateX(2px);
+}
+
+.verificationLevelInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.verificationLevelNumber {
+  font-weight: 600;
+  color: #3498db;
+  min-width: 60px;
+}
+
+.verificationLevelName {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.verificationLevelEmail {
+  color: #718096;
+  font-size: 13px;
+}
+
+.verificationLevelDesignation {
+  color: #718096;
+  font-size: 13px;
+  font-style: italic;
+  background-color: #f1f1f1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.verifierCell {
+  background-color: #f8f9fa;
+}
+
+.verifierInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.verifierECode {
+  font-size: 12px;
+  color: #718096;
+}
+
+.submitButtonContainer {
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Preview Table Styles */
+.previewRow {
+  background-color: #f8f9fa;
+  transition: background-color 0.3s ease;
+}
+
+.previewRow:hover {
+  background-color: #edf2f7;
+}
+
+.previewRow:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.previewRow:nth-child(even):hover {
+  background-color: #f5f5f5;
+}
+
+.previewVerifierCell {
+  background-color: #edf2f7;
+  border-left: 2px solid #3498db !important;
+}
+
+.previewVerifierInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.previewVerifierName {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.previewVerifierECode {
+  font-size: 12px;
+  color: #718096;
+}
+
+.previewVerifierDesignation {
+  font-size: 12px;
+  color: #718096;
+  font-style: italic;
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 450px;
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modalActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  gap: 10px;
+}
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1100;
+  min-width: 300px;
+  max-width: 90%;
+  animation: toastIn 0.5s ease, toastOut 0.5s ease 2.5s;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes toastOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+}
+
+.toastSuccess {
+  background-color: #d4edda;
+  color: #155724;
+  border-left: 4px solid #28a745;
+}
+
+.toastError {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-left: 4px solid #dc3545;
+}
+
+.toastInfo {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border-left: 4px solid #17a2b8;
+}
+
+.toastIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.toastMessage {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .appContainer {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .addTeamContainer {
+    flex-direction: column;
+  }
+
+  .addTeamContainer .input {
+    margin-bottom: 10px;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .dataTable th,
+  .dataTable td {
+    padding: 8px 10px;
+  }
+
+  .teamTab {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  .uploadContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .fileName {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+
+  .dataTable th,
+  .dataTable td {
+    padding: 8px 6px;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .verificationLevelInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .previewButtonContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .previewButton, .addTeamBtn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .dprContainer {
+    padding: 15px 10px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .sectionTitle {
+    font-size: 20px;
+  }
+
+  .teamTitle {
+    font-size: 18px;
+  }
+
+  .verificationLevelInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .toast {
+    min-width: 250px;
+  }
+}
