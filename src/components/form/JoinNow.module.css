@@ -1,0 +1,774 @@
+/* Main container */
+.registrationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+}
+
+/* Form card */
+.formCard {
+  width: 100%;
+  max-width: 1200px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Form header */
+.formHeader {
+  padding: 1rem;
+  margin-top: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+}
+
+.formHeader h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.formHeader p {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+/* Progress steps */
+.progressSteps {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.stepNumber {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.stepLabel {
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.stepConnector {
+  width: 80px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 0.5rem;
+}
+
+.step.active .stepNumber {
+  background-color: white;
+  color: #764ba2;
+}
+
+/* Form content */
+.formContent {
+  display: flex;
+}
+
+/* Sidebar */
+.formSidebar {
+  width: 30%;
+  background-color: #f8f9fa;
+  padding: 2rem;
+  border-right: 1px solid #eaeaea;
+}
+
+.sidebarContent h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #764ba2;
+}
+
+.requirementsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.requirementsList li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #555;
+}
+
+.bulletPoint {
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #764ba2;
+}
+
+/* Main form area */
+.formMain {
+  width: 70%;
+  padding: 1rem;
+}
+
+.formSection {
+  margin-bottom: 1rem;
+}
+
+.formSection h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  /* border-bottom: 2px solid #eaeaea; */
+}
+
+.inputGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+}
+
+.inputGroup {
+  margin-bottom: 0.5rem;
+}
+
+.inputGroup,
+.verificationCol label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+}
+.homeButton {
+}
+
+.formInput,
+.formSelect {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  transition: border-color 0.3s;
+  margin-top: 6px;
+}
+
+.formInput:focus,
+.formSelect:focus {
+  border-color: #764ba2;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(118, 75, 162, 0.1);
+}
+
+.formInput::placeholder {
+  color: #aaa;
+}
+
+.phoneInput {
+  display: flex;
+  align-items: center;
+}
+
+.countryCode {
+  color: #555;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-right: none;
+  border-radius: 5px 0 0 5px;
+  padding: 8.1px 1rem;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.phoneInput .formInput {
+  border-radius: 0 8px 8px 0;
+}
+
+.error {
+  color: #e53e3e;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+/* Verification section - updated for inline layout */
+.verificationRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: flex-end;
+}
+
+.verificationCol {
+  flex: 1;
+  min-width: 200px;
+}
+
+.verificationButtons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.emailField,
+.otpField {
+  position: relative;
+}
+
+.domain {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-weight: 500;
+}
+
+.verifiedBadge {
+}
+
+.verifiedBadge img {
+  width: 17px;
+  height: 17px;
+}
+
+/* Buttons */
+.actionButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 80px;
+  height: 34px;
+}
+
+.otpButton {
+  background-color: #764ba2;
+  color: white;
+}
+
+.otpButton:hover {
+  background-color: #663d91;
+}
+
+.otpButton:disabled {
+  background-color: #d1c4e9;
+  cursor: not-allowed;
+}
+
+.verifyButton {
+  background-color: #4c51bf;
+  color: white;
+}
+
+.verifyButton:hover {
+  background-color: #434190;
+}
+
+.verifyButton:disabled {
+  background-color: #c3dafe;
+  cursor: not-allowed;
+  width: 100%;
+}
+
+.formActions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.acknowledgement {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.acknowledgement input[type="checkbox"] {
+  margin-top: 0.25rem;
+}
+
+.acknowledgement label {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.primaryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(118, 75, 162, 0.2);
+}
+
+.primaryButton:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.secondaryButton {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  padding: 1rem 2rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.secondaryButton:hover {
+  background-color: #e5e7eb;
+}
+
+/* Payment section */
+.paymentSection {
+  padding: 0.5rem;
+}
+
+.paymentSection h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.paymentSection p {
+  color: #666;
+  text-align: center;
+}
+
+.paymentTimer {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px;
+  display: flex;
+}
+
+.timerIcon {
+  font-size: 1.2rem;
+}
+
+.timer {
+  font-family: monospace;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #e53e3e;
+}
+
+.qrCodeWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.qrCode {
+  max-width: 200px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  background-color: white;
+}
+
+.timeExpired {
+  color: #e53e3e;
+  text-align: center;
+  background-color: #fee2e2;
+  border-radius: 5px;
+  padding: 6px;
+}
+
+.paymentForm {
+  margin-top: 1rem;
+}
+
+/* Payment row layout */
+.paymentRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: flex-end;
+}
+
+.paymentCol {
+  flex: 1;
+  min-width: 150px;
+}
+
+.paymentSubmitButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  height: 38px;
+}
+
+.paymentSubmitButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(118, 75, 162, 0.2);
+}
+
+.paymentSubmitButton:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.transactionError {
+  color: #e53e3e;
+  font-size: 0.9rem;
+  padding: 0.75rem;
+  background-color: #fee2e2;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.transactionSuccess {
+  color: #059669;
+  background-color: #d1fae5;
+  border-radius: 8px;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 12px;
+  display: flex;
+  padding: 0.5rem;
+  margin-bottom: 10px;
+}
+
+.errorIcon,
+.successIcon {
+  font-size: 1.2rem;
+}
+
+.paymentActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.paymentActions button {
+  flex: 1;
+}
+
+.securePayment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.secureIcon {
+  font-size: 1rem;
+}
+
+/* Success message */
+.successMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem;
+  text-align: center;
+}
+
+.successIcon {
+  color: #fff;
+  background-color: #10b981;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  width: 15px;
+  height: 15px;
+  font-size: 1rem;
+  display: flex;
+  padding: 10px;
+  font-size: 10px;
+}
+
+.successMessage h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.successMessage p {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.progressBar {
+  width: 300px;
+  height: 6px;
+  background-color: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #10b981;
+  border-radius: 3px;
+  animation: fillProgress 3s linear forwards;
+}
+
+@keyframes fillProgress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Custom Alert */
+.customAlert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  min-width: 300px;
+  max-width: 450px;
+  animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.success {
+  background-color: #d1fae5;
+  border-left: 4px solid #10b981;
+}
+
+.error {
+  background-color: #fee2e2;
+  border-left: 4px solid #ef4444;
+}
+
+.warning {
+  background-color: #fff7ed;
+  border-left: 4px solid #f97316;
+}
+
+.info {
+  background-color: #e0f2fe;
+  border-left: 4px solid #0ea5e9;
+}
+
+.alertContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.alertIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.success .alertIcon {
+  background-color: #10b981;
+  color: white;
+}
+
+.error .alertIcon {
+  background-color: #ef4444;
+  color: white;
+}
+
+.warning .alertIcon {
+  background-color: #f97316;
+  color: white;
+}
+
+.info .alertIcon {
+  background-color: #0ea5e9;
+  color: white;
+}
+
+.alertMessage {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.alertClose {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.alertClose:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.formHeaderTwo {
+  display: none;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .registrationContainer {
+    padding: 1rem;
+  }
+  .formHeader {
+    display: none;
+  }
+
+  .formContent {
+    flex-direction: column;
+  }
+
+  .formSidebar {
+    display: none;
+  }
+  .formMain {
+    width: 100%;
+    margin-top: 30px;
+  }
+  .formHeaderTwo {
+    display: block;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+  .formSidebar {
+    border-right: none;
+    border-bottom: 1px solid #eaeaea;
+    padding: 1.5rem;
+  }
+
+  .inputGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .verificationRow,
+  .paymentRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .verificationButtons {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .paymentActions {
+    flex-direction: column;
+  }
+
+  .progressSteps {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stepConnector {
+    width: 2px;
+    height: 20px;
+    margin: 0.5rem 0;
+  }
+}

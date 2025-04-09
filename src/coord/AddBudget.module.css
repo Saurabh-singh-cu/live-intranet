@@ -1,0 +1,148 @@
+.fixeHeight {
+  height: 100vh;
+  overflow: scroll;
+}
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 100 auto;
+}
+
+.form {
+  margin-bottom: 20px;
+}
+
+.container h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.input {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.submitButton {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #45a049;
+}
+
+.budgetInWords {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ff0000;
+  font-style: italic;
+}
+
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: calc(25% - 15px);
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.cardHeader {
+  padding: 15px;
+  text-align: center;
+}
+
+.cardHeader h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.card:nth-child(1) .cardHeader {
+  background-color: #3498db;
+}
+
+.card:nth-child(2) .cardHeader {
+  background-color: #2ecc71;
+}
+
+.card:nth-child(3) .cardHeader {
+  background-color: #f1c40f;
+}
+
+.card:nth-child(4) .cardHeader {
+  background-color: #e74c3c;
+}
+
+.cardBody {
+  padding: 15px;
+}
+
+.cardBody p {
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.cardBody p strong {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.loading,
+.noBudget {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  margin-top: 20px;
+}
+
+.warningMessage {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 15px;
+  border-left: 5px solid #ffcc00;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .card {
+    width: calc(50% - 10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 100%;
+  }
+}
