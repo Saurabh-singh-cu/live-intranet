@@ -47,7 +47,7 @@
   position: relative;
   overflow: hidden;
   text-align: center;
-  height: 220px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,12 +56,12 @@
 
 .profileCard:hover {
   transform: translateY(-10px);
-  box-shadow: 0 12px 30px rgba(126, 125, 125, 0.15);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
 .profileCardIcon {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -69,10 +69,11 @@
   margin: 0 auto 15px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  color: white;
 }
 
 .roleIcon {
-  font-size: 30px;
+  font-size: 24px;
 }
 
 .cardTitle {
@@ -129,7 +130,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(207, 202, 202, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,7 +204,7 @@
 }
 
 .closeButton:hover {
-  background: rgba(207, 205, 205, 0.3);
+  background: rgba(255, 255, 255, 0.3);
   transform: rotate(90deg);
 }
 
@@ -448,4 +449,3 @@
     width: 100%;
   }
 }
-

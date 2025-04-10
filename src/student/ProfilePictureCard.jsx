@@ -211,140 +211,139 @@ const ProfilePictureCards = () => {
 
   return (
     <div className={styles.profileCardsContainer}>
-      <h2 className={styles.profileCardsTitle}>Update Profile Pictures</h2>
-      <div className={styles.profileCardsGrid}>
-        {roles.map((role) => (
+    <h2 className={styles.profileCardsTitle}>Update Profile Pictures</h2>
+    <div className={styles.profileCardsGrid}>
+      {roles.map((role) => (
+        <div
+          key={role.id}
+          className={styles.profileCard}
+          style={{
+            backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), ${role.gradient}`,
+            borderTop: `4px solid ${role.color}`,
+          }}
+          onClick={() => openModal(role)}
+        >
           <div
-            key={role.id}
-            className={styles.profileCard}
+            className={styles.profileCardIcon}
             style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), ${role.gradient}`,
-              borderTop: `4px solid ${role.color}`,
+              background: role.gradient,
             }}
-            onClick={() => openModal(role)}
           >
-            <div
-              className={styles.profileCardIcon}
-              style={{
-                background: role.gradient,
-                color: "white",
-              }}
-            >
-              <span className={styles.roleIcon}>{role.icon}</span>
-            </div>
-            <h3 className={styles.cardTitle}>{role.title}</h3>
-            <p className={styles.cardDescription}>Update profile picture for {role.title}</p>
-            <div className={styles.cardOverlay}>
-              <span className={styles.updateText}>Update</span>
-            </div>
+            <span className={styles.roleIcon}>{role.icon}</span>
           </div>
-        ))}
-      </div>
-
-      {isModalOpen && selectedRole && (
-        <div className={styles.profileModalOverlay}>
-          <div className={styles.profileModal}>
-            <div className={styles.profileModalHeader} style={{ background: selectedRole.gradient }}>
-              <h2 className={styles.modalTitle}>Update {selectedRole.title} Profile Picture</h2>
-              <button className={styles.closeButton} onClick={closeModal}>
-                ×
-              </button>
-            </div>
-
-            <div className={styles.profileModalContent}>
-              <div className={styles.entitySelector}>
-                <label htmlFor="entity-select">Select Entity:</label>
-                <select
-                  id="entity-select"
-                  value={selectedEntity}
-                  onChange={(e) => setSelectedEntity(e.target.value)}
-                  className={styles.entitySelect}
-                >
-                  <option value="">Select an entity</option>
-                  {availableEntities.map((entity) => (
-                    <option key={entity.value} value={entity.value}>
-                      {entity.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className={styles.uploadSection}>
-                <label htmlFor="profile-image" className={styles.uploadLabel}>
-                  <div className={styles.uploadIcon}>
-                    <span>📷</span>
-                  </div>
-                  <span className={styles.uploadText}>Select Image</span>
-                  <input
-                    type="file"
-                    id="profile-image"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className={styles.fileInput}
-                  />
-                </label>
-                <p className={styles.uploadHint}>Only JPG, PNG, GIF, and WebP images are allowed</p>
-              </div>
-
-              {previewUrl && (
-                <div className={styles.previewContainer}>
-                  <div className={styles.previewControls}>
-                    <button onClick={handleZoomIn} className={styles.zoomButton}>
-                      +
-                    </button>
-                    <button onClick={handleZoomOut} className={styles.zoomButton}>
-                      -
-                    </button>
-                  </div>
-
-                  <div
-                    className={styles.previewFrame}
-                    onMouseDown={handleMouseDown}
-                    onMouseMove={handleMouseMove}
-                    onMouseUp={handleMouseUp}
-                    onMouseLeave={handleMouseUp}
-                  >
-                    <div className={styles.previewCircle}>
-                      <img
-                        ref={imageRef}
-                        src={previewUrl || "/placeholder.svg"}
-                        alt="Preview"
-                        className={styles.previewImage}
-                        style={{
-                          transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-                          cursor: isDragging ? "grabbing" : "grab",
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <p className={styles.previewHint}>Drag to position and use + / - to zoom</p>
-                </div>
-              )}
-            </div>
-
-            <div className={styles.profileModalFooter}>
-              <button onClick={closeModal} className={styles.cancelButton}>
-                Cancel
-              </button>
-              <button
-                onClick={handleSubmit}
-                className={styles.submitButton}
-                style={{ background: selectedRole.gradient }}
-                disabled={!selectedImage || !selectedEntity}
-              >
-                Update Profile Picture
-              </button>
-            </div>
+          <h3 className={styles.cardTitle}>{role.title}</h3>
+          <p className={styles.cardDescription}>Update profile picture for {role.title}</p>
+          <div className={styles.cardOverlay}>
+            <span className={styles.updateText}>Update</span>
           </div>
         </div>
-      )}
-
-      <div className={styles.clubDetailsPage}>
-        {/* Render the new UpdateMediaAttachment component */}
-        <UpdateMediaAttachment regId={regId} userDetails={userDetails} approvedMedia={approvedMedia} />
-      </div>
-      <CommitteeCardStudent />
+      ))}
     </div>
+
+    {isModalOpen && selectedRole && (
+      <div className={styles.profileModalOverlay}>
+        <div className={styles.profileModal}>
+          <div className={styles.profileModalHeader} style={{ background: selectedRole.gradient }}>
+            <h2 className={styles.modalTitle}>Update {selectedRole.title} Profile Picture</h2>
+            <button className={styles.closeButton} onClick={closeModal}>
+              ×
+            </button>
+          </div>
+
+          <div className={styles.profileModalContent}>
+            <div className={styles.entitySelector}>
+              <label htmlFor="entity-select">Select Entity:</label>
+              <select
+                id="entity-select"
+                value={selectedEntity}
+                onChange={(e) => setSelectedEntity(e.target.value)}
+                className={styles.entitySelect}
+              >
+                <option value="">Select an entity</option>
+                {availableEntities.map((entity) => (
+                  <option key={entity.value} value={entity.value}>
+                    {entity.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.uploadSection}>
+              <label htmlFor="profile-image" className={styles.uploadLabel}>
+                <div className={styles.uploadIcon}>
+                  <span>📷</span>
+                </div>
+                <span className={styles.uploadText}>Select Image</span>
+                <input
+                  type="file"
+                  id="profile-image"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className={styles.fileInput}
+                />
+              </label>
+              <p className={styles.uploadHint}>Only JPG, PNG, GIF, and WebP images are allowed</p>
+            </div>
+
+            {previewUrl && (
+              <div className={styles.previewContainer}>
+                <div className={styles.previewControls}>
+                  <button onClick={handleZoomIn} className={styles.zoomButton}>
+                    +
+                  </button>
+                  <button onClick={handleZoomOut} className={styles.zoomButton}>
+                    -
+                  </button>
+                </div>
+
+                <div
+                  className={styles.previewFrame}
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseUp}
+                >
+                  <div className={styles.previewCircle}>
+                    <img
+                      ref={imageRef}
+                      src={previewUrl || "/placeholder.svg"}
+                      alt="Preview"
+                      className={styles.previewImage}
+                      style={{
+                        transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+                        cursor: isDragging ? "grabbing" : "grab",
+                      }}
+                    />
+                  </div>
+                </div>
+                <p className={styles.previewHint}>Drag to position and use + / - to zoom</p>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.profileModalFooter}>
+            <button onClick={closeModal} className={styles.cancelButton}>
+              Cancel
+            </button>
+            <button
+              onClick={handleSubmit}
+              className={styles.submitButton}
+              style={{ background: selectedRole.gradient }}
+              disabled={!selectedImage || !selectedEntity}
+            >
+              Update Profile Picture
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <div className={styles.clubDetailsPage}>
+      {/* Render the UpdateMediaAttachment component */}
+      <UpdateMediaAttachment regId={regId} userDetails={userDetails} approvedMedia={approvedMedia} />
+    </div>
+    <CommitteeCardStudent />
+  </div>
   )
 }
 

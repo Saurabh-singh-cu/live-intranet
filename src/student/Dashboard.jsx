@@ -33,9 +33,7 @@ import {
 import {
   InboxOutlined,
   NotificationOutlined,
-  FileTextOutlined,
-  FileImageOutlined,
-  RadiusUprightOutlined,
+
 } from "@ant-design/icons";
 import Scroller from "../components/Scroller";
 
@@ -49,8 +47,7 @@ import not2 from "../assets/images/not2.png";
 import apiClient from "../config/apiClient";
 import EntitySelectorPopup from "./EntitySelectorPopup";
 import "./Dashboard.css";
-import ProfilePictureCards from "./ProfilePictureCard";
-import CommitteeCardStudent from "./committeeCardStudent";
+
 import UpdatedCarousel from "./drawerNotification/UpdatedCarousel";
 import InfoCard from "./InfoCard";
 import ActivityBarGraph from "./ActivityBarGraph";
@@ -179,7 +176,7 @@ const Dashboard = () => {
     "Appointment Holder": [
       {
         from: "Faculty Advisor : Spectrum",
-        content: "Club going to organize the workshop. Apply for Volunteer",
+        content: "Club going to organize the workshop. Apply for Volunteer1",
         messageTime: "2hr ago",
       },
       {

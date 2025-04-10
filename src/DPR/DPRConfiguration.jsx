@@ -414,7 +414,7 @@ const DPRConfiguration = () => {
     try {
       // Make API call
       const response = await fetch(
-        "http://172.17.2.247:8080/intranetapp/setup-dpr-team/",
+        "https://api.cuintranet.in/intranetapp/setup-dpr-team/",
         {
           method: "POST",
           headers: {
