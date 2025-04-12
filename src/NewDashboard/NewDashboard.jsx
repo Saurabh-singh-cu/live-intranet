@@ -1,0 +1,992 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import {
+  ChevronDown,
+  ChevronUp,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Users,
+  X,
+  Calendar,
+  Bell,
+  MessageCircle,
+  Flag,
+  Info,
+} from "lucide-react"
+import styles from "./NewDashboard.module.css"
+import cf from "../assets/images/cf.jpg"
+import am from "../assets/images/am.jpg"
+import not1 from "../assets/images/not1.png";
+import not2 from "../assets/images/not2.png";
+
+const NewDashboard = () => {
+  const [activeAccordion, setActiveAccordion] = useState(null)
+  const [currentMonth, setCurrentMonth] = useState("April")
+  const [currentYear, setCurrentYear] = useState(2025)
+  const [showCalendarModal, setShowCalendarModal] = useState(false)
+  const [showAnnouncementModal, setShowAnnouncementModal] = useState(false)
+  const [selectedDate, setSelectedDate] = useState(null)
+  const [selectedEvent, setSelectedEvent] = useState(null)
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null)
+  const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0)
+  const [activeTab, setActiveTab] = useState("appointment")
+  const [currentNewsIndex, setCurrentNewsIndex] = useState(0)
+  const [entityCounts, setEntityCounts] = useState({
+    club: 0,
+    departmentSociety: 0,
+    professionalSociety: 0,
+    community: 0,
+  })
+
+  // Fetch entity counts from API
+  useEffect(() => {
+    const fetchEntityCounts = async () => {
+      try {
+        const response = await fetch("https://api.cuintranet.in/intranetapp/entity_count/")
+        const data = await response.json()
+
+        // Map the API response to our state structure
+        const counts = {
+          club: 0,
+          departmentSociety: 0,
+          professionalSociety: 0,
+          community: 0,
+        }
+
+        data.forEach((item) => {
+          if (item.entity_name === "CLUB") {
+            counts.club = item.entity_count
+          } else if (item.entity_name === "DEPARTMENT SOCIETY") {
+            counts.departmentSociety = item.entity_count
+          } else if (item.entity_name === "PROFESSIONAL SOCIETY") {
+            counts.professionalSociety = item.entity_count
+          } else if (item.entity_name === "COMMUNITY") {
+            counts.community = item.entity_count
+          }
+        })
+
+        setEntityCounts(counts)
+      } catch (error) {
+        console.error("Error fetching entity counts:", error)
+      }
+    }
+
+    fetchEntityCounts()
+  }, [])
+
+  // Mock data for demonstration
+  const announcements = [
+    {
+      id: 1,
+      title: "Meet The Shark",
+      content: "Join us for an exclusive session with Anupam Mittal, Founder & CEO of Shaadi.com",
+      from: "Professional Society: E-Cell",
+      messageTime: "2hr ago",
+      priority: "high",
+      image: am,
+      description:
+        "Don't miss this opportunity to meet Anupam Mittal, Founder & CEO of Shaadi.com and a prominent Shark Tank India judge. Learn about entrepreneurship, business strategies, and get insights from his journey to success. The event will be held on 16th January, 2025 at 10:00 AM in the University Incubator.",
+      date: "16th January, 2025",
+      time: "10:00 AM ONWARD",
+      location: "University Incubator",
+      registerLink: "#",
+    },
+    {
+      id: 2,
+      title: "Group Project Discussion",
+      content: "Group Project Discussion going to be held today at 4PM near C3 Block.",
+      from: "Student Secretary: CAC",
+      messageTime: "3hr ago",
+      priority: "medium",
+      image: cf,
+      description:
+        "All students participating in the semester project are required to attend this important discussion session. Team leaders will present their progress and receive feedback from faculty advisors. Please bring your project materials and be prepared to discuss your current challenges and achievements.",
+      date: "Today",
+      time: "4:00 PM",
+      location: "C3 Block",
+    },
+    {
+      id: 3,
+      title: "Department Society Registration",
+      content: "Registration open for all department society till 10th Dec.",
+      from: "Co-Curricular Cord: CSE",
+      messageTime: "5hr ago",
+      priority: "low",
+      image: not1,
+      description:
+        "All students interested in joining department societies must complete their registration before December 10th. This is a great opportunity to develop your skills, network with peers, and participate in departmental activities throughout the academic year. Registration can be completed online through the student portal.",
+      date: "Until December 10th",
+      time: "11:59 PM",
+      location: "Online",
+    },
+    {
+      id: 4,
+      title: "DCPD Workshop",
+      content: "Mandatory DCPD workshop going to be organized by Career Department.",
+      from: "HOD: CSE 3rd Year",
+      messageTime: "1 day ago",
+      priority: "medium",
+      image: not2,
+      description:
+        "The Career Development Department is organizing a mandatory workshop for all 3rd year students. This workshop will cover essential skills for industry preparation, resume building, and interview techniques. Attendance is compulsory and will be tracked. Please bring your student ID and notebook.",
+      date: "December 15th, 2023",
+      time: "10:00 AM - 2:00 PM",
+      location: "Main Auditorium",
+    },
+  ]
+
+  const discussions = [
+    {
+      title: "Club",
+      participants: ["G", "D", "T"],
+      additionalCount: 5,
+      content: "Discussion about various club activities and events.",
+    },
+    {
+      title: "Community",
+      participants: ["A", "Q", "S"],
+      additionalCount: 3,
+      content: "Discussion forum for all Chandigarh University Student Tech Community & Community.",
+    },
+    {
+      title: "Department Society",
+      participants: ["C", "D", "P", "J"],
+      additionalCount: 2,
+      content: "Discussion forum for all Chandigarh University Student Department Society.",
+    },
+    {
+      title: "Professional Society (Student Chapters)",
+      participants: ["C", "S"],
+      additionalCount: 2,
+      content: "Discussion forum for all Chandigarh University Student Chapters.",
+    },
+  ]
+
+  const events = [
+    {
+      id: 1,
+      date: "2025-04-15",
+      title: "Tech Symposium",
+      time: "09:00 - 05:00 PM",
+      price: "Free",
+      ticketsLeft: 45,
+      attendees: ["user1", "user2", "user3"],
+      color: "#4285F4",
+    },
+    {
+      id: 2,
+      date: "2025-04-16",
+      title: "Career Fair",
+      time: "10:00 - 04:00 PM",
+      price: "Free",
+      ticketsLeft: 120,
+      attendees: ["user4"],
+      color: "#EA4335",
+    },
+    {
+      id: 3,
+      date: "2025-04-23",
+      title: "Hackathon",
+      time: "08:00 AM - 08:00 PM",
+      price: "Free",
+      ticketsLeft: 30,
+      attendees: ["user1", "user5", "user6"],
+      color: "#FBBC05",
+    },
+    {
+      id: 4,
+      date: "2025-04-23",
+      title: "Workshop on AI",
+      time: "02:00 - 05:00 PM",
+      price: "₹200",
+      ticketsLeft: 25,
+      attendees: ["user2", "user3", "user7"],
+      color: "#34A853",
+    },
+    {
+      id: 5,
+      date: "2025-04-27",
+      title: "Cultural Fest",
+      time: "05:00 - 10:00 PM",
+      price: "₹150",
+      ticketsLeft: 200,
+      attendees: ["user8", "user9"],
+      color: "#4285F4",
+    },
+    {
+      id: 6,
+      date: "2025-04-27",
+      title: "Alumni Meet",
+      time: "11:00 AM - 02:00 PM",
+      price: "₹500",
+      ticketsLeft: 80,
+      attendees: ["user10"],
+      color: "#EA4335",
+    },
+    {
+      id: 7,
+      date: "2025-04-27",
+      title: "Research Presentation",
+      time: "03:00 - 06:00 PM",
+      price: "Free",
+      ticketsLeft: 40,
+      attendees: ["user11", "user12"],
+      color: "#34A853",
+    },
+  ]
+
+  const newsItems = [
+    {
+      id: 1,
+      title: "Chandigarh University becomes India's First ABET Accredited Private University",
+      content:
+        "CU has earned the Accreditation Board for Engineering and Technology (ABET) recognition for its nine engineering programmes, highest in India.",
+      image: cf,
+      date: "April 10, 2025",
+      category: "Achievement",
+    },
+    {
+      id: 2,
+      title: "University Ranks #1 in Placement Records",
+      content:
+        "Our university has achieved the highest placement record this year with over 95% students placed in top companies with excellent packages.",
+      image: am,
+      date: "April 5, 2025",
+      category: "Placement",
+    },
+    {
+      id: 3,
+      title: "International Conference on Emerging Technologies",
+      content:
+        "The university is hosting an international conference on emerging technologies next month with speakers from MIT, Stanford, and Google.",
+      image: not1,
+      date: "April 2, 2025",
+      category: "Event",
+    },
+  ]
+
+  // Calendar data generation
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+  // Generate calendar days for current month
+  const generateCalendarDays = () => {
+    const year = currentYear
+    const month = new Date(`${currentMonth} 1, ${currentYear}`).getMonth()
+
+    const firstDay = new Date(year, month, 1).getDay()
+    const daysInMonth = new Date(year, month + 1, 0).getDate()
+    const daysInPrevMonth = new Date(year, month, 0).getDate()
+
+    const calendarDays = []
+
+    // Previous month days
+    for (let i = firstDay - 1; i >= 0; i--) {
+      calendarDays.push({
+        day: daysInPrevMonth - i,
+        month: month === 0 ? "December" : new Date(year, month - 1, 1).toLocaleString("default", { month: "long" }),
+        current: false,
+        events: [],
+      })
+    }
+
+    // Current month days
+    for (let i = 1; i <= daysInMonth; i++) {
+      const date = new Date(year, month, i)
+      const dateString = date.toISOString().split("T")[0]
+
+      calendarDays.push({
+        day: i,
+        month: currentMonth,
+        current: true,
+        events: events.filter((event) => event.date === dateString),
+      })
+    }
+
+    // Next month days
+    const remainingDays = 42 - calendarDays.length // 6 rows of 7 days
+    for (let i = 1; i <= remainingDays; i++) {
+      calendarDays.push({
+        day: i,
+        month: month === 11 ? "January" : new Date(year, month + 1, 1).toLocaleString("default", { month: "long" }),
+        current: false,
+        events: [],
+      })
+    }
+
+    return calendarDays
+  }
+
+  const calendarDays = generateCalendarDays()
+
+  const toggleAccordion = (index) => {
+    setActiveAccordion(activeAccordion === index ? null : index)
+  }
+
+  const handlePrevMonth = () => {
+    const date = new Date(`${currentMonth} 1, ${currentYear}`)
+    date.setMonth(date.getMonth() - 1)
+    setCurrentMonth(date.toLocaleString("default", { month: "long" }))
+    setCurrentYear(date.getFullYear())
+  }
+
+  const handleNextMonth = () => {
+    const date = new Date(`${currentMonth} 1, ${currentYear}`)
+    date.setMonth(date.getMonth() + 1)
+    setCurrentMonth(date.toLocaleString("default", { month: "long" }))
+    setCurrentYear(date.getFullYear())
+  }
+
+  const handleDateClick = (day) => {
+    setSelectedDate(day)
+    setShowCalendarModal(true)
+  }
+
+  const handleEventClick = (event) => {
+    setSelectedEvent(event)
+  }
+
+  const handleAnnouncementClick = (announcement) => {
+    setSelectedAnnouncement(announcement)
+    setShowAnnouncementModal(true)
+  }
+
+  const closeModal = () => {
+    setShowCalendarModal(false)
+    setShowAnnouncementModal(false)
+    setSelectedEvent(null)
+  }
+
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF"
+    let color = "#"
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)]
+    }
+    return color
+  }
+
+  const nextAnnouncement = () => {
+    setCurrentAnnouncementIndex((prevIndex) => (prevIndex === announcements.length - 1 ? 0 : prevIndex + 1))
+  }
+
+  const prevAnnouncement = () => {
+    setCurrentAnnouncementIndex((prevIndex) => (prevIndex === 0 ? announcements.length - 1 : prevIndex - 1))
+  }
+
+  const nextNews = () => {
+    setCurrentNewsIndex((prevIndex) => (prevIndex === newsItems.length - 1 ? 0 : prevIndex + 1))
+  }
+
+  const prevNews = () => {
+    setCurrentNewsIndex((prevIndex) => (prevIndex === 0 ? newsItems.length - 1 : prevIndex - 1))
+  }
+
+  // Redirect functions
+  const redirectToClubs = () => {
+    window.location.href = "/clubs"
+  }
+
+  const redirectToCommunities = () => {
+    window.location.href = "/communities"
+  }
+
+  const redirectToDepartmentSociety = () => {
+    window.location.href = "/department-society"
+  }
+
+  const redirectToProfessionalSociety = () => {
+    window.location.href = "/professional-society"
+  }
+
+  return (
+    <div className={styles.dashboardContainer}>
+      <div className={styles.contentGrid}>
+        <div className={styles.announcementSection}>
+          <div className={styles.sectionHeader}>
+            <h2>Announcements</h2>
+            <div className={styles.carouselControls}>
+              <button onClick={prevAnnouncement} className={styles.carouselButton}>
+                <ChevronLeft size={20} />
+              </button>
+              <div className={styles.carouselIndicators}>
+                {announcements.map((_, index) => (
+                  <span
+                    key={index}
+                    className={`${styles.indicator} ${currentAnnouncementIndex === index ? styles.activeIndicator : ""}`}
+                    onClick={() => setCurrentAnnouncementIndex(index)}
+                  ></span>
+                ))}
+              </div>
+              <button onClick={nextAnnouncement} className={styles.carouselButton}>
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+
+          <div className={styles.announcementCarousel}>
+            <div
+              className={styles.announcementSlides}
+              style={{ transform: `translateX(-${currentAnnouncementIndex * 100}%)` }}
+            >
+              {announcements.map((announcement, index) => (
+                <div
+                  key={index}
+                  className={`${styles.announcementCard} ${styles[`priority${announcement.priority}`]}`}
+                  onClick={() => handleAnnouncementClick(announcement)}
+                >
+                  <div className={styles.announcementImageContainer}>
+                    <img
+                      src={announcement.image || "/placeholder.svg"}
+                      alt={announcement.title}
+                      className={styles.announcementImage}
+                    />
+                    {announcement.priority === "high" && <div className={styles.announcementBadge}>Important</div>}
+                  </div>
+                  <div className={styles.announcementCardContent}>
+                    {announcement.title && <h3 className={styles.announcementTitle}>{announcement.title}</h3>}
+                    <p className={styles.announcementContent}>{announcement.content}</p>
+                    <div className={styles.announcementFooter}>
+                      <span className={styles.announcementFrom}>{announcement.from}</span>
+                      <span className={styles.announcementTime}>{announcement.messageTime}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.metricsSection}>
+          <div className={styles.metricCardsGrid}>
+            <div onClick={redirectToClubs} className={`${styles.metricCard} ${styles.card1}`}>
+              <div className={styles.cardContent}>
+                <div className={styles.cardInfo}>
+                  <h2 className={styles.cardCount}>{entityCounts.club}</h2>
+                  <div className={styles.cardCategory}>CO-CURRICULAR</div>
+                  <p className={styles.cardTitle}>Club</p>
+                </div>
+                <div className={styles.cardIconContainer}>
+                  <div className={styles.iconCircle}>
+                    <Flag className={styles.cardIcon} />
+                  </div>
+                </div>
+              </div>
+              <div className={styles.cardShine}></div>
+            </div>
+
+            <div onClick={redirectToCommunities} className={`${styles.metricCard} ${styles.card2}`}>
+              <div className={styles.cardContent}>
+                <div className={styles.cardInfo}>
+                  <h2 className={styles.cardCount}>{entityCounts.community}</h2>
+                  <div className={styles.cardCategory}>CO-CURRICULAR</div>
+                  <p className={styles.cardTitle}>Community</p>
+                </div>
+                <div className={styles.cardIconContainer}>
+                  <div className={styles.iconCircle}>
+                    <Users className={styles.cardIcon} />
+                  </div>
+                </div>
+              </div>
+              <div className={styles.cardShine}></div>
+            </div>
+
+            <div onClick={redirectToDepartmentSociety} className={`${styles.metricCard} ${styles.card3}`}>
+              <div className={styles.cardContent}>
+                <div className={styles.cardInfo}>
+                  <h2 className={styles.cardCount}>{entityCounts.departmentSociety}</h2>
+                  <div className={styles.cardCategory}>CO-CURRICULAR</div>
+                  <p className={styles.cardTitle}>Department Society</p>
+                </div>
+                <div className={styles.cardIconContainer}>
+                  <div className={styles.iconCircle}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className={styles.cardIcon}
+                    >
+                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.cardShine}></div>
+            </div>
+
+            <div onClick={redirectToProfessionalSociety} className={`${styles.metricCard} ${styles.card4}`}>
+              <div className={styles.cardContent}>
+                <div className={styles.cardInfo}>
+                  <h2 className={styles.cardCount}>{entityCounts.professionalSociety}</h2>
+                  <div className={styles.cardCategory}>PROFESSIONAL SOCIETY</div>
+                  <p className={styles.cardTitle}>Student Chapters</p>
+                </div>
+                <div className={styles.cardIconContainer}>
+                  <div className={styles.iconCircle}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className={styles.cardIcon}
+                    >
+                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.cardShine}></div>
+            </div>
+          </div>
+        </div>
+
+       
+      </div>
+      <div className={styles.contentGridSecond}>
+      <div className={styles.calendarSection}>
+          <div className={styles.calendarHeader} onClick={() => setShowCalendarModal(true)}>
+            <div className={styles.monthSelector}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handlePrevMonth()
+                }}
+                className={styles.monthButton}
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <h2>
+                {currentMonth} {currentYear}
+              </h2>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleNextMonth()
+                }}
+                className={styles.monthButton}
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+            <div className={styles.calendarIcon}>
+              <Calendar size={18} />
+            </div>
+          </div>
+
+          <div className={styles.calendarGrid}>
+            {daysOfWeek.map((day) => (
+              <div key={day} className={styles.dayHeader}>
+                {day}
+              </div>
+            ))}
+
+            {calendarDays.slice(0, 35).map((day, index) => (
+              <div
+                key={index}
+                className={`${styles.calendarDay} ${!day.current ? styles.otherMonth : ""} ${day.events.length > 0 ? styles.hasEvents : ""}`}
+                onClick={() => day.events.length > 0 && handleDateClick(day)}
+              >
+                <span className={styles.dayNumber}>{day.day}</span>
+                {day.events.length > 0 && (
+                  <div className={styles.eventIndicators}>
+                    {day.events.slice(0, 3).map((event, i) => (
+                      <span key={i} className={styles.eventDot} style={{ backgroundColor: event.color }}></span>
+                    ))}
+                    {day.events.length > 3 && <span className={styles.moreEvents}>+{day.events.length - 3}</span>}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.tabsSection}>
+          <div className={styles.tabsHeader}>
+            <div
+              className={`${styles.tab} ${activeTab === "appointment" ? styles.activeTab : ""}`}
+              onClick={() => setActiveTab("appointment")}
+            >
+              <Bell size={16} />
+              <span>Appointment Holder</span>
+            </div>
+            <div
+              className={`${styles.tab} ${activeTab === "section" ? styles.activeTab : ""}`}
+              onClick={() => setActiveTab("section")}
+            >
+              <Users size={16} />
+              <span>Section Management</span>
+            </div>
+            <div
+              className={`${styles.tab} ${activeTab === "announcement" ? styles.activeTab : ""}`}
+              onClick={() => setActiveTab("announcement")}
+            >
+              <MessageCircle size={16} />
+              <span>Announcements</span>
+            </div>
+          </div>
+
+          <div className={styles.tabContent}>
+            {activeTab === "appointment" && (
+              <div className={styles.appointmentContent}>
+                <div className={styles.appointmentItem}>
+                  <div className={styles.appointmentHeader}>
+                    <h3>Club going to organize the workshop. Apply for Volunteer</h3>
+                    <span className={styles.appointmentTime}>2hr ago</span>
+                  </div>
+                  <p className={styles.appointmentFrom}>From: Faculty Advisor: Spectrum</p>
+                </div>
+                <div className={styles.appointmentItem}>
+                  <div className={styles.appointmentHeader}>
+                    <h3>Group Project Discussion going to be held today at 4PM near C3 Block.</h3>
+                    <span className={styles.appointmentTime}>3hr ago</span>
+                  </div>
+                  <p className={styles.appointmentFrom}>From: Student Secretary: CAC</p>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "section" && (
+              <div className={styles.sectionContent}>
+                <div className={styles.sectionItem}>
+                  <div className={styles.sectionHeader}>
+                    <h3>Section Management</h3>
+                    <span className={styles.sectionBadge}>2</span>
+                  </div>
+                  <p className={styles.sectionDescription}>Manage your sections and assign faculty members</p>
+                </div>
+                <div className={styles.sectionItem}>
+                  <div className={styles.sectionHeader}>
+                    <h3>Faculty Assignment</h3>
+                    <span className={styles.sectionBadge}>5</span>
+                  </div>
+                  <p className={styles.sectionDescription}>Assign faculty members to different sections</p>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "announcement" && (
+              <div className={styles.announcementTabContent}>
+                <div className={styles.announcementTabItem}>
+                  <div className={styles.announcementTabHeader}>
+                    <h3>New Club Registration</h3>
+                    <span className={styles.announcementTabBadge}>New</span>
+                  </div>
+                  <p className={styles.announcementTabDescription}>
+                    Registration for new clubs is now open. Apply before December 15th.
+                  </p>
+                  <div className={styles.announcementTabFooter}>
+                    <span>Faculty Advisor: Spectrum</span>
+                    <button className={styles.viewDetailsButton}>View Details</button>
+                  </div>
+                </div>
+                <div className={styles.announcementTabItem}>
+                  <div className={styles.announcementTabHeader}>
+                    <h3>DCPD Workshop</h3>
+                  </div>
+                  <p className={styles.announcementTabDescription}>
+                    Mandatory DCPD workshop going to be organized by Career Department.
+                  </p>
+                  <div className={styles.announcementTabFooter}>
+                    <span>HOD: CSE 3rd Year</span>
+                    <button className={styles.viewDetailsButton}>View Details</button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className={styles.discussionSection}>
+          <div className={styles.sectionHeader}>
+            <h2>Discussion Forum</h2>
+          </div>
+
+          <div className={styles.discussionList}>
+            {discussions.map((discussion, index) => (
+              <div key={index} className={styles.discussionItem}>
+                <button
+                  className={`${styles.discussionButton} ${activeAccordion === index ? styles.active : ""}`}
+                  onClick={() => toggleAccordion(index)}
+                >
+                  <span className={styles.discussionTitle}>{discussion.title}</span>
+                  <div className={styles.discussionMeta}>
+                    <div className={styles.participantAvatars}>
+                      {discussion.participants.map((letter, i) => (
+                        <div key={i} className={styles.avatar} style={{ backgroundColor: getRandomColor() }}>
+                          {letter}
+                        </div>
+                      ))}
+                      {discussion.additionalCount > 0 && (
+                        <span className={styles.additionalCount}>+{discussion.additionalCount}</span>
+                      )}
+                    </div>
+                    <span className={styles.accordionIcon}>
+                      {activeAccordion === index ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                    </span>
+                  </div>
+                </button>
+                {activeAccordion === index && (
+                  <div className={styles.discussionContent}>
+                    <p>{discussion.content}</p>
+                    <button className={styles.joinButton}>Join Discussion</button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.newsSection}>
+          <div className={styles.sectionHeader}>
+            <h2>News & Views</h2>
+            <div className={styles.carouselControls}>
+              <button onClick={prevNews} className={styles.carouselButton}>
+                <ChevronLeft size={20} />
+              </button>
+              <div className={styles.carouselIndicators}>
+                {newsItems.map((_, index) => (
+                  <span
+                    key={index}
+                    className={`${styles.indicator} ${currentNewsIndex === index ? styles.activeIndicator : ""}`}
+                    onClick={() => setCurrentNewsIndex(index)}
+                  ></span>
+                ))}
+              </div>
+              <button onClick={nextNews} className={styles.carouselButton}>
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+
+          <div className={styles.newsCarousel}>
+            <div className={styles.newsSlides} style={{ transform: `translateX(-${currentNewsIndex * 100}%)` }}>
+              {newsItems.map((news, index) => (
+                <div key={index} className={styles.newsCard}>
+                  <div className={styles.newsImageContainer}>
+                    <img src={news.image || "/placeholder.svg"} alt={news.title} className={styles.newsImage} />
+                    <div className={styles.newsCategory}>{news.category}</div>
+                  </div>
+                  <div className={styles.newsCardContent}>
+                    <h3 className={styles.newsTitle}>{news.title}</h3>
+                    <p className={styles.newsContent}>{news.content}</p>
+                    <div className={styles.newsFooter}>
+                      <span className={styles.newsDate}>{news.date}</span>
+                      <button className={styles.readMoreButton}>Read More</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {showCalendarModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.calendarModal}>
+            <div className={styles.modalHeader}>
+              <h2>
+                {selectedDate
+                  ? `Events for ${selectedDate.month} ${selectedDate.day}`
+                  : `${currentMonth} ${currentYear} Calendar`}
+              </h2>
+              <button className={styles.closeButton} onClick={closeModal}>
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className={styles.modalContent}>
+              <div className={styles.calendarModalGrid}>
+                <div className={styles.calendarModalDays}>
+                  {daysOfWeek.map((day) => (
+                    <div key={day} className={styles.modalDayHeader}>
+                      {day}
+                    </div>
+                  ))}
+
+                  {calendarDays.map((day, index) => (
+                    <div
+                      key={index}
+                      className={`${styles.modalCalendarDay} ${!day.current ? styles.modalOtherMonth : ""} 
+                        ${day.events.length > 0 ? styles.modalHasEvents : ""} 
+                        ${selectedDate && selectedDate.day === day.day && selectedDate.month === day.month ? styles.modalSelectedDay : ""}`}
+                      onClick={() => setSelectedDate(day)}
+                    >
+                      <span className={styles.modalDayNumber}>{day.day}</span>
+                      {day.events.length > 0 && (
+                        <div className={styles.modalEventIndicators}>
+                          {day.events.slice(0, 3).map((event, i) => (
+                            <span
+                              key={i}
+                              className={styles.modalEventDot}
+                              style={{ backgroundColor: event.color }}
+                            ></span>
+                          ))}
+                          {day.events.length > 3 && (
+                            <span className={styles.modalMoreEvents}>+{day.events.length - 3}</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className={styles.eventsList}>
+                  <h3 className={styles.eventsListTitle}>
+                    {selectedDate
+                      ? `Events on ${selectedDate.month} ${selectedDate.day}`
+                      : "Select a date to view events"}
+                  </h3>
+
+                  {selectedDate && selectedDate.events.length > 0 ? (
+                    selectedDate.events.map((event) => (
+                      <div
+                        key={event.id}
+                        className={`${styles.eventItem} ${selectedEvent?.id === event.id ? styles.selectedEvent : ""}`}
+                        onClick={() => handleEventClick(event)}
+                      >
+                        <div className={styles.eventHeader}>
+                          <h3 className={styles.eventTitle}>{event.title}</h3>
+                          <div className={styles.eventTime}>
+                            <Clock size={14} />
+                            <span>{event.time}</span>
+                          </div>
+                        </div>
+                        <div className={styles.eventDetails}>
+                          <div className={styles.eventAttendees}>
+                            <div className={styles.attendeeAvatars}>
+                              {event.attendees.slice(0, 3).map((attendee, i) => (
+                                <div
+                                  key={i}
+                                  className={styles.attendeeAvatar}
+                                  style={{ backgroundColor: getRandomColor() }}
+                                >
+                                  {attendee.charAt(0).toUpperCase()}
+                                </div>
+                              ))}
+                              {event.attendees.length > 3 && (
+                                <span className={styles.moreAttendees}>+{event.attendees.length - 3}</span>
+                              )}
+                            </div>
+                          </div>
+                          <div className={styles.eventPrice}>{event.price}</div>
+                        </div>
+                        {selectedEvent?.id === event.id && (
+                          <div className={styles.eventExpandedDetails}>
+                            <div className={styles.ticketsInfo}>
+                              <span className={styles.ticketsLabel}>Tickets left:</span>
+                              <span className={styles.ticketsCount}>{event.ticketsLeft}</span>
+                            </div>
+                            <div className={styles.progressBar}>
+                              <div
+                                className={styles.progressFill}
+                                style={{ width: `${Math.min(100, (event.ticketsLeft / 30) * 100)}%` }}
+                              ></div>
+                            </div>
+                            <button className={styles.registerButton}>Register Now</button>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  ) : selectedDate ? (
+                    <div className={styles.noEvents}>
+                      <p>No events scheduled for this day.</p>
+                    </div>
+                  ) : (
+                    <div className={styles.noDateSelected}>
+                      <Calendar size={48} className={styles.calendarPlaceholderIcon} />
+                      <p>Select a date from the calendar to view events</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showAnnouncementModal && selectedAnnouncement && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.announcementModal}>
+            <div className={styles.modalHeader}>
+              <h2>{selectedAnnouncement.title}</h2>
+              <button className={styles.closeButton} onClick={closeModal}>
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className={styles.announcementModalContent}>
+              <div className={styles.announcementModalImageContainer}>
+                <img
+                  src={selectedAnnouncement.image || "/placeholder.svg"}
+                  alt={selectedAnnouncement.title}
+                  className={styles.announcementModalImage}
+                />
+              </div>
+
+              <div className={styles.announcementModalDetails}>
+                <div className={styles.announcementModalInfo}>
+                  {selectedAnnouncement.date && (
+                    <div className={styles.announcementModalInfoItem}>
+                      <Calendar size={18} />
+                      <span>{selectedAnnouncement.date}</span>
+                    </div>
+                  )}
+                  {selectedAnnouncement.time && (
+                    <div className={styles.announcementModalInfoItem}>
+                      <Clock size={18} />
+                      <span>{selectedAnnouncement.time}</span>
+                    </div>
+                  )}
+                  {selectedAnnouncement.location && (
+                    <div className={styles.announcementModalInfoItem}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={styles.infoIcon}
+                      >
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                      <span>{selectedAnnouncement.location}</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className={styles.announcementModalDescription}>
+                  <h3>Description</h3>
+                  <p>{selectedAnnouncement.description}</p>
+                </div>
+
+                <div className={styles.announcementModalFrom}>
+                  <Info size={18} />
+                  <span>{selectedAnnouncement.from}</span>
+                </div>
+
+                {selectedAnnouncement.registerLink && <button className={styles.registerButton}>Register Now</button>}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default NewDashboard

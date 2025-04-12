@@ -462,3 +462,6 @@
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   gap: 24px;
 }
+.dashboard-content{
+  padding-top: 5rem;
+}

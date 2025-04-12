@@ -1,15 +1,26 @@
-"use client"
-
-import { useEffect, useRef, useState } from "react"
-import { IoIosLogOut } from "react-icons/io"
-import logonew from "../assets/images/intralogonew.jpeg"
-import { SettingOutlined } from "@ant-design/icons"
-import { Dropdown, Popover, Space } from "antd"
-import { useNavigate } from "react-router-dom"
-import CreditModal from "../CreditScore/CreditModal"
-import TokenExpireTime from "../tokenExpire/TokenExpireTime"
-import styles from "./NavBar.module.css"
-import { FaBars, FaTimes, FaHome, FaUsers, FaChevronDown, FaWpforms, FaSearch } from "react-icons/fa"
+import React, { useEffect, useRef, useState } from "react";
+import { IoIosLogOut } from "react-icons/io";
+import logonew from "../assets/images/intralogonew.jpeg";
+import { SettingOutlined } from "@ant-design/icons";
+import { Dropdown, Popover, Space } from "antd";
+import { useNavigate } from "react-router-dom";
+import CreditModal from "../CreditScore/CreditModal";
+import TokenExpireTime from "../tokenExpire/TokenExpireTime";
+import styles from "./NavBar.module.css";
+import {
+  FaBars,
+  FaTimes,
+  FaHome,
+  FaUsers,
+  FaChevronDown,
+  FaWpforms,
+  FaSearch,
+  FaRegCompass,
+  FaRegLightbulb,
+  FaRegBell,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
 
 import {
   MdEmail,
@@ -18,49 +29,54 @@ import {
   MdOutlineDashboardCustomize,
   MdOutlinePermMedia,
   MdSpaceDashboard,
-} from "react-icons/md"
-import { AiTwotoneFileExclamation } from "react-icons/ai"
-import { BsCurrencyRupee, BsFillCCircleFill, BsFillExplicitFill } from "react-icons/bs"
+} from "react-icons/md";
+import { AiTwotoneFileExclamation } from "react-icons/ai";
+import {
+  BsCurrencyRupee,
+  BsFillCCircleFill,
+  BsFillExplicitFill,
+} from "react-icons/bs";
 
 const NavBar = ({ isLoggedIn, onLogout }) => {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [showResults, setShowResults] = useState(false)
-  const [filteredResults, setFilteredResults] = useState([])
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [expirationTime, setExpirationTime] = useState(null)
-  const [user, setUser] = useState([])
-  const [isMobile, setIsMobile] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [mobileMenuItems, setMobileMenuItems] = useState([])
-  const [isSubmenuOpen, setIsSubmenuOpen] = useState({})
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showResults, setShowResults] = useState(false);
+  const [filteredResults, setFilteredResults] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [expirationTime, setExpirationTime] = useState(null);
+  const [user, setUser] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mobileMenuItems, setMobileMenuItems] = useState([]);
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState({});
+  const [activeTab, setActiveTab] = useState("home");
 
-  const searchRef = useRef(null)
-  const navigate = useNavigate()
+  const searchRef = useRef(null);
+  const navigate = useNavigate();
 
-  const [userName, setUserName] = useState([])
+  const [userName, setUserName] = useState([]);
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
+      setIsMobile(window.innerWidth <= 768);
+    };
 
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
 
-    return () => window.removeEventListener("resize", checkMobile)
-  }, [])
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Generate mobile menu items based on user role
   useEffect(() => {
     if (isMenuOpen && isMobile) {
-      generateMobileMenuItems()
+      generateMobileMenuItems();
     }
-  }, [isMenuOpen, isMobile])
+  }, [isMenuOpen, isMobile]);
 
   const generateMobileMenuItems = () => {
-    const user = JSON.parse(localStorage.getItem("user"))
-    const userRole = user?.role_name || ""
-    const isCoordinatorActive = user?.is_cordinator === "active"
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userRole = user?.role_name || "";
+    const isCoordinatorActive = user?.is_cordinator === "active";
 
     const routes = [
       {
@@ -73,7 +89,12 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
         path: "/home",
         name: "Home",
         icon: <FaHome />,
-        allowedRoles: ["Admin", "Student Secretary", "Faculty Advisory", "Co Curricular Coordinator"],
+        allowedRoles: [
+          "Admin",
+          "Student Secretary",
+          "Faculty Advisory",
+          "Co Curricular Coordinator",
+        ],
       },
       {
         path: "/COORD",
@@ -200,7 +221,7 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
           },
         ],
       },
-    ]
+    ];
 
     // Update routes based on coordinator status
     const updatedRoutes = routes.map((route) => {
@@ -211,53 +232,58 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
             allowedRoles: [...route.allowedRoles, "Faculty Advisory"],
             subRoutes: route.subRoutes.map((subRoute) => ({
               ...subRoute,
-              allowedRoles: [...(subRoute.allowedRoles || []), "Faculty Advisory"],
+              allowedRoles: [
+                ...(subRoute.allowedRoles || []),
+                "Faculty Advisory",
+              ],
             })),
-          }
+          };
         }
       }
-      return route
-    })
+      return route;
+    });
 
     // Filter routes based on user role
-    const filteredRoutes = updatedRoutes.filter((route) => route.allowedRoles?.includes(userRole))
+    const filteredRoutes = updatedRoutes.filter((route) =>
+      route.allowedRoles?.includes(userRole)
+    );
 
-    setMobileMenuItems(filteredRoutes)
-  }
+    setMobileMenuItems(filteredRoutes);
+  };
 
   const handleLoginLogout = () => {
     if (isLoggedIn) {
-      onLogout()
+      onLogout();
     } else {
-      window.location.href = "/login"
+      window.location.href = "/login";
     }
-  }
+  };
 
   useEffect(() => {
-    const getuser = JSON.parse(localStorage.getItem("user"))
-    setUserName(getuser)
-  }, [])
+    const getuser = JSON.parse(localStorage.getItem("user"));
+    setUserName(getuser);
+  }, []);
 
   const navigatetohome = () => {
     if (userName?.role_name === "Admin") {
-      window.location.href = "/admin-dashboard"
+      window.location.href = "/admin-dashboard";
     } else if (userName?.role_name === "Student Secretary") {
-      window.location.href = "/student-secretary-dashboard"
+      window.location.href = "/student-secretary-dashboard";
     } else {
-      window.location.href = "/"
+      window.location.href = "/";
     }
-  }
+  };
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const toggleSubmenu = (index) => {
     setIsSubmenuOpen((prev) => ({
       ...prev,
       [index]: !prev[index],
-    }))
-  }
+    }));
+  };
 
   const items = [
     {
@@ -284,7 +310,7 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
       icon: <SettingOutlined />,
       extra: "⌘S",
     },
-  ]
+  ];
 
   const pages = [
     { title: "Dashboard", path: "/" },
@@ -295,57 +321,69 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
     { title: "Join Now", path: "/join-now" },
     { title: "Settings", path: "/settings" },
     { title: "Profile", path: "/profile" },
-  ]
+  ];
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setShowResults(false)
+    const handleOutsideClick = (event) => {
+      const overlay = document.querySelector(`.${styles.mobileMenuOverlay}`);
+      if (overlay && !overlay.contains(event.target)) {
+        setIsMenuOpen(false);
       }
+    };
+
+    if (isMenuOpen && isMobile) {
+      document.addEventListener("mousedown", handleOutsideClick);
     }
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isMenuOpen, isMobile]);
 
   const handleLogout = () => {
-    onLogout()
-  }
+    onLogout();
+  };
 
   const handleSearch = (e) => {
-    const query = e.target.value
-    setSearchQuery(query)
+    const query = e.target.value;
+    setSearchQuery(query);
 
     if (query.trim()) {
-      const results = pages.filter((page) => page.title.toLowerCase().includes(query.toLowerCase()))
-      setFilteredResults(results)
-      setShowResults(true)
+      const results = pages.filter((page) =>
+        page.title.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredResults(results);
+      setShowResults(true);
     } else {
-      setShowResults(false)
+      setShowResults(false);
     }
-  }
+  };
 
   const handleResultClick = (path) => {
-    navigate(path)
-    setSearchQuery("")
-    setShowResults(false)
-  }
+    navigate(path);
+    setSearchQuery("");
+    setShowResults(false);
+  };
 
   const handleCreditScoreCheck = () => {
-    setIsModalOpen(true)
-  }
+    setIsModalOpen(true);
+  };
 
   // Render submenu items
   const renderSubMenu = (subRoutes, parentIndex) => {
     return (
-      <div className={`${styles.mobileSubmenu} ${isSubmenuOpen[parentIndex] ? styles.submenuOpen : ""}`}>
+      <div
+        className={`${styles.mobileSubmenu} ${
+          isSubmenuOpen[parentIndex] ? styles.submenuOpen : ""
+        }`}
+      >
         {subRoutes.map((subRoute, index) => (
           <div
             key={index}
             className={styles.mobileSubmenuItem}
             onClick={() => {
-              navigate(subRoute.path)
-              setIsMenuOpen(false)
+              navigate(subRoute.path);
+              setIsMenuOpen(false);
             }}
           >
             <span className={styles.mobileSubmenuIcon}>{subRoute.icon}</span>
@@ -353,183 +391,340 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
           </div>
         ))}
       </div>
-    )
-  }
+    );
+  };
+
+  const mainNavItems = [
+    { id: "home", label: "Home", icon: <FaHome />, path: "/" },
+    { id: "clubs", label: "Clubs", icon: <FaUsers />, path: "/clubs" },
+    {
+      id: "departments",
+      label: "Departments",
+      icon: <MdOutlineDashboardCustomize />,
+      path: "/department-society",
+    },
+    {
+      id: "communities",
+      label: "Communities",
+      icon: <FaRegCompass />,
+      path: "/communities",
+    },
+    {
+      id: "professional",
+      label: "Professional",
+      icon: <FaRegLightbulb />,
+      path: "/professional-society",
+    },
+  ];
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.navbarLeft}>
-        <div className={styles.logoContainer} onClick={navigatetohome}>
-          <img src={logonew || "/placeholder.svg"} alt="Logo" className={styles.logo} />
-        </div>
-      </div>
-
-      <div className={styles.searchWrapper} ref={searchRef}>
-        <div className={styles.searchContainerNav}>
-          <div className={styles.searchInputWrapper}>
-            <FaSearch className={styles.searchIcon} />
-            <input
-              type="text"
-              placeholder="Search & Bookmark your page"
-              value={searchQuery}
-              onChange={handleSearch}
-              className={styles.searchInputNav}
-              onFocus={() => searchQuery.trim() && setShowResults(true)}
-            />
-          </div>
-        </div>
-        {showResults && (
-          <div className={styles.searchResults}>
-            {filteredResults.length > 0 ? (
-              filteredResults.map((result, index) => (
-                <div key={index} className={styles.searchResultItem} onClick={() => handleResultClick(result.path)}>
-                  {result.title}
-                </div>
-              ))
-            ) : (
-              <div className={`${styles.searchResultItem} ${styles.noResults}`}>No results found</div>
-            )}
-          </div>
-        )}
-      </div>
-
-      <div className={styles.navbarRight}>
-        {isLoggedIn ? (
-          <>
-            {["Admin", "Faculty Advisory", "Student Secretary", "Co Curricular Coordinator"].includes(
-              userName?.role_name,
-            ) ? null : (
-              <>
-                <button onClick={() => navigate("/join-now")} className={styles.navButton}>
-                  Join as New Member
-                </button>
-                <button onClick={() => navigate("/Register-New-Entity")} className={styles.navButton}>
-                  Register New Entity
-                </button>
-              </>
-            )}
-
-            {/* Dropdown for logged-in user */}
-            {userName && (
-              <button className={`${styles.iconButton} ${styles.desktopOnly}`}>
-                <span className={styles.greenDot}></span>
-                <Dropdown menu={{ items }}>
-                  <a onClick={(e) => e.preventDefault()}>
-                    <Space>
-                      <span className={styles.userOnNav}>{userName?.user_name} </span>
-                      <FaChevronDown className={styles.dropdownIcon} />
-                    </Space>
-                  </a>
-                </Dropdown>
-              </button>
-            )}
-          </>
-        ) : (
-          <>
-            <Popover title="Join as New Member">
-              <button onClick={() => navigate("/join-now")} className={styles.navButton}>
-                Join as New Member
-              </button>
-            </Popover>
-            <Popover title="Register New Entity">
-              <button onClick={() => navigate("/Register-New-Entity")} className={styles.navButton}>
-                Register New Entity
-              </button>
-            </Popover>
-          </>
-        )}
-
-        {/* Login/Logout Button */}
-        <div className={`${styles.userProfile} ${styles.desktopOnly}`}>
-          <button onClick={handleLoginLogout} className={styles.loginButton}>
-            {isLoggedIn ? (
-              <div className={styles.logout}>
-                Log out
-                <IoIosLogOut className={styles.logoutIcon} />
-              </div>
-            ) : (
-              <div className={styles.logout}>Login</div>
-            )}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        <button className={styles.menuButton} onClick={toggleMenu}>
-          {isMenuOpen ? <FaTimes /> : <FaBars />}
-        </button>
-      </div>
-
-      {isMenuOpen && (
-        <div className={styles.mobileMenu}>
-          <div className={styles.mobileSearchContainer}>
-            <div className={styles.searchInputWrapper}>
-              <FaSearch className={styles.searchIcon} />
-              <input
-                type="text"
-                placeholder="Search & Bookmark your page"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={styles.searchInputNav}
+    <>
+      <div className={styles.navbarContainer}>
+        <div className={styles.navbarTop}>
+          <div className={styles.navbarTopInner}>
+            <div className={styles.logoSection} onClick={navigatetohome}>
+              <img
+                src={logonew || "/placeholder.svg"}
+                alt="Logo"
+                className={styles.logo}
               />
             </div>
-          </div>
 
-          {isLoggedIn === true && userName ? (
-            <div className={styles.mobileUserInfo}>
-              <span className={styles.greenDot}></span>
-              <span className={styles.userOnNav}>Welcome {userName?.user_name}</span>
-            </div>
-          ) : null}
+            <div className={styles.searchSection} ref={searchRef}>
+              <div className={styles.searchInputContainer}>
+                <FaSearch className={styles.searchIconTop} />
+                <input
+                  type="text"
+                  placeholder="Search pages, events, clubs..."
+                  value={searchQuery}
+                  onChange={handleSearch}
+                  className={styles.searchInput}
+                  onFocus={() => searchQuery.trim() && setShowResults(true)}
+                />
+              </div>
 
-          {/* Sidebar Navigation Items - Only shown on mobile */}
-          {isLoggedIn && isMobile && (
-            <div className={styles.mobileSidebarMenu}>
-              <h3 className={styles.mobileMenuHeading}>Navigation</h3>
-              {mobileMenuItems.map((route, index) => (
-                <div key={index} className={styles.mobileMenuItem}>
-                  {route.subRoutes ? (
-                    <div className={styles.mobileMenuWithSubmenu}>
-                      <div className={styles.mobileMenuParent} onClick={() => toggleSubmenu(index)}>
-                        <span className={styles.mobileMenuIcon}>{route.icon}</span>
-                        <span className={styles.mobileMenuText}>{route.name}</span>
-                        <FaChevronDown
-                          className={`${styles.submenuArrow} ${isSubmenuOpen[index] ? styles.rotated : ""}`}
-                        />
+              {showResults && (
+                <div className={styles.searchResultsDropdown}>
+                  <div className={styles.searchResultsHeader}>
+                    <span>Search Results</span>
+                    <button onClick={() => setShowResults(false)}>
+                      <FaTimes />
+                    </button>
+                  </div>
+                  <div className={styles.searchResultsList}>
+                    {filteredResults.length > 0 ? (
+                      filteredResults.map((result, index) => (
+                        <div
+                          key={index}
+                          className={styles.searchResultItem}
+                          onClick={() => handleResultClick(result.path)}
+                        >
+                          {result.title}
+                        </div>
+                      ))
+                    ) : (
+                      <div className={styles.noResultsFound}>
+                        No results found
                       </div>
-                      {renderSubMenu(route.subRoutes, index)}
-                    </div>
-                  ) : (
-                    <div
-                      className={styles.mobileMenuLink}
-                      onClick={() => {
-                        navigate(route.path)
-                        setIsMenuOpen(false)
-                      }}
-                    >
-                      <span className={styles.mobileMenuIcon}>{route.icon}</span>
-                      <span className={styles.mobileMenuText}>{route.name}</span>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              ))}
+              )}
             </div>
-          )}
 
-          <button className={styles.mobileLogoutButton} onClick={handleLoginLogout}>
-            <IoIosLogOut className={styles.mobileLogoutIcon} />
-            <div className={styles.mobileLogoutText}>
-              <div>{isLoggedIn ? "Log out" : "Login"}</div>
-              <div>
-                <TokenExpireTime onLogout={handleLogout} />
+            <div className={styles.userSection}>
+              {isLoggedIn ? (
+                <>
+                  <div className={styles.notificationIcon}>
+                    <FaRegBell />
+                    <span className={styles.notificationBadge}>2</span>
+                  </div>
+
+                  <div className={styles.userProfileSection}>
+                    <Dropdown menu={{ items }} trigger={["click"]}>
+                      <div className={styles.userProfileTrigger}>
+                        <div className={styles.userAvatarCircle}>
+                          {userName?.user_name?.charAt(0).toUpperCase()}
+                        </div>
+                        <div className={styles.userNameDisplay}>
+                          <span>{userName?.user_name}</span>
+                          <FaChevronDown className={styles.dropdownArrow} />
+                        </div>
+                      </div>
+                    </Dropdown>
+                  </div>
+
+                  <button
+                    onClick={handleLoginLogout}
+                    className={styles.logoutButton}
+                  >
+                    <IoIosLogOut />
+                    <span className={styles.logoutText}>Logout</span>
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleLoginLogout}
+                  className={styles.loginButton}
+                >
+                  Login
+                </button>
+              )}
+
+              <button className={styles.mobileMenuToggle} onClick={toggleMenu}>
+                {isMenuOpen ? <FaTimes /> : <FaBars />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {!isLoggedIn && (
+          <div className={styles.navbarBottom}>
+            <div className={styles.navbarBottomInner}>
+              <div className={styles.mainNavigation}>
+                {mainNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    className={`${styles.mainNavItem} ${
+                      activeTab === item.id ? styles.activeNavItem : ""
+                    }`}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      navigate(item.path);
+                    }}
+                  >
+                    <div className={styles.mainNavIcon}>{item.icon}</div>
+                    <span className={styles.mainNavLabel}>{item.label}</span>
+                    {activeTab === item.id && (
+                      <div className={styles.activeIndicator}></div>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              <div className={styles.actionButtons}>
+                {![
+                  "Admin",
+                  "Faculty Advisory",
+                  "Student Secretary",
+                  "Co Curricular Coordinator",
+                ].includes(userName?.role_name) && (
+                  <>
+                    <button
+                      onClick={() => navigate("/join-now")}
+                      className={styles.joinButton}
+                    >
+                      Join as Member
+                    </button>
+                    <button
+                      onClick={() => navigate("/Register-New-Entity")}
+                      className={styles.registerButton}
+                    >
+                      Register Entity
+                    </button>
+                  </>
+                )}
               </div>
             </div>
-          </button>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className={styles.mobileMenuOverlay}>
+         
+
+          <div className={styles.mobileMenuContent}>
+          <div className={styles.mobileMenuHeader}>
+            <button
+              className={styles.mobileMenuCloseButton}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <FaTimes />
+            </button>
+          </div>
+            {isLoggedIn ? (
+              <div className={styles.mobileUserProfile}>
+                <div className={styles.mobileUserAvatar}>
+                  {userName?.user_name?.charAt(0).toUpperCase()}
+                </div>
+                <div className={styles.mobileUserInfo}>
+                  <div className={styles.mobileUserName}>
+                    {userName?.user_name}
+                  </div>
+                  <div className={styles.mobileUserRole}>
+                    {userName?.role_name}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={handleLoginLogout}
+                className={styles.mobileLoginButton}
+              >
+                Login to Your Account
+              </button>
+            )}
+
+            <div className={styles.mobileSearch}>
+              <div className={styles.mobileSearchInputWrapper}>
+                <FaSearch className={styles.mobileSearchIcon} />
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className={styles.mobileSearchInput}
+                  value={searchQuery}
+                  onChange={handleSearch}
+                />
+              </div>
+            </div>
+
+            <div className={styles.mobileMainNav}>
+              {mainNavItems.map((item) => (
+                <button
+                  key={item.id}
+                  className={styles.mobileMainNavItem}
+                  onClick={() => {
+                    navigate(item.path);
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <div className={styles.mobileNavIcon}>{item.icon}</div>
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {![
+              "Admin",
+              "Faculty Advisory",
+              "Student Secretary",
+              "Co Curricular Coordinator",
+            ].includes(userName?.role_name) && (
+              <div className={styles.mobileActionButtons}>
+                <button
+                  onClick={() => navigate("/join-now")}
+                  className={styles.mobileJoinButton}
+                >
+                  Join as Member
+                </button>
+                <button
+                  onClick={() => navigate("/Register-New-Entity")}
+                  className={styles.mobileRegisterButton}
+                >
+                  Register Entity
+                </button>
+              </div>
+            )}
+
+            {isLoggedIn && mobileMenuItems.length > 0 && (
+              <div className={styles.mobileMenuItems}>
+                <div className={styles.mobileMenuTitle}>Navigation</div>
+                {mobileMenuItems.map((route, index) => (
+                  <div key={index} className={styles.mobileMenuItem}>
+                    {route.subRoutes ? (
+                      <div className={styles.mobileMenuWithSubmenu}>
+                        <div
+                          className={styles.mobileMenuParent}
+                          onClick={() => toggleSubmenu(index)}
+                        >
+                          <span className={styles.mobileMenuIcon}>
+                            {route.icon}
+                          </span>
+                          <span className={styles.mobileMenuText}>
+                            {route.name}
+                          </span>
+                          <FaChevronDown
+                            className={`${styles.submenuArrow} ${
+                              isSubmenuOpen[index] ? styles.rotated : ""
+                            }`}
+                          />
+                        </div>
+                        {renderSubMenu(route.subRoutes, index)}
+                      </div>
+                    ) : (
+                      <div
+                        className={styles.mobileMenuLink}
+                        onClick={() => {
+                          navigate(route.path);
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        <span className={styles.mobileMenuIcon}>
+                          {route.icon}
+                        </span>
+                        <span className={styles.mobileMenuText}>
+                          {route.name}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {isLoggedIn && (
+              <div className={styles.mobileLogoutSection}>
+                <button
+                  onClick={handleLogout}
+                  className={styles.mobileLogoutButton}
+                >
+                  <IoIosLogOut className={styles.mobileLogoutIcon} />
+                  <span>Logout</span>
+                </button>
+                <div className={styles.sessionInfo}>
+                  <TokenExpireTime onLogout={handleLogout} />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
+
       <CreditModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </nav>
-  )
-}
+    </>
+  );
+};
 
-export default NavBar
-
+export default NavBar;

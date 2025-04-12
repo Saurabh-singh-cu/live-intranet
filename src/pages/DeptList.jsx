@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Search, Users, Building, BookOpen, Clock, Eye } from "lucide-react";
+import { Search } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
-import cc1 from "../assets/images/hackthon.jpg";
-import cc2 from "../assets/images/c3.png";
-import "./ClubList.css";
-import {
-  MdGroup,
-  MdOutlineArrowBack,
-  MdOutlineOutlinedFlag,
-} from "react-icons/md";
-import { BsActivity } from "react-icons/bs";
+import { MdGroup, MdOutlineArrowBack } from "react-icons/md";
 import Scroller from "../components/Scroller";
 import Footer from "../components/Footer";
+import styles from "./ClubList.module.css";
 
 const DeptList = () => {
   const [societies, setSocieties] = useState([]);
@@ -46,7 +39,7 @@ const DeptList = () => {
   };
 
   const handleCardClick = (clubSociety) => {
-    navigate("/join-now-detailed-page", { state: { society: clubSociety, entity_id:2 } });
+    navigate("/join-now-detailed-page", { state: { society: clubSociety, entity_id: 2 } });
   };
 
   const handleBack = () => {
@@ -54,89 +47,70 @@ const DeptList = () => {
   };
 
   return (
-    <div className="club-container">
-      {/* Fixed Sidebar */}
-      <aside className="sidebar-list-card2h">
-        <div className="club-details-list">
-          <h2 className="entity-name-head"> Department Society</h2>
-          <p className="club-description">
-            Join our most active Department Society and participate in exciting
-            events and activities.
+    <div className={styles.container}>
+      <aside className={`${styles.sidebar} ${styles.departmentTheme}`}>
+        <div className={styles.sidebarContent}>
+          <h2 className={styles.entityTitle}>Department Society</h2>
+          <p className={styles.entityDescription}>
+            Join our most active Department Society and participate in exciting events and activities.
           </p>
-          {/* <div className="club-stats-list">
-            <div className="stat-item-list">
-              <MdGroup style={{ color: "white" }} size={20} />
-              <span className="member-list-count">
-             
-              </span>
-            </div>
-            <div className="stat-item-list">
-              <MdOutlineOutlinedFlag style={{ color: "white" }} size={20} />
-              <span>{societies.length} Department Society</span>
-            </div>
-            <div className="stat-item-list">
-              <BsActivity style={{ color: "white" }} size={20} />
-              <span>21 Activities</span>
-            </div>
-          </div> */}
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="main-content-list">
-        <div className="search-container-list">
-          <div className="search-wrapper-list">
-            <Search className="search-icon-list" />
+      <main className={styles.mainContent}>
+        <div className={styles.searchContainer}>
+          <div className={styles.searchWrapper}>
+            <Search className={styles.searchIcon} />
             <input
               type="text"
-              placeholder="Search clubs..."
+              placeholder="Search department societies..."
               value={searchTerm}
               onChange={handleSearch}
-              className="search-input"
+              className={styles.searchInput}
             />
           </div>
         </div>
-        <div className="back-button-card2h">
-          <button onClick={handleBack}>
-            <MdOutlineArrowBack />
-            Back
-          </button>
-        </div>
+        
+        <button onClick={handleBack} className={`${styles.backButton} ${styles.departmentThemeButton}`}>
+          <MdOutlineArrowBack />
+          <span>Back</span>
+        </button>
 
-        <div className="cards-grid-list">
-          { filteredSocieties?.length > 0 && filteredSocieties.map((clubSociety) => (
-            <div
-              key={clubSociety.registration_code}
-              className="club-card-list-card2h"
-              onClick={() => handleCardClick(clubSociety)}
-            >
-              <div className="club-numbers">
-                <div className="club-card-image-card2h">
-                  <h1>{clubSociety.registration_name?.charAt(0)}</h1>
-                </div>
-                <div className="card-content-list">
-                  <h3>{clubSociety.registration_name}</h3>
-                  <p style={{ fontWeight: "bold" }} className="club-location">
-                    Owner : {clubSociety.dept_name}
-                  </p>
-                  <div className="card-stats-list">
-                    <div className="stat">
-                      <MdGroup size={16} />
-                      <span>{clubSociety?.membership_count} Registered Member</span>
+        <div className={styles.cardsGrid}>
+          {filteredSocieties?.length > 0 &&
+            filteredSocieties.map((clubSociety) => (
+              <div
+                key={clubSociety.registration_code}
+                className={`${styles.card} ${styles.departmentThemeCard}`}
+                onClick={() => handleCardClick(clubSociety)}
+              >
+                <div className={styles.cardHeader}>
+                  <div className={`${styles.cardAvatar} ${styles.departmentThemeAvatar}`}>
+                    <h1>{clubSociety.registration_name?.charAt(0)}</h1>
+                  </div>
+                  <div className={styles.cardContent}>
+                    <h3 className={styles.cardTitle}>{clubSociety.registration_name}</h3>
+                    <p className={styles.cardOwner}>
+                      Owner: {clubSociety.dept_name}
+                    </p>
+                    <div className={styles.cardStats}>
+                      <div className={styles.stat}>
+                        <MdGroup className={styles.statIcon} />
+                        <span>{clubSociety?.membership_count} Registered Member</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="tags"></div>
                 </div>
+                <div className={`${styles.cardAction} ${styles.departmentThemeAction}`}>Know More</div>
               </div>
-              <div className="price">Know More</div>
-            </div>
-          ))}
+            ))}
         </div>
 
-        <div className="scroller-i">
+        <div className={styles.scrollerWrapper}>
           <Scroller />
         </div>
       </main>
+
       <Footer theme="deptTheme" />
     </div>
   );

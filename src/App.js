@@ -57,7 +57,9 @@ import RegisteredMemberList from "./student/RegisteredMemberList";
 import ProfilePictureCards from "./student/ProfilePictureCard";
 import SideBar from "./components/Sidebar/SideBar";
 import PushNotification from "./pages/PushNotification";
-import DPRConfiguration from "./DPR/DPRConfiguration";
+
+import NewDashboard from "./NewDashboard/NewDashboard";
+
 
 function AppContent() {
   const location = useLocation();
@@ -177,10 +179,7 @@ function AppContent() {
             isExecutive) && <SideBar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />}
         <div style={{ flex: 1 }}>
           <Routes>
-          <Route
-              path="/DPR-configuration-settings"
-              element={<DPRConfiguration/>}
-            />
+         
             <Route
               path="/"
               element={<Dashboard onShowLogin={handleShowLogin} />}
@@ -349,6 +348,10 @@ function AppContent() {
             <Route
               path="/home"
               element={<Home onShowLogin={handleShowLogin} />}
+            />
+            <Route
+              path="/home-new-dashboard-testing"
+              element={<NewDashboard  />}
             />
             <Route
               path="/student-secretary-dashboard"
