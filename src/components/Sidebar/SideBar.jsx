@@ -33,6 +33,7 @@ import {
   BsFillCCircleFill,
   BsFillExplicitFill,
 } from "react-icons/bs";
+import { GiNewspaper } from "react-icons/gi";
 import styles from "./Sidebar.module.css";
 
 const routes = [
@@ -110,6 +111,12 @@ const routes = [
     path: "/push-notification",
     name: "Push Notification",
     icon: <AiFillNotification />,
+    allowedRoles: ["Admin"],
+  },
+  {
+    path: "/push-news-views",
+    name: "Push News & Views",
+    icon: <GiNewspaper />,
     allowedRoles: ["Admin"],
   },
   {

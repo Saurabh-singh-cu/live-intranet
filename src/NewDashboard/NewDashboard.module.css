@@ -33,7 +33,7 @@
 /* Dashboard Container */
 .dashboardContainer {
   padding: 24px;
-  padding-top: 9rem;
+  /* padding-top: 9rem; */
   background-color: #f8fafc;
   background-image: linear-gradient(to right, lab(91.84% -0.19 -4.46 / 0.7) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(224, 229, 238, 0.7) 1px, transparent 1px);
@@ -43,6 +43,13 @@
     "Helvetica Neue", sans-serif;
   position: relative;
   font-size: var(--base-font-size);
+}
+
+.dashboardContainerLoggedOut {
+  padding-top: 9rem;
+}
+.dashboardContainerLoggedIn {
+  padding-top: 4rem;
 }
 
 /* Add overlay for depth */
@@ -136,6 +143,34 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* Category Filters */
+.categoryFilters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.categoryButton {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+.categoryButton:hover {
+  background-color: #e0e0e0;
+}
+
+.activeCategory {
+  background-color: #ff7e5f;
+  color: white;
+}
+
 /* Metrics Section */
 .metricsSection {
   grid-column: 2;
@@ -151,6 +186,7 @@
   gap: 16px;
   justify-content: center;
   align-items: center;
+  padding: 22px;
 }
 
 .metricCard {
@@ -174,6 +210,12 @@
 }
 
 .card2 {
+  background: linear-gradient(135deg, #7f7fd5, #86a8e7, #91eae4);
+  color: white;
+}
+
+.card3 {
+  
   background: linear-gradient(135deg, #7f7fd5, #86a8e7, #91eae4);
   color: white;
 }
@@ -285,7 +327,7 @@
 .sectionHeader h2 {
   font-size: 1.4rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #5f5c56;
   margin: 0;
 }
 
@@ -394,6 +436,20 @@
   z-index: 10;
 }
 
+.publicBadge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: #4caf50;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+  z-index: 10;
+}
+
 .announcementCardContent {
   width: 40%;
   padding: 24px;
@@ -413,6 +469,11 @@
 
 .prioritylow {
   border-left: 4px solid #2ed573;
+}
+
+.publicNotification {
+  border-left: 4px solid #4caf50;
+  background-color: #f0fff0;
 }
 
 .announcementTitle {
@@ -485,7 +546,7 @@
 .monthButton {
   background: none;
   border: none;
-  color: #666;
+  color: #5f5c56;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -494,7 +555,12 @@
   border-radius: 50%;
   transition: all 0.2s ease;
 }
-
+.monthButton h2 {
+  color: #5f5c56;
+}
+.monthSelector h2 {
+  color: #5f5c56;
+}
 .monthButton:hover {
   background-color: #f5f5f5;
   color: #333;
@@ -618,105 +684,6 @@
   min-height: 300px;
 }
 
-/* Appointment Content */
-.appointmentContent {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.appointmentItem {
-  padding: 16px;
-  border-radius: 12px;
-  background-color: #f9f9f9;
-  transition: all 0.2s ease;
-}
-
-.appointmentItem:hover {
-  background-color: #f0f4f8;
-  transform: translateY(-2px);
-}
-
-.appointmentHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 8px;
-}
-
-.appointmentHeader h3 {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #333;
-  margin: 0;
-  flex: 1;
-  padding-right: 12px;
-}
-
-.appointmentTime {
-  font-size: 0.85rem;
-  color: #777;
-  white-space: nowrap;
-}
-
-.appointmentFrom {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0;
-}
-
-/* Section Content */
-.sectionContent {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.sectionItem {
-  padding: 16px;
-  border-radius: 12px;
-  background-color: #f9f9f9;
-  transition: all 0.2s ease;
-}
-
-.sectionItem:hover {
-  background-color: #f0f4f8;
-  transform: translateY(-2px);
-}
-
-.sectionHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.sectionHeader h3 {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #333;
-  margin: 0;
-}
-
-.sectionBadge {
-  background-color: #ff7e5f;
-  color: white;
-  font-size: 0.8rem;
-  font-weight: 600;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sectionDescription {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0;
-}
-
 /* Announcement Tab Content */
 .announcementTabContent {
   display: flex;
@@ -752,6 +719,15 @@
 
 .announcementTabBadge {
   background-color: #ff7e5f;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.publicNotificationBadge {
+  background-color: #4caf50;
   color: white;
   font-size: 0.8rem;
   font-weight: 600;
@@ -1471,7 +1447,7 @@
   .contentGrid {
     grid-template-columns: 1fr;
   }
-  .contentGridSecond{
+  .contentGridSecond {
     grid-template-columns: 1fr;
   }
 
@@ -1593,6 +1569,11 @@
     font-size: var(--content-font-size);
     line-height: 1.5;
   }
+
+  .categoryFilters {
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1608,7 +1589,7 @@
   .contentGrid {
     gap: 16px;
   }
-  .contentGridSecond{
+  .contentGridSecond {
     gap: 16px;
   }
 
@@ -1702,4 +1683,72 @@
   .announcementModalInfoItem {
     font-size: 0.95rem;
   }
+
+  .categoryFilters {
+    flex-wrap: wrap;
+  }
+
+  .categoryButton {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+  }
+}
+/* Category filter styles */
+.categoryFilters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.categoryButton {
+  background-color: #f5f5f5;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.categoryButton:hover {
+  background-color: #e0e0e0;
+}
+
+.activeCategory {
+  background-color: #ff7e5f;
+  color: white;
+}
+
+.unreadBadge {
+  background-color: #ff4757;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+}
+
+.newIndicator {
+  background-color: #ff4757;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+.unreadItem {
+  border-left: 3px solid #ff4757;
 }

@@ -56,9 +56,13 @@ import PublishYourEvent from "./faculty/PublishYourEvent";
 import RegisteredMemberList from "./student/RegisteredMemberList";
 import ProfilePictureCards from "./student/ProfilePictureCard";
 import SideBar from "./components/Sidebar/SideBar";
-import PushNotification from "./pages/PushNotification";
+
 
 import NewDashboard from "./NewDashboard/NewDashboard";
+import PushNotification from "./pages/PushNotiAndNews/PushNotification";
+import PushNewsAndViews from "./pages/PushNotiAndNews/PushNewsAndViews";
+import NewAdminDashboard from "./Admin/Dashboard/NewAdminDashboard";
+
 
 
 function AppContent() {
@@ -182,7 +186,8 @@ function AppContent() {
          
             <Route
               path="/"
-              element={<Dashboard onShowLogin={handleShowLogin} />}
+              // element={<Dashboard onShowLogin={handleShowLogin} />}
+              element={<NewDashboard onShowLogin={handleShowLogin} />}
             />
             <Route
               path="/dummy"
@@ -192,7 +197,7 @@ function AppContent() {
               path="/admin-dashboard"
               element={
                 <ProtectedRoute allowedRoles={["Admin"]} user={user}>
-                  <AdminDashboard />
+                  <NewAdminDashboard />
                 </ProtectedRoute>
               }
             />
@@ -275,6 +280,14 @@ function AppContent() {
               }
             />
             <Route
+              path="//push-news-views"
+              element={
+                <ProtectedRoute allowedRoles={["Admin"]} user={user}>
+                  <PushNewsAndViews />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/event-approval-request"
               element={
                 <ProtectedRoute allowedRoles={["Admin"]} user={user}>
@@ -347,7 +360,8 @@ function AppContent() {
 
             <Route
               path="/home"
-              element={<Home onShowLogin={handleShowLogin} />}
+              // element={<Home onShowLogin={handleShowLogin} />}
+              element={<NewDashboard onShowLogin={handleShowLogin} />}
             />
             <Route
               path="/home-new-dashboard-testing"
@@ -355,6 +369,7 @@ function AppContent() {
             />
             <Route
               path="/student-secretary-dashboard"
+              // element={<Dashboard onShowLogin={handleShowLogin} />}
               element={<Dashboard onShowLogin={handleShowLogin} />}
             />
             <Route
@@ -399,7 +414,8 @@ function AppContent() {
                   {isLoggedIn ? (
                     <Users />
                   ) : (
-                    <Dashboard onShowLogin={handleShowLogin} />
+                    // <Dashboard onShowLogin={handleShowLogin} />
+                    <NewDashboard onShowLogin={handleShowLogin} />
                   )}
                 </ProtectedRoute>
               }
@@ -419,7 +435,8 @@ function AppContent() {
                   {isLoggedIn ? (
                     <EntityTable />
                   ) : (
-                    <Dashboard onShowLogin={handleShowLogin} />
+                    // <Dashboard onShowLogin={handleShowLogin} />
+                    <NewDashboard onShowLogin={handleShowLogin} />
                   )}
                 </ProtectedRoute>
               }

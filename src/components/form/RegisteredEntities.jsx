@@ -10,6 +10,7 @@ import mail from "../../assets/images/mail.png";
 import "./EntityTable.css";
 import axios from "axios";
 import apiClient from "../../config/apiClient";
+import Swal from "sweetalert2";
 
 function RegisteredEntities() {
   const [entities, setEntities] = useState([]);
@@ -26,7 +27,7 @@ function RegisteredEntities() {
   const [viewMoreDrawerVisible, setViewMoreDrawerVisible] = useState(false);
   const [selectedEntityDetails, setSelectedEntityDetails] = useState(null);
   const [departments, setDepartments] = useState([]);
-  const [entityTypes, setEntityTypes] = useState([])
+  const [entityTypes, setEntityTypes] = useState([]);
 
   useEffect(() => {
     apiClient
@@ -43,8 +44,8 @@ function RegisteredEntities() {
       try {
         const parsedUser = JSON.parse(userData);
         setUser(parsedUser);
-        fetchDepartments()
-        fetchEntityTypes()
+        fetchDepartments();
+        fetchEntityTypes();
       } catch (error) {
         console.error("Error parsing user data:", error);
         localStorage.removeItem("user");
@@ -84,45 +85,53 @@ function RegisteredEntities() {
   //     });
   // };
   const onFinish = async (values) => {
-  
     try {
       // Ensure the date is in 'YYYY-MM-DD' format before sending
       if (values.proposed_date) {
-        values.proposed_date = values.proposed_date.format("YYYY-MM-DD")
+        values.proposed_date = values.proposed_date.format("YYYY-MM-DD");
       }
 
       // Find the entity and department names for display
-      const selectedEntity = entityTypes.find((entity) => entity.entity_id === values.entity_id)
-      const selectedDepartment = departments.find((dept) => dept.department === values.department)
+      const selectedEntity = entityTypes.find(
+        (entity) => entity.entity_id === values.entity_id
+      );
+      const selectedDepartment = departments.find(
+        (dept) => dept.department === values.department
+      );
 
       // Store the names for display in the table
-      values.entity_name = selectedEntity ? selectedEntity.entity_name : ""
-      values.department_name = selectedDepartment ? selectedDepartment.dept_name : ""
+      values.entity_name = selectedEntity ? selectedEntity.entity_name : "";
+      values.department_name = selectedDepartment
+        ? selectedDepartment.dept_name
+        : "";
 
       // Send the request
-      const response = await apiClient.put(`update-entity/${editingEntity.reg_id}/`, values)
+      const response = await apiClient.put(
+        `update-entity/${editingEntity.reg_id}/`,
+        values
+      );
 
       if (response.status === 200) {
-        message.success("Entity updated successfully")
+        message.success("Entity updated successfully");
 
         setEntities((prevEntities) =>
           prevEntities.map((entity) =>
-            entity.entcr_id === editingEntity.entcr_id ? { ...entity, ...values } : entity,
-          ),
-        )
+            entity.entcr_id === editingEntity.entcr_id
+              ? { ...entity, ...values }
+              : entity
+          )
+        );
 
-        onDrawerClose()
-       
+        onDrawerClose();
       } else {
-        message.error("Failed to update entity")
+        message.error("Failed to update entity");
       }
     } catch (error) {
-      console.error("Error updating entity:", error)
-      message.error("An error occurred while updating entity")
+      console.error("Error updating entity:", error);
+      message.error("An error occurred while updating entity");
     } finally {
-      
     }
-  }
+  };
   const fetchDepartments = async () => {
     try {
       const response = await apiClient.get("departments/");
@@ -134,12 +143,12 @@ function RegisteredEntities() {
 
   const fetchEntityTypes = async () => {
     try {
-      const response = await apiClient.get("entity-types/")
-      setEntityTypes(response.data)
+      const response = await apiClient.get("entity-types/");
+      setEntityTypes(response.data);
     } catch (error) {
-      console.error("Error fetching entity types:", error)
+      console.error("Error fetching entity types:", error);
     }
-  }
+  };
 
   const handleSendMail = useCallback(
     (params) => {
@@ -416,6 +425,34 @@ function RegisteredEntities() {
     );
   };
 
+  const bulkUploadUser = async () => {
+    try {
+      const response = await apiClient.post("/api/bulk-upload-users/");
+      if (response?.status === 201) {
+        message.success("User uploaded successfully");
+        Swal.fire({
+          icon: "success",
+          title: "User uploaded successfully",
+          text: "User creation process completed",
+        });
+      } else {
+        message.error("Failed to upload user");
+        Swal.fire({
+          icon: "error",
+          title: "Something went wrong!",
+          text: "Please try again later.",
+        })
+      }
+    } catch (error) {
+      console.error("Error uploading user:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong!",
+        text: "Please try again later.",
+      })
+    }
+  };
+
   return (
     <div className="entity-table-container">
       <div className="table-header-entity">
@@ -426,7 +463,9 @@ function RegisteredEntities() {
           <button className="clear-button" onClick={downloadCSV}>
             Download CSV
           </button>
-          <button className="clear-button">Add Entity</button>
+          <button onClick={bulkUploadUser} className="clear-button">
+            Bulk Upload User
+          </button>
         </div>
       </div>
       <div style={{ height: "20vh", width: "100%" }}>

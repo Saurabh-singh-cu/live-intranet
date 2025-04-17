@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import {
   ChevronDown,
   ChevronUp,
@@ -14,38 +14,46 @@ import {
   MessageCircle,
   Flag,
   Info,
-} from "lucide-react"
-import styles from "./NewDashboard.module.css"
-import cf from "../assets/images/cf.jpg"
-import am from "../assets/images/am.jpg"
+} from "lucide-react";
+import styles from "./NewDashboard.module.css";
+import cf from "../assets/images/cf.jpg";
+import am from "../assets/images/am.jpg";
 import not1 from "../assets/images/not1.png";
 import not2 from "../assets/images/not2.png";
+import apiClient from "../config/apiClient";
 
 const NewDashboard = () => {
-  const [activeAccordion, setActiveAccordion] = useState(null)
-  const [currentMonth, setCurrentMonth] = useState("April")
-  const [currentYear, setCurrentYear] = useState(2025)
-  const [showCalendarModal, setShowCalendarModal] = useState(false)
-  const [showAnnouncementModal, setShowAnnouncementModal] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(null)
-  const [selectedEvent, setSelectedEvent] = useState(null)
-  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null)
-  const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0)
-  const [activeTab, setActiveTab] = useState("appointment")
-  const [currentNewsIndex, setCurrentNewsIndex] = useState(0)
+  const [activeAccordion, setActiveAccordion] = useState(null);
+  const [currentMonth, setCurrentMonth] = useState("April");
+  const [currentYear, setCurrentYear] = useState(2025);
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
+  const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+  const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState("announcement");
+  const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
+  const [activeCategory, setActiveCategory] = useState(null);
   const [entityCounts, setEntityCounts] = useState({
     club: 0,
     departmentSociety: 0,
     professionalSociety: 0,
     community: 0,
-  })
+  });
+  const [publicNotifications, setPublicNotifications] = useState([]);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [categorie, setCategorie] = useState([])
+  const [newsAndViews, setNewsAndViews] = useState([])
 
   // Fetch entity counts from API
   useEffect(() => {
     const fetchEntityCounts = async () => {
       try {
-        const response = await fetch("https://api.cuintranet.in/intranetapp/entity_count/")
-        const data = await response.json()
+        const response = await fetch(
+          "http://172.17.2.247:8080/intranetapp/entity_count/"
+        );
+        const data = await response.json();
 
         // Map the API response to our state structure
         const counts = {
@@ -53,35 +61,38 @@ const NewDashboard = () => {
           departmentSociety: 0,
           professionalSociety: 0,
           community: 0,
-        }
+        };
 
         data.forEach((item) => {
           if (item.entity_name === "CLUB") {
-            counts.club = item.entity_count
+            counts.club = item.entity_count;
           } else if (item.entity_name === "DEPARTMENT SOCIETY") {
-            counts.departmentSociety = item.entity_count
+            counts.departmentSociety = item.entity_count;
           } else if (item.entity_name === "PROFESSIONAL SOCIETY") {
-            counts.professionalSociety = item.entity_count
+            counts.professionalSociety = item.entity_count;
           } else if (item.entity_name === "COMMUNITY") {
-            counts.community = item.entity_count
+            counts.community = item.entity_count;
           }
-        })
+        });
 
-        setEntityCounts(counts)
+        setEntityCounts(counts);
       } catch (error) {
-        console.error("Error fetching entity counts:", error)
+        console.error("Error fetching entity counts:", error);
       }
-    }
+    };
 
-    fetchEntityCounts()
-  }, [])
+    fetchEntityCounts();
+    getPublicNotifications();
+    getNewsAndViews()
+  }, []);
 
   // Mock data for demonstration
   const announcements = [
     {
       id: 1,
       title: "Meet The Shark",
-      content: "Join us for an exclusive session with Anupam Mittal, Founder & CEO of Shaadi.com",
+      content:
+        "Join us for an exclusive session with Anupam Mittal, Founder & CEO of Shaadi.com",
       from: "Professional Society: E-Cell",
       messageTime: "2hr ago",
       priority: "high",
@@ -96,7 +107,8 @@ const NewDashboard = () => {
     {
       id: 2,
       title: "Group Project Discussion",
-      content: "Group Project Discussion going to be held today at 4PM near C3 Block.",
+      content:
+        "Group Project Discussion going to be held today at 4PM near C3 Block.",
       from: "Student Secretary: CAC",
       messageTime: "3hr ago",
       priority: "medium",
@@ -124,7 +136,8 @@ const NewDashboard = () => {
     {
       id: 4,
       title: "DCPD Workshop",
-      content: "Mandatory DCPD workshop going to be organized by Career Department.",
+      content:
+        "Mandatory DCPD workshop going to be organized by Career Department.",
       from: "HOD: CSE 3rd Year",
       messageTime: "1 day ago",
       priority: "medium",
@@ -135,7 +148,7 @@ const NewDashboard = () => {
       time: "10:00 AM - 2:00 PM",
       location: "Main Auditorium",
     },
-  ]
+  ];
 
   const discussions = [
     {
@@ -148,21 +161,24 @@ const NewDashboard = () => {
       title: "Community",
       participants: ["A", "Q", "S"],
       additionalCount: 3,
-      content: "Discussion forum for all Chandigarh University Student Tech Community & Community.",
+      content:
+        "Discussion forum for all Chandigarh University Student Tech Community & Community.",
     },
     {
       title: "Department Society",
       participants: ["C", "D", "P", "J"],
       additionalCount: 2,
-      content: "Discussion forum for all Chandigarh University Student Department Society.",
+      content:
+        "Discussion forum for all Chandigarh University Student Department Society.",
     },
     {
       title: "Professional Society (Student Chapters)",
       participants: ["C", "S"],
       additionalCount: 2,
-      content: "Discussion forum for all Chandigarh University Student Chapters.",
+      content:
+        "Discussion forum for all Chandigarh University Student Chapters.",
     },
-  ]
+  ];
 
   const events = [
     {
@@ -235,12 +251,13 @@ const NewDashboard = () => {
       attendees: ["user11", "user12"],
       color: "#34A853",
     },
-  ]
+  ];
 
   const newsItems = [
     {
       id: 1,
-      title: "Chandigarh University becomes India's First ABET Accredited Private University",
+      title:
+        "Chandigarh University becomes India's First ABET Accredited Private University",
       content:
         "CU has earned the Accreditation Board for Engineering and Technology (ABET) recognition for its nine engineering programmes, highest in India.",
       image: cf,
@@ -265,161 +282,288 @@ const NewDashboard = () => {
       date: "April 2, 2025",
       category: "Event",
     },
-  ]
+  ];
 
   // Calendar data generation
-  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   // Generate calendar days for current month
   const generateCalendarDays = () => {
-    const year = currentYear
-    const month = new Date(`${currentMonth} 1, ${currentYear}`).getMonth()
+    const year = currentYear;
+    const month = new Date(`${currentMonth} 1, ${currentYear}`).getMonth();
 
-    const firstDay = new Date(year, month, 1).getDay()
-    const daysInMonth = new Date(year, month + 1, 0).getDate()
-    const daysInPrevMonth = new Date(year, month, 0).getDate()
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
 
-    const calendarDays = []
+    const calendarDays = [];
 
     // Previous month days
     for (let i = firstDay - 1; i >= 0; i--) {
       calendarDays.push({
         day: daysInPrevMonth - i,
-        month: month === 0 ? "December" : new Date(year, month - 1, 1).toLocaleString("default", { month: "long" }),
+        month:
+          month === 0
+            ? "December"
+            : new Date(year, month - 1, 1).toLocaleString("default", {
+                month: "long",
+              }),
         current: false,
         events: [],
-      })
+      });
     }
 
     // Current month days
     for (let i = 1; i <= daysInMonth; i++) {
-      const date = new Date(year, month, i)
-      const dateString = date.toISOString().split("T")[0]
+      const date = new Date(year, month, i);
+      const dateString = date.toISOString().split("T")[0];
 
       calendarDays.push({
         day: i,
         month: currentMonth,
         current: true,
         events: events.filter((event) => event.date === dateString),
-      })
+      });
     }
 
     // Next month days
-    const remainingDays = 42 - calendarDays.length // 6 rows of 7 days
+    const remainingDays = 42 - calendarDays.length; // 6 rows of 7 days
     for (let i = 1; i <= remainingDays; i++) {
       calendarDays.push({
         day: i,
-        month: month === 11 ? "January" : new Date(year, month + 1, 1).toLocaleString("default", { month: "long" }),
+        month:
+          month === 11
+            ? "January"
+            : new Date(year, month + 1, 1).toLocaleString("default", {
+                month: "long",
+              }),
         current: false,
         events: [],
-      })
+      });
     }
 
-    return calendarDays
-  }
+    return calendarDays;
+  };
 
-  const calendarDays = generateCalendarDays()
+  const calendarDays = generateCalendarDays();
 
   const toggleAccordion = (index) => {
-    setActiveAccordion(activeAccordion === index ? null : index)
-  }
+    setActiveAccordion(activeAccordion === index ? null : index);
+  };
 
   const handlePrevMonth = () => {
-    const date = new Date(`${currentMonth} 1, ${currentYear}`)
-    date.setMonth(date.getMonth() - 1)
-    setCurrentMonth(date.toLocaleString("default", { month: "long" }))
-    setCurrentYear(date.getFullYear())
-  }
+    const date = new Date(`${currentMonth} 1, ${currentYear}`);
+    date.setMonth(date.getMonth() - 1);
+    setCurrentMonth(date.toLocaleString("default", { month: "long" }));
+    setCurrentYear(date.getFullYear());
+  };
 
   const handleNextMonth = () => {
-    const date = new Date(`${currentMonth} 1, ${currentYear}`)
-    date.setMonth(date.getMonth() + 1)
-    setCurrentMonth(date.toLocaleString("default", { month: "long" }))
-    setCurrentYear(date.getFullYear())
-  }
+    const date = new Date(`${currentMonth} 1, ${currentYear}`);
+    date.setMonth(date.getMonth() + 1);
+    setCurrentMonth(date.toLocaleString("default", { month: "long" }));
+    setCurrentYear(date.getFullYear());
+  };
 
   const handleDateClick = (day) => {
-    setSelectedDate(day)
-    setShowCalendarModal(true)
-  }
+    setSelectedDate(day);
+    setShowCalendarModal(true);
+  };
 
   const handleEventClick = (event) => {
-    setSelectedEvent(event)
-  }
+    setSelectedEvent(event);
+  };
 
   const handleAnnouncementClick = (announcement) => {
-    setSelectedAnnouncement(announcement)
-    setShowAnnouncementModal(true)
-  }
+    setSelectedAnnouncement(announcement);
+    setShowAnnouncementModal(true);
+  };
 
   const closeModal = () => {
-    setShowCalendarModal(false)
-    setShowAnnouncementModal(false)
-    setSelectedEvent(null)
-  }
+    setShowCalendarModal(false);
+    setShowAnnouncementModal(false);
+    setSelectedEvent(null);
+  };
 
   const getRandomColor = () => {
-    const letters = "0123456789ABCDEF"
-    let color = "#"
+    const letters = "0123456789ABCDEF";
+    let color = "#";
     for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)]
+      color += letters[Math.floor(Math.random() * 16)];
     }
-    return color
-  }
+    return color;
+  };
 
   const nextAnnouncement = () => {
-    setCurrentAnnouncementIndex((prevIndex) => (prevIndex === announcements.length - 1 ? 0 : prevIndex + 1))
-  }
+    if (publicNotifications.length > 0) {
+      setCurrentAnnouncementIndex((prevIndex) =>
+        prevIndex === publicNotifications.length - 1 ? 0 : prevIndex + 1
+      );
+    } else {
+      setCurrentAnnouncementIndex((prevIndex) =>
+        prevIndex === announcements.length - 1 ? 0 : prevIndex + 1
+      );
+    }
+  };
 
   const prevAnnouncement = () => {
-    setCurrentAnnouncementIndex((prevIndex) => (prevIndex === 0 ? announcements.length - 1 : prevIndex - 1))
-  }
+    if (publicNotifications.length > 0) {
+      setCurrentAnnouncementIndex((prevIndex) =>
+        prevIndex === 0 ? publicNotifications.length - 1 : prevIndex - 1
+      );
+    } else {
+      setCurrentAnnouncementIndex((prevIndex) =>
+        prevIndex === 0 ? announcements.length - 1 : prevIndex - 1
+      );
+    }
+  };
 
   const nextNews = () => {
-    setCurrentNewsIndex((prevIndex) => (prevIndex === newsItems.length - 1 ? 0 : prevIndex + 1))
-  }
+    setCurrentNewsIndex((prevIndex) =>
+      prevIndex === newsItems.length - 1 ? 0 : prevIndex + 1
+    );
+  };
 
   const prevNews = () => {
-    setCurrentNewsIndex((prevIndex) => (prevIndex === 0 ? newsItems.length - 1 : prevIndex - 1))
-  }
+    setCurrentNewsIndex((prevIndex) =>
+      prevIndex === 0 ? newsItems.length - 1 : prevIndex - 1
+    );
+  };
 
   // Redirect functions
   const redirectToClubs = () => {
-    window.location.href = "/clubs"
-  }
+    window.location.href = "/clubs";
+  };
 
   const redirectToCommunities = () => {
-    window.location.href = "/communities"
-  }
+    window.location.href = "/communities";
+  };
 
   const redirectToDepartmentSociety = () => {
-    window.location.href = "/department-society"
-  }
+    window.location.href = "/department-society";
+  };
 
   const redirectToProfessionalSociety = () => {
-    window.location.href = "/professional-society"
+    window.location.href = "/professional-society";
+  };
+
+  const userData = () => {
+    const getUser = JSON.parse(localStorage.getItem("user"));
+    if (getUser?.user_name) {
+      setLoggedInUser(true);
+    } else {
+      setLoggedInUser(false);
+    }
+  };
+
+  useEffect(() => {
+    userData();
+  }, []);
+
+  // Format date to readable format
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  // Get time difference from now
+  const getTimeDifference = (dateString) => {
+    const now = new Date();
+    const date = new Date(dateString);
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHrs = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHrs / 24);
+
+    if (diffMins < 60) {
+      return `${diffMins}min ago`;
+    } else if (diffHrs < 24) {
+      return `${diffHrs}hr ago`;
+    } else {
+      return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+    }
+  };
+  const categories = [...new Set(publicNotifications.map((n) => n.category))];
+  useEffect(() => {
+    if (categories.length > 0 && !activeCategory) {
+      setActiveCategory(categories[0]);
+    }
+  }, [categories, activeCategory]);
+
+  const getPublicNotifications = async () => {
+    try {
+      const payload = {
+        role_id: [8],
+      }
+      const response = await apiClient.post("get-push-notifications/", payload)
+      const data = response.data
+
+      // Filter notifications with category "public"
+      const publicNotifs = data.filter((notification) => notification.roles[0] === 8)
+      console.log(publicNotifs, "NOOOOOO")
+      setPublicNotifications(publicNotifs)
+
+      // Extract unique categories
+      const uniqueCategories = [...new Set(publicNotifs.map((n) => n.category))]
+      setCategories(uniqueCategories)
+    } catch (error) {
+      console.error("Error fetching notifications:", error)
+    }
+  }
+
+  const getNewsAndViews = async () => {
+    try {
+      const response = await apiClient.get("news-and-views/active/")
+      const data = response.data
+      console.log("News and Views data:", data)
+      setNewsAndViews(data)
+    } catch (error) {
+      console.error("Error fetching news and views:", error)
+    }
   }
 
   return (
-    <div className={styles.dashboardContainer}>
+    <div
+      className={
+        loggedInUser
+          ? styles.dashboardContainerLoggedIn
+          : styles.dashboardContainerLoggedOut
+      }
+    >
       <div className={styles.contentGrid}>
         <div className={styles.announcementSection}>
           <div className={styles.sectionHeader}>
             <h2>Announcements</h2>
             <div className={styles.carouselControls}>
-              <button onClick={prevAnnouncement} className={styles.carouselButton}>
+              <button
+                onClick={prevAnnouncement}
+                className={styles.carouselButton}
+              >
                 <ChevronLeft size={20} />
               </button>
               <div className={styles.carouselIndicators}>
                 {announcements.map((_, index) => (
                   <span
                     key={index}
-                    className={`${styles.indicator} ${currentAnnouncementIndex === index ? styles.activeIndicator : ""}`}
+                    className={`${styles.indicator} ${
+                      currentAnnouncementIndex === index
+                        ? styles.activeIndicator
+                        : ""
+                    }`}
                     onClick={() => setCurrentAnnouncementIndex(index)}
                   ></span>
                 ))}
               </div>
-              <button onClick={nextAnnouncement} className={styles.carouselButton}>
+              <button
+                onClick={nextAnnouncement}
+                className={styles.carouselButton}
+              >
                 <ChevronRight size={20} />
               </button>
             </div>
@@ -428,12 +572,16 @@ const NewDashboard = () => {
           <div className={styles.announcementCarousel}>
             <div
               className={styles.announcementSlides}
-              style={{ transform: `translateX(-${currentAnnouncementIndex * 100}%)` }}
+              style={{
+                transform: `translateX(-${currentAnnouncementIndex * 100}%)`,
+              }}
             >
               {announcements.map((announcement, index) => (
                 <div
                   key={index}
-                  className={`${styles.announcementCard} ${styles[`priority${announcement.priority}`]}`}
+                  className={`${styles.announcementCard} ${
+                    styles[`priority${announcement.priority}`]
+                  }`}
                   onClick={() => handleAnnouncementClick(announcement)}
                 >
                   <div className={styles.announcementImageContainer}>
@@ -442,14 +590,26 @@ const NewDashboard = () => {
                       alt={announcement.title}
                       className={styles.announcementImage}
                     />
-                    {announcement.priority === "high" && <div className={styles.announcementBadge}>Important</div>}
+                    {announcement.priority === "high" && (
+                      <div className={styles.announcementBadge}>Important</div>
+                    )}
                   </div>
                   <div className={styles.announcementCardContent}>
-                    {announcement.title && <h3 className={styles.announcementTitle}>{announcement.title}</h3>}
-                    <p className={styles.announcementContent}>{announcement.content}</p>
+                    {announcement.title && (
+                      <h3 className={styles.announcementTitle}>
+                        {announcement.title}
+                      </h3>
+                    )}
+                    <p className={styles.announcementContent}>
+                      {announcement.content}
+                    </p>
                     <div className={styles.announcementFooter}>
-                      <span className={styles.announcementFrom}>{announcement.from}</span>
-                      <span className={styles.announcementTime}>{announcement.messageTime}</span>
+                      <span className={styles.announcementFrom}>
+                        {announcement.from}
+                      </span>
+                      <span className={styles.announcementTime}>
+                        {announcement.messageTime}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -460,7 +620,10 @@ const NewDashboard = () => {
 
         <div className={styles.metricsSection}>
           <div className={styles.metricCardsGrid}>
-            <div onClick={redirectToClubs} className={`${styles.metricCard} ${styles.card1}`}>
+            <div
+              onClick={redirectToClubs}
+              className={`${styles.metricCard} ${styles.card1}`}
+            >
               <div className={styles.cardContent}>
                 <div className={styles.cardInfo}>
                   <h2 className={styles.cardCount}>{entityCounts.club}</h2>
@@ -476,7 +639,10 @@ const NewDashboard = () => {
               <div className={styles.cardShine}></div>
             </div>
 
-            <div onClick={redirectToCommunities} className={`${styles.metricCard} ${styles.card2}`}>
+            <div
+              onClick={redirectToCommunities}
+              className={`${styles.metricCard} ${styles.card2}`}
+            >
               <div className={styles.cardContent}>
                 <div className={styles.cardInfo}>
                   <h2 className={styles.cardCount}>{entityCounts.community}</h2>
@@ -492,10 +658,15 @@ const NewDashboard = () => {
               <div className={styles.cardShine}></div>
             </div>
 
-            <div onClick={redirectToDepartmentSociety} className={`${styles.metricCard} ${styles.card3}`}>
+            <div
+              onClick={redirectToDepartmentSociety}
+              className={`${styles.metricCard} ${styles.card3}`}
+            >
               <div className={styles.cardContent}>
                 <div className={styles.cardInfo}>
-                  <h2 className={styles.cardCount}>{entityCounts.departmentSociety}</h2>
+                  <h2 className={styles.cardCount}>
+                    {entityCounts.departmentSociety}
+                  </h2>
                   <div className={styles.cardCategory}>CO-CURRICULAR</div>
                   <p className={styles.cardTitle}>Department Society</p>
                 </div>
@@ -520,11 +691,18 @@ const NewDashboard = () => {
               <div className={styles.cardShine}></div>
             </div>
 
-            <div onClick={redirectToProfessionalSociety} className={`${styles.metricCard} ${styles.card4}`}>
+            <div
+              onClick={redirectToProfessionalSociety}
+              className={`${styles.metricCard} ${styles.card4}`}
+            >
               <div className={styles.cardContent}>
                 <div className={styles.cardInfo}>
-                  <h2 className={styles.cardCount}>{entityCounts.professionalSociety}</h2>
-                  <div className={styles.cardCategory}>PROFESSIONAL SOCIETY</div>
+                  <h2 className={styles.cardCount}>
+                    {entityCounts.professionalSociety}
+                  </h2>
+                  <div className={styles.cardCategory}>
+                    PROFESSIONAL SOCIETY
+                  </div>
                   <p className={styles.cardTitle}>Student Chapters</p>
                 </div>
                 <div className={styles.cardIconContainer}>
@@ -549,17 +727,18 @@ const NewDashboard = () => {
             </div>
           </div>
         </div>
-
-       
       </div>
       <div className={styles.contentGridSecond}>
-      <div className={styles.calendarSection}>
-          <div className={styles.calendarHeader} onClick={() => setShowCalendarModal(true)}>
+        <div className={styles.calendarSection}>
+          <div
+            className={styles.calendarHeader}
+            onClick={() => setShowCalendarModal(true)}
+          >
             <div className={styles.monthSelector}>
               <button
                 onClick={(e) => {
-                  e.stopPropagation()
-                  handlePrevMonth()
+                  e.stopPropagation();
+                  handlePrevMonth();
                 }}
                 className={styles.monthButton}
               >
@@ -570,8 +749,8 @@ const NewDashboard = () => {
               </h2>
               <button
                 onClick={(e) => {
-                  e.stopPropagation()
-                  handleNextMonth()
+                  e.stopPropagation();
+                  handleNextMonth();
                 }}
                 className={styles.monthButton}
               >
@@ -593,16 +772,26 @@ const NewDashboard = () => {
             {calendarDays.slice(0, 35).map((day, index) => (
               <div
                 key={index}
-                className={`${styles.calendarDay} ${!day.current ? styles.otherMonth : ""} ${day.events.length > 0 ? styles.hasEvents : ""}`}
+                className={`${styles.calendarDay} ${
+                  !day.current ? styles.otherMonth : ""
+                } ${day.events.length > 0 ? styles.hasEvents : ""}`}
                 onClick={() => day.events.length > 0 && handleDateClick(day)}
               >
                 <span className={styles.dayNumber}>{day.day}</span>
                 {day.events.length > 0 && (
                   <div className={styles.eventIndicators}>
                     {day.events.slice(0, 3).map((event, i) => (
-                      <span key={i} className={styles.eventDot} style={{ backgroundColor: event.color }}></span>
+                      <span
+                        key={i}
+                        className={styles.eventDot}
+                        style={{ backgroundColor: event.color }}
+                      ></span>
                     ))}
-                    {day.events.length > 3 && <span className={styles.moreEvents}>+{day.events.length - 3}</span>}
+                    {day.events.length > 3 && (
+                      <span className={styles.moreEvents}>
+                        +{day.events.length - 3}
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
@@ -613,20 +802,6 @@ const NewDashboard = () => {
         <div className={styles.tabsSection}>
           <div className={styles.tabsHeader}>
             <div
-              className={`${styles.tab} ${activeTab === "appointment" ? styles.activeTab : ""}`}
-              onClick={() => setActiveTab("appointment")}
-            >
-              <Bell size={16} />
-              <span>Appointment Holder</span>
-            </div>
-            <div
-              className={`${styles.tab} ${activeTab === "section" ? styles.activeTab : ""}`}
-              onClick={() => setActiveTab("section")}
-            >
-              <Users size={16} />
-              <span>Section Management</span>
-            </div>
-            <div
               className={`${styles.tab} ${activeTab === "announcement" ? styles.activeTab : ""}`}
               onClick={() => setActiveTab("announcement")}
             >
@@ -636,73 +811,94 @@ const NewDashboard = () => {
           </div>
 
           <div className={styles.tabContent}>
-            {activeTab === "appointment" && (
-              <div className={styles.appointmentContent}>
-                <div className={styles.appointmentItem}>
-                  <div className={styles.appointmentHeader}>
-                    <h3>Club going to organize the workshop. Apply for Volunteer</h3>
-                    <span className={styles.appointmentTime}>2hr ago</span>
-                  </div>
-                  <p className={styles.appointmentFrom}>From: Faculty Advisor: Spectrum</p>
-                </div>
-                <div className={styles.appointmentItem}>
-                  <div className={styles.appointmentHeader}>
-                    <h3>Group Project Discussion going to be held today at 4PM near C3 Block.</h3>
-                    <span className={styles.appointmentTime}>3hr ago</span>
-                  </div>
-                  <p className={styles.appointmentFrom}>From: Student Secretary: CAC</p>
-                </div>
+            <div className={styles.categoryFilters}>
+              <div
+                className={`${styles.categoryButton} ${activeCategory === "all" ? styles.activeCategory : ""}`}
+                onClick={() => setActiveCategory("all")}
+              >
+                All ({publicNotifications.length})
+                {publicNotifications.filter((n) => !n.is_read).length > 0 && (
+                  <span className={styles.unreadBadge}>{publicNotifications.filter((n) => !n.is_read).length}</span>
+                )}
               </div>
-            )}
 
-            {activeTab === "section" && (
-              <div className={styles.sectionContent}>
-                <div className={styles.sectionItem}>
-                  <div className={styles.sectionHeader}>
-                    <h3>Section Management</h3>
-                    <span className={styles.sectionBadge}>2</span>
-                  </div>
-                  <p className={styles.sectionDescription}>Manage your sections and assign faculty members</p>
+              {categories.map((category) => (
+                <div
+                  key={category}
+                  className={`${styles.categoryButton} ${activeCategory === category ? styles.activeCategory : ""}`}
+                  onClick={() => setActiveCategory(category)}
+                >
+                  {category} ({publicNotifications.filter((n) => n.category === category).length})
+                  {publicNotifications.filter((n) => n.category === category && !n.is_read).length > 0 && (
+                    <span className={styles.unreadBadge}>
+                      {publicNotifications.filter((n) => n.category === category && !n.is_read).length}
+                    </span>
+                  )}
                 </div>
-                <div className={styles.sectionItem}>
-                  <div className={styles.sectionHeader}>
-                    <h3>Faculty Assignment</h3>
-                    <span className={styles.sectionBadge}>5</span>
-                  </div>
-                  <p className={styles.sectionDescription}>Assign faculty members to different sections</p>
-                </div>
-              </div>
-            )}
+              ))}
+            </div>
 
-            {activeTab === "announcement" && (
-              <div className={styles.announcementTabContent}>
+            <div className={styles.announcementTabContent}>
+              {activeCategory === "all" ? (
+                publicNotifications.length > 0 ? (
+                  publicNotifications.map((notification, index) => (
+                    <div
+                      key={index}
+                      className={`${styles.announcementTabItem} ${!notification.is_read ? styles.unreadItem : ""}`}
+                    >
+                      <div className={styles.announcementTabHeader}>
+                        <h3>
+                          {!notification.is_read && <span className={styles.newIndicator}>NEW</span>}
+                          {notification.message}
+                        </h3>
+                        <span className={styles.publicNotificationBadge}>{notification?.category}</span>
+                      </div>
+                      <p className={styles.announcementTabDescription}>{notification.message}</p>
+                      <div className={styles.announcementTabFooter}>
+                        <span>From: {getTimeDifference(notification.created_at)}</span>
+                        <button className={styles.viewDetailsButton}>End Date: {notification?.end_date}</button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className={styles.announcementTabItem}>
+                    <div className={styles.announcementTabHeader}>
+                      <h3>No announcements</h3>
+                    </div>
+                    <p className={styles.announcementTabDescription}>There are no announcements at this time.</p>
+                  </div>
+                )
+              ) : publicNotifications.filter((n) => n.category === activeCategory).length > 0 ? (
+                publicNotifications
+                  .filter((notification) => notification.category === activeCategory)
+                  .map((notification, index) => (
+                    <div
+                      key={index}
+                      className={`${styles.announcementTabItem} ${!notification.is_read ? styles.unreadItem : ""}`}
+                    >
+                      <div className={styles.announcementTabHeader}>
+                        <h3>
+                          {!notification.is_read && <span className={styles.newIndicator}>NEW</span>}
+                          {notification.message}
+                        </h3>
+                        <span className={styles.publicNotificationBadge}>{notification?.category}</span>
+                      </div>
+                      <p className={styles.announcementTabDescription}>{notification.message}</p>
+                      <div className={styles.announcementTabFooter}>
+                        <span>From: {getTimeDifference(notification.created_at)}</span>
+                        <button className={styles.viewDetailsButton}>End Date: {notification?.end_date}</button>
+                      </div>
+                    </div>
+                  ))
+              ) : (
                 <div className={styles.announcementTabItem}>
                   <div className={styles.announcementTabHeader}>
-                    <h3>New Club Registration</h3>
-                    <span className={styles.announcementTabBadge}>New</span>
+                    <h3>No announcements in this category</h3>
                   </div>
-                  <p className={styles.announcementTabDescription}>
-                    Registration for new clubs is now open. Apply before December 15th.
-                  </p>
-                  <div className={styles.announcementTabFooter}>
-                    <span>Faculty Advisor: Spectrum</span>
-                    <button className={styles.viewDetailsButton}>View Details</button>
-                  </div>
+                  <p className={styles.announcementTabDescription}>There are no announcements at this time.</p>
                 </div>
-                <div className={styles.announcementTabItem}>
-                  <div className={styles.announcementTabHeader}>
-                    <h3>DCPD Workshop</h3>
-                  </div>
-                  <p className={styles.announcementTabDescription}>
-                    Mandatory DCPD workshop going to be organized by Career Department.
-                  </p>
-                  <div className={styles.announcementTabFooter}>
-                    <span>HOD: CSE 3rd Year</span>
-                    <button className={styles.viewDetailsButton}>View Details</button>
-                  </div>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
 
@@ -715,30 +911,46 @@ const NewDashboard = () => {
             {discussions.map((discussion, index) => (
               <div key={index} className={styles.discussionItem}>
                 <button
-                  className={`${styles.discussionButton} ${activeAccordion === index ? styles.active : ""}`}
+                  className={`${styles.discussionButton} ${
+                    activeAccordion === index ? styles.active : ""
+                  }`}
                   onClick={() => toggleAccordion(index)}
                 >
-                  <span className={styles.discussionTitle}>{discussion.title}</span>
+                  <span className={styles.discussionTitle}>
+                    {discussion.title}
+                  </span>
                   <div className={styles.discussionMeta}>
                     <div className={styles.participantAvatars}>
                       {discussion.participants.map((letter, i) => (
-                        <div key={i} className={styles.avatar} style={{ backgroundColor: getRandomColor() }}>
+                        <div
+                          key={i}
+                          className={styles.avatar}
+                          style={{ backgroundColor: getRandomColor() }}
+                        >
                           {letter}
                         </div>
                       ))}
                       {discussion.additionalCount > 0 && (
-                        <span className={styles.additionalCount}>+{discussion.additionalCount}</span>
+                        <span className={styles.additionalCount}>
+                          +{discussion.additionalCount}
+                        </span>
                       )}
                     </div>
                     <span className={styles.accordionIcon}>
-                      {activeAccordion === index ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                      {activeAccordion === index ? (
+                        <ChevronUp size={18} />
+                      ) : (
+                        <ChevronDown size={18} />
+                      )}
                     </span>
                   </div>
                 </button>
                 {activeAccordion === index && (
                   <div className={styles.discussionContent}>
                     <p>{discussion.content}</p>
-                    <button className={styles.joinButton}>Join Discussion</button>
+                    <button className={styles.joinButton}>
+                      Join Discussion
+                    </button>
                   </div>
                 )}
               </div>
@@ -754,7 +966,7 @@ const NewDashboard = () => {
                 <ChevronLeft size={20} />
               </button>
               <div className={styles.carouselIndicators}>
-                {newsItems.map((_, index) => (
+                {(newsAndViews.length > 0 ? newsAndViews : newsItems).map((_, index) => (
                   <span
                     key={index}
                     className={`${styles.indicator} ${currentNewsIndex === index ? styles.activeIndicator : ""}`}
@@ -770,26 +982,55 @@ const NewDashboard = () => {
 
           <div className={styles.newsCarousel}>
             <div className={styles.newsSlides} style={{ transform: `translateX(-${currentNewsIndex * 100}%)` }}>
-              {newsItems.map((news, index) => (
-                <div key={index} className={styles.newsCard}>
-                  <div className={styles.newsImageContainer}>
-                    <img src={news.image || "/placeholder.svg"} alt={news.title} className={styles.newsImage} />
-                    <div className={styles.newsCategory}>{news.category}</div>
-                  </div>
-                  <div className={styles.newsCardContent}>
-                    <h3 className={styles.newsTitle}>{news.title}</h3>
-                    <p className={styles.newsContent}>{news.content}</p>
-                    <div className={styles.newsFooter}>
-                      <span className={styles.newsDate}>{news.date}</span>
-                      <button className={styles.readMoreButton}>Read More</button>
+              {newsAndViews.length > 0
+                ? newsAndViews.map((news, index) => (
+                    <div key={index} className={styles.newsCard}>
+                      <div className={styles.newsImageContainer}>
+                        {news.image ? (
+                          <img src={news.image_url || "/placeholder.svg"} alt={news.title} className={styles.newsImage} />
+                        ) : (
+                          <img
+                            src={news?.image_url}
+                            alt="Placeholder"
+                            className={styles.newsImage}
+                          />
+                        )}
+                        <div className={styles.newsCategory}>{news.category}</div>
+                      </div>
+                      <div className={styles.newsCardContent}>
+                        <h3 className={styles.newsTitle}>{news.title}</h3>
+                        <p className={styles.newsContent}>{news.content}</p>
+                        <div className={styles.newsFooter}>
+                          <span className={styles.newsDate}>{new Date(news.start_date).toLocaleDateString()}</span>
+                          <button className={styles.readMoreButton}>Read More</button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  ))
+                : // Use the mock news items as fallback if no data from API
+                  newsItems.map((news, index) => (
+                    <div key={index} className={styles.newsCard}>
+                      <div className={styles.newsImageContainer}>
+                        <img
+                          src={news.image || "/placeholder.svg?height=300&width=400"}
+                          alt={news.title}
+                          className={styles.newsImage}
+                        />
+                        <div className={styles.newsCategory}>{news.category}</div>
+                      </div>
+                      <div className={styles.newsCardContent}>
+                        <h3 className={styles.newsTitle}>{news.title}</h3>
+                        <p className={styles.newsContent}>{news.content}</p>
+                        <div className={styles.newsFooter}>
+                          <span className={styles.newsDate}>{news.date}</span>
+                          <button className={styles.readMoreButton}>Read More</button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
             </div>
           </div>
         </div>
-
       </div>
 
       {showCalendarModal && (
@@ -818,9 +1059,17 @@ const NewDashboard = () => {
                   {calendarDays.map((day, index) => (
                     <div
                       key={index}
-                      className={`${styles.modalCalendarDay} ${!day.current ? styles.modalOtherMonth : ""} 
+                      className={`${styles.modalCalendarDay} ${
+                        !day.current ? styles.modalOtherMonth : ""
+                      } 
                         ${day.events.length > 0 ? styles.modalHasEvents : ""} 
-                        ${selectedDate && selectedDate.day === day.day && selectedDate.month === day.month ? styles.modalSelectedDay : ""}`}
+                        ${
+                          selectedDate &&
+                          selectedDate.day === day.day &&
+                          selectedDate.month === day.month
+                            ? styles.modalSelectedDay
+                            : ""
+                        }`}
                       onClick={() => setSelectedDate(day)}
                     >
                       <span className={styles.modalDayNumber}>{day.day}</span>
@@ -834,7 +1083,9 @@ const NewDashboard = () => {
                             ></span>
                           ))}
                           {day.events.length > 3 && (
-                            <span className={styles.modalMoreEvents}>+{day.events.length - 3}</span>
+                            <span className={styles.modalMoreEvents}>
+                              +{day.events.length - 3}
+                            </span>
                           )}
                         </div>
                       )}
@@ -853,7 +1104,11 @@ const NewDashboard = () => {
                     selectedDate.events.map((event) => (
                       <div
                         key={event.id}
-                        className={`${styles.eventItem} ${selectedEvent?.id === event.id ? styles.selectedEvent : ""}`}
+                        className={`${styles.eventItem} ${
+                          selectedEvent?.id === event.id
+                            ? styles.selectedEvent
+                            : ""
+                        }`}
                         onClick={() => handleEventClick(event)}
                       >
                         <div className={styles.eventHeader}>
@@ -866,17 +1121,23 @@ const NewDashboard = () => {
                         <div className={styles.eventDetails}>
                           <div className={styles.eventAttendees}>
                             <div className={styles.attendeeAvatars}>
-                              {event.attendees.slice(0, 3).map((attendee, i) => (
-                                <div
-                                  key={i}
-                                  className={styles.attendeeAvatar}
-                                  style={{ backgroundColor: getRandomColor() }}
-                                >
-                                  {attendee.charAt(0).toUpperCase()}
-                                </div>
-                              ))}
+                              {event.attendees
+                                .slice(0, 3)
+                                .map((attendee, i) => (
+                                  <div
+                                    key={i}
+                                    className={styles.attendeeAvatar}
+                                    style={{
+                                      backgroundColor: getRandomColor(),
+                                    }}
+                                  >
+                                    {attendee.charAt(0).toUpperCase()}
+                                  </div>
+                                ))}
                               {event.attendees.length > 3 && (
-                                <span className={styles.moreAttendees}>+{event.attendees.length - 3}</span>
+                                <span className={styles.moreAttendees}>
+                                  +{event.attendees.length - 3}
+                                </span>
                               )}
                             </div>
                           </div>
@@ -885,16 +1146,27 @@ const NewDashboard = () => {
                         {selectedEvent?.id === event.id && (
                           <div className={styles.eventExpandedDetails}>
                             <div className={styles.ticketsInfo}>
-                              <span className={styles.ticketsLabel}>Tickets left:</span>
-                              <span className={styles.ticketsCount}>{event.ticketsLeft}</span>
+                              <span className={styles.ticketsLabel}>
+                                Tickets left:
+                              </span>
+                              <span className={styles.ticketsCount}>
+                                {event.ticketsLeft}
+                              </span>
                             </div>
                             <div className={styles.progressBar}>
                               <div
                                 className={styles.progressFill}
-                                style={{ width: `${Math.min(100, (event.ticketsLeft / 30) * 100)}%` }}
+                                style={{
+                                  width: `${Math.min(
+                                    100,
+                                    (event.ticketsLeft / 30) * 100
+                                  )}%`,
+                                }}
                               ></div>
                             </div>
-                            <button className={styles.registerButton}>Register Now</button>
+                            <button className={styles.registerButton}>
+                              Register Now
+                            </button>
                           </div>
                         )}
                       </div>
@@ -905,7 +1177,10 @@ const NewDashboard = () => {
                     </div>
                   ) : (
                     <div className={styles.noDateSelected}>
-                      <Calendar size={48} className={styles.calendarPlaceholderIcon} />
+                      <Calendar
+                        size={48}
+                        className={styles.calendarPlaceholderIcon}
+                      />
                       <p>Select a date from the calendar to view events</p>
                     </div>
                   )}
@@ -979,14 +1254,18 @@ const NewDashboard = () => {
                   <span>{selectedAnnouncement.from}</span>
                 </div>
 
-                {selectedAnnouncement.registerLink && <button className={styles.registerButton}>Register Now</button>}
+                {selectedAnnouncement.registerLink && (
+                  <button className={styles.registerButton}>
+                    Register Now
+                  </button>
+                )}
               </div>
             </div>
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default NewDashboard
+export default NewDashboard;

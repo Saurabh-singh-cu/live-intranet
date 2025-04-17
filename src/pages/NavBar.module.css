@@ -50,13 +50,13 @@
 }
 
 .searchInputContainer {
-  position: relative;
+  /* position: relative; */
   width: 100%;
 }
 
 .searchIconTop {
   position: absolute;
-  left: 1rem;
+  right: 1rem;
   top: 50%;
   transform: translateY(-50%);
   color: #9ca3af;

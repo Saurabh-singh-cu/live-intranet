@@ -1,0 +1,178 @@
+.tableContainer {
+    width: 100%;
+  }
+  
+  .tableFilters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  
+  .searchInput {
+    flex: 1;
+    padding: 10px 16px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .filterSelect {
+    padding: 10px 16px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    font-size: 14px;
+    min-width: 150px;
+  }
+  
+  .filterButton {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .filterButton:hover {
+    background-color: #5a6268;
+  }
+  
+  .dataTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .dataTable th,
+  .dataTable td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e1e4e8;
+  }
+  
+  .dataTable th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+  }
+  
+  .dataTable tr:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .statusApproved,
+  .statusRejected,
+  .statusPending {
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .statusApproved {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  .statusRejected {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+  
+  .statusPending {
+    background-color: #fff8e1;
+    color: #f57c00;
+  }
+  
+  .actionButtons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .approveButton,
+  .rejectButton,
+  .viewButton {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .approveButton {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  .approveButton:hover {
+    background-color: #c8e6c9;
+  }
+  
+  .rejectButton {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+  
+  .rejectButton:hover {
+    background-color: #ffcdd2;
+  }
+  
+  .viewButton {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  .viewButton:hover {
+    background-color: #bbdefb;
+  }
+  
+  .tablePagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .paginationButton {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .paginationButton:hover {
+    background-color: #e9ecef;
+  }
+  
+  .paginationNumbers {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .pageNumber {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: 1px solid #e1e4e8;
+    background-color: #f8f9fa;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .pageNumber:hover {
+    background-color: #e9ecef;
+  }
+  
+  .activePage {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+  }
+  
