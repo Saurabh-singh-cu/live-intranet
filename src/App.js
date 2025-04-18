@@ -62,6 +62,7 @@ import NewDashboard from "./NewDashboard/NewDashboard";
 import PushNotification from "./pages/PushNotiAndNews/PushNotification";
 import PushNewsAndViews from "./pages/PushNotiAndNews/PushNewsAndViews";
 import NewAdminDashboard from "./Admin/Dashboard/NewAdminDashboard";
+import MembershipAll from "./Admin/Dashboard/MembersPage/MembershipAll";
 
 
 
@@ -198,6 +199,14 @@ function AppContent() {
               element={
                 <ProtectedRoute allowedRoles={["Admin"]} user={user}>
                   <NewAdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/membership-and-cluster"
+              element={
+                <ProtectedRoute allowedRoles={["Admin"]} user={user}>
+                  <MembershipAll />
                 </ProtectedRoute>
               }
             />

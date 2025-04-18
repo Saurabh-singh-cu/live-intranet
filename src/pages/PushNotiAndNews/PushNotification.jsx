@@ -472,7 +472,7 @@ const PushNotification = () => {
 
   return (
     <div className={styles.dashboardContainer}>
-      {/* Toast Notification */}
+    
       <Toast
         show={toast.show}
         type={toast.type}

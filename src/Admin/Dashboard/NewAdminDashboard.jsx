@@ -151,6 +151,19 @@ const NewAdminDashboard = () => {
     // In a real app, you would fetch all the other data here using apiClient
   }, [])
 
+  const getMembers = async() => {
+    try{
+      const payload = {
+        reg_id: regId,
+        entity_id : entityId
+      }
+      const response = await apiClient.get("memberships/all", payload);
+      console.log(response, "TTTTT");
+    }catch(error) {
+      console.error("Error fetching members:", error);
+    }
+  }
+
   return (
     <div className={styles.dashboardContainer}>
       <div className={styles.dashboardHeader}>

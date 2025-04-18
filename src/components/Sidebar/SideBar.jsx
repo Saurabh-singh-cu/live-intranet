@@ -35,6 +35,7 @@ import {
 } from "react-icons/bs";
 import { GiNewspaper } from "react-icons/gi";
 import styles from "./Sidebar.module.css";
+import { FaTable } from "react-icons/fa6";
 
 const routes = [
   {
@@ -100,6 +101,12 @@ const routes = [
         icon: <MdEventNote />,
       },
     ],
+  },
+  {
+    path: "membership-and-cluster",
+    name: "Membership & Cluster",
+    icon: <FaTable />,
+    allowedRoles: ["Admin"],
   },
   {
     path: "/email/email-service",
