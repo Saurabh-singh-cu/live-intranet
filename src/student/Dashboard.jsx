@@ -952,7 +952,8 @@ const Dashboard = () => {
   return (
     <>
       <div className="dashboard-home">
-        <div className="dashboard-content" ref={contentRef}>
+        {/* <div className="dashboard-content" ref={contentRef}> */}
+        <div className={userDetails ? "dashboard-content-user" : "dashboard-content"} ref={contentRef}>
           {userDetails && (
             <div
               className={`secretary-info-container ${

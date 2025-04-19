@@ -28,7 +28,7 @@
 //   const fetchSocieties = async () => {
 //     try {
 //       const response = await fetch(
-//         "http://172.17.2.247:8080/intranetapp/entity-registration-summary/?entity_id=1"
+//         "https://api.cuintranet.in/intranetapp/entity-registration-summary/?entity_id=1"
 //       );
 //       const data = await response.json();
 //       setSocieties(data);
@@ -92,7 +92,7 @@
 //   const approvedMedia = async (regId) => {
 //     try {
 //       const fetch = await axios.get(
-//         `http://172.17.2.247:8080/intranetapp/entity_media_approved/${regId}/`
+//         `https://api.cuintranet.in/intranetapp/entity_media_approved/${regId}/`
 //       );
 //       setMediaData(fetch?.data[0]);
 //       console.log(fetch?.data[0], "FETCH MEDIA");
@@ -207,6 +207,7 @@ const ClubList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [regId, setRegId] = useState(null);
   const [mediaData, setMediaData] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -217,7 +218,7 @@ const ClubList = () => {
   const fetchSocieties = async () => {
     try {
       const response = await fetch(
-        "http://172.17.2.247:8080/intranetapp/entity-registration-summary/?entity_id=1"
+        "https://api.cuintranet.in/intranetapp/entity-registration-summary/?entity_id=1"
       );
       const data = await response.json();
       setSocieties(data);
@@ -250,6 +251,7 @@ const ClubList = () => {
         const userData = localStorage.getItem("user");
         if (userData) {
           const parsedUserData = JSON.parse(userData);
+          setIsLoggedIn(true)
           if (
             parsedUserData &&
             parsedUserData.secretary_details &&
@@ -279,7 +281,7 @@ const ClubList = () => {
   const approvedMedia = async (regId) => {
     try {
       const fetch = await axios.get(
-        `http://172.17.2.247:8080/intranetapp/entity_media_approved/${regId}/`
+        `https://api.cuintranet.in/intranetapp/entity_media_approved/${regId}/`
       );
       setMediaData(fetch?.data[0]);
     } catch (error) {
@@ -289,7 +291,7 @@ const ClubList = () => {
 
   return (
     <div className={styles.container}>
-      <aside className={`${styles.sidebar} ${styles.clubTheme}`}>
+      <aside className={`${styles.sidebar} ${isLoggedIn === true ? styles.noSideBar : styles.clubTheme}`}>
         <div className={styles.sidebarContent}>
           <h2 className={styles.entityTitle}>Club</h2>
           <p className={styles.entityDescription}>
@@ -298,7 +300,7 @@ const ClubList = () => {
         </div>
       </aside>
 
-      <main className={styles.mainContent}>
+      <main className={isLoggedIn === true ? styles.noMainContent : styles.mainContent}>
         <div className={styles.searchContainer}>
           <div className={styles.searchWrapper}>
             <Search className={styles.searchIcon} />

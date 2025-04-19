@@ -19,8 +19,14 @@ import styles from "./NewDashboard.module.css";
 import cf from "../assets/images/cf.jpg";
 import am from "../assets/images/am.jpg";
 import not1 from "../assets/images/not1.png";
-import not2 from "../assets/images/not2.png";
+
 import apiClient from "../config/apiClient";
+import shark from "./images/shark.png";
+import ai from "./images/ai.png";
+import ali from "./images/ali.png";
+import sat from "./images/sat.png";
+import fest from "./images/fest.png";
+import alertI from "./images/alert.png";
 
 const NewDashboard = () => {
   const [activeAccordion, setActiveAccordion] = useState(null);
@@ -51,7 +57,7 @@ const NewDashboard = () => {
     const fetchEntityCounts = async () => {
       try {
         const response = await fetch(
-          "http://172.17.2.247:8080/intranetapp/entity_count/"
+          "https://api.cuintranet.in/intranetapp/entity_count/"
         );
         const data = await response.json();
 
@@ -86,8 +92,23 @@ const NewDashboard = () => {
     getNewsAndViews()
   }, []);
 
-  // Mock data for demonstration
   const announcements = [
+    {
+      id: 6,
+      title: "Stay Alert, Stay Safe",
+      content:
+        "At #ChandigarhUniversity, the safety and well-being of our students, staff, and community remain our top priority.",
+      from: "Alert System",
+      messageTime: "1Hr ago",
+      priority: "high",
+      image: alertI, // Replace with actual image import
+      description:
+        "An evening of innovation and ideas! Watch aspiring entrepreneurs pitch their startups to real investors. Networking session and refreshments to follow.",
+      date: "30th January, 2025",
+      time: "5:00 PM ONWARD",
+      location: "Seminar Hall A",
+      registerLink: "#",
+    },
     {
       id: 1,
       title: "Meet The Shark",
@@ -96,7 +117,7 @@ const NewDashboard = () => {
       from: "Professional Society: E-Cell",
       messageTime: "2hr ago",
       priority: "high",
-      image: am,
+      image: shark, // Replace with actual image import
       description:
         "Don't miss this opportunity to meet Anupam Mittal, Founder & CEO of Shaadi.com and a prominent Shark Tank India judge. Learn about entrepreneurship, business strategies, and get insights from his journey to success. The event will be held on 16th January, 2025 at 10:00 AM in the University Incubator.",
       date: "16th January, 2025",
@@ -106,49 +127,71 @@ const NewDashboard = () => {
     },
     {
       id: 2,
-      title: "Group Project Discussion",
+      title: "AI in Healthcare: The Future is Now",
       content:
-        "Group Project Discussion going to be held today at 4PM near C3 Block.",
-      from: "Student Secretary: CAC",
-      messageTime: "3hr ago",
+        "Explore how AI is transforming the healthcare industry with Dr. Ritu Raj, Data Scientist at IBM.",
+      from: "Department of Computer Science",
+      messageTime: "5hr ago",
       priority: "medium",
-      image: cf,
+      image: ai, // Replace with actual image import
       description:
-        "All students participating in the semester project are required to attend this important discussion session. Team leaders will present their progress and receive feedback from faculty advisors. Please bring your project materials and be prepared to discuss your current challenges and achievements.",
-      date: "Today",
-      time: "4:00 PM",
-      location: "C3 Block",
+        "This seminar will dive deep into the impact of Artificial Intelligence in revolutionizing diagnosis, treatment, and patient care. Don't miss the chance to interact with an expert from IBM and understand what the future holds.",
+      date: "20th January, 2025",
+      time: "2:00 PM - 4:00 PM",
+      location: "Auditorium Hall B",
+      registerLink: "#",
     },
     {
       id: 3,
-      title: "Department Society Registration",
-      content: "Registration open for all department society till 10th Dec.",
-      from: "Co-Curricular Cord: CSE",
-      messageTime: "5hr ago",
-      priority: "low",
-      image: not1,
+      title: "Alumni Homecoming: 10-Year Reunion Alumni Meet",
+      content:
+        "After a decade of growth and success, our alumni have come together to celebrate their journey, reconnect with old friends, and relive the unforgettable memories of their time at Chandigarh University.",
+      from: "Student Affairs Committee",
+      messageTime: "1 day ago",
+      priority: "high",
+      image: ali, // Replace with actual image import
       description:
-        "All students interested in joining department societies must complete their registration before December 10th. This is a great opportunity to develop your skills, network with peers, and participate in departmental activities throughout the academic year. Registration can be completed online through the student portal.",
-      date: "Until December 10th",
-      time: "11:59 PM",
-      location: "Online",
+        "Join us for 'Sanskriti'—a cultural extravaganza featuring music bands, dance groups, drama performances, and food stalls. Fun competitions and celebrity guest appearances await!",
+      date: "25th January, 2025",
+      time: "All Day Event",
+      location: "Main Ground",
+      registerLink: "#",
     },
     {
       id: 4,
-      title: "DCPD Workshop",
+      title: " #CapitalSummit2025 ",
       content:
-        "Mandatory DCPD workshop going to be organized by Career Department.",
-      from: "HOD: CSE 3rd Year",
-      messageTime: "1 day ago",
-      priority: "medium",
-      image: not2,
+        "The North India's biggest Incubator and #CapitalSummit2025 commenced with an inspiring welcome address by Rajya Sabha MP and Hon’ble Chancellor of Chandigarh University, Shri Satnam Singh Sandhu ( @satnamsandhuchd ).",
+      from: "Chandigarh University",
+      messageTime: "3 days ago",
+      priority: "low",
+      image: sat, // Replace with actual image import
       description:
-        "The Career Development Department is organizing a mandatory workshop for all 3rd year students. This workshop will cover essential skills for industry preparation, resume building, and interview techniques. Attendance is compulsory and will be tracked. Please bring your student ID and notebook.",
-      date: "December 15th, 2023",
-      time: "10:00 AM - 2:00 PM",
-      location: "Main Auditorium",
+        "Get guidance from TCS professionals on writing impactful resumes, common mistakes to avoid, and tips for standing out. Please bring your laptops.",
+      date: "18th January, 2025",
+      time: "11:00 AM - 1:00 PM",
+      location: "T&P Lab, 2nd Floor",
+      registerLink: "#",
     },
+    {
+      id: 5,
+      title: "CU Fest 2025",
+      content:
+        "CU Fest 2025 is about to hit all the right notes as the sensational Jubin Nautiyal takes the stage!",
+      from: "CU FEST 2025",
+      messageTime: "4 days ago",
+      priority: "medium",
+      image: fest, // Replace with actual image import
+      description:
+        "Explore the cutting-edge projects by our graduating batch, ranging from AI, IoT, to sustainable solutions. Open for all students and faculty.",
+      date: "22nd January, 2025",
+      time: "10:00 AM - 3:00 PM",
+      location: "Exhibition Hall, Block C",
+      registerLink: "#",
+    },
+   
   ];
+  
 
   const discussions = [
     {

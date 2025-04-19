@@ -7,25 +7,12 @@ import Calendar from "./Calendar";
 import { useNavigate } from "react-router-dom";
 import { FaUserFriends } from "react-icons/fa";
 import circle from "../assets/images/circle.svg";
-import {
-  MdCardMembership,
-  MdEventAvailable,
-  MdGroupAdd,
-  MdOutlineAttachMoney,
-} from "react-icons/md";
-import {
-  BsBank,
-  BsBuildingsFill,
-  BsCreditCard2Front,
-  BsFillFilePptFill,
-} from "react-icons/bs";
-import axios from "axios";
-import { BsBuildingsFill } from "react-icons/bs";
-import { BsFillFilePptFill } from "react-icons/bs";
+import { MdEventAvailable } from "react-icons/md";
 import { BsBank } from "react-icons/bs";
+
+
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import apiClient from "../config/apiClient";
-
 
 const StudentSecretary = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -74,9 +61,7 @@ const StudentSecretary = () => {
 
   const dashboardCardCount = async () => {
     try {
-      const response = await apiClient.get(
-        "entity_count/"
-      );
+      const response = await apiClient.get("entity_count/");
       setDashboardCount(response.data);
       filterData(response.data);
     } catch (error) {
@@ -107,20 +92,20 @@ const StudentSecretary = () => {
 
   return (
     <div className="dashboard-home">
-       <div className="loggedInAss">{userName?.role_name}</div>
+      <div className="loggedInAss">{userName?.role_name}</div>
       <div className="metric-cards-home">
-        <div  className="metric-card-home card4h">
+        <div className="metric-card-home card4h">
           <img src={circle} />
           {/* <h2>{filteredData?.club}</h2> */}
           <h2>100+</h2>
           <p>Member</p>
 
           <span className="icon-home">
-            <FaUserFriends  size={50} />
+            <FaUserFriends size={50} />
           </span>
         </div>
 
-        <div  className="metric-card-home card4h">
+        <div className="metric-card-home card4h">
           <img src={circle} />
           {/* <h2>{filteredData?.departmentSociety}</h2> */}
           <h2>Events</h2>
@@ -129,7 +114,7 @@ const StudentSecretary = () => {
           {/* <p>Events</p> */}
           <span className="icon-home">
             {" "}
-            <MdEventAvailable  size={50} />
+            <MdEventAvailable size={50} />
           </span>
         </div>
         <div className="metric-card-home card4h">
@@ -141,10 +126,10 @@ const StudentSecretary = () => {
           {/* <p>Final Budget</p> */}
           <span className="icon-home">
             {" "}
-            <FaMoneyBillTrendUp   size={50} />
+            <FaMoneyBillTrendUp size={50} />
           </span>
         </div>
-        <div  className="metric-card-home card4h">
+        <div className="metric-card-home card4h">
           <img src={circle} />
           {/* <h2>{filteredData?.community}</h2> */}
           <h2>100</h2>

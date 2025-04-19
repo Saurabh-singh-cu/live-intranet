@@ -10,6 +10,7 @@ const ProfessionalSociety = () => {
   const [societies, setSocieties] = useState([]);
   const [filteredSocieties, setFilteredSocieties] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const ProfessionalSociety = () => {
   const fetchSocieties = async () => {
     try {
       const response = await fetch(
-        "http://172.17.2.247:8080/intranetapp/entity-registration-summary/?entity_id=3"
+        "https://api.cuintranet.in/intranetapp/entity-registration-summary/?entity_id=3"
       );
       const data = await response.json();
       setSocieties(data);
@@ -46,9 +47,35 @@ const ProfessionalSociety = () => {
     navigate(-1);
   };
 
+  useEffect(() => {
+    const getUserData = () => {
+      try {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+          const parsedUserData = JSON.parse(userData);
+          setIsLoggedIn(true)
+          if (
+            parsedUserData &&
+            parsedUserData.secretary_details &&
+            parsedUserData.secretary_details.reg_id
+          ) {
+            setRegId(parsedUserData.secretary_details.reg_id);
+          } else {
+            throw new Error("reg_id not found in user data");
+          }
+        } else {
+          throw new Error("User data not found in localStorage");
+        }
+      } catch (err) {
+        console.log(`Failed to get user data: ${err.message}`);
+      }
+    };
+
+    getUserData();
+  }, []);
   return (
     <div className={styles.container}>
-      <aside className={`${styles.sidebar} ${styles.chapterTheme}`}>
+       <aside className={`${styles.sidebar} ${isLoggedIn === true ? styles.noSideBar : styles.chapterTheme}`}>
         <div className={styles.sidebarContent}>
           <h2 className={styles.entityTitle}>Student Chapters</h2>
           <p className={styles.entityDescription}>
@@ -57,7 +84,7 @@ const ProfessionalSociety = () => {
         </div>
       </aside>
 
-      <main className={styles.mainContent}>
+      <main className={isLoggedIn === true ? styles.noMainContent : styles.mainContent}>
         <div className={styles.searchContainer}>
           <div className={styles.searchWrapper}>
             <Search className={styles.searchIcon} />

@@ -102,13 +102,7 @@
   }
   
   .searchIcon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #718096;
-    width: 1.25rem;
-    height: 1.25rem;
+   display: none;
   }
   
   /* Back Button */
@@ -414,4 +408,18 @@
       padding: 0.375rem 0.75rem;
       font-size: 0.875rem;
     }
+  }
+
+  .noSideBar{
+    display: none;
+  }
+  .noMainContent{
+    flex: 1;
+    padding: 2rem;
+    /* margin-left: 300px; */
+    background: #f8f9fa;
+    min-height: 100vh;
+    overflow-y: auto;
+    position: relative;
+    padding-top: 5rem;
   }

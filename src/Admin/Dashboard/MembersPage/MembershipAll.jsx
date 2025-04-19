@@ -66,7 +66,7 @@ const MembershipManagement = () => {
   // Fetch entity types
   const fetchEntityTypes = async () => {
     try {
-      const response = await fetch("http://172.17.2.247:8080/intranetapp/entity-types/")
+      const response = await fetch("https://api.cuintranet.in/intranetapp/entity-types/")
       const data = await response.json()
       setEntityTypes(data)
     } catch (error) {

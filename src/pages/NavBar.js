@@ -8,8 +8,8 @@ import CreditModal from "../CreditScore/CreditModal";
 import TokenExpireTime from "../tokenExpire/TokenExpireTime";
 import styles from "./NavBar.module.css";
 import {
-  FaBars,
-  FaTimes,
+  
+ 
   FaHome,
   FaUsers,
   FaChevronDown,

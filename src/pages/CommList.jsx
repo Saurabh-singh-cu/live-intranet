@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search } from 'lucide-react';
+import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { MdGroup, MdOutlineArrowBack } from "react-icons/md";
 import Scroller from "../components/Scroller";
@@ -10,6 +10,7 @@ const ComList = () => {
   const [societies, setSocieties] = useState([]);
   const [filteredSocieties, setFilteredSocieties] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const ComList = () => {
   const fetchSocieties = async () => {
     try {
       const response = await fetch(
-        "http://172.17.2.247:8080/intranetapp/entity-registration-summary/?entity_id=4"
+        "https://api.cuintranet.in/intranetapp/entity-registration-summary/?entity_id=4"
       );
       const data = await response.json();
       setSocieties(data);
@@ -39,25 +40,63 @@ const ComList = () => {
   };
 
   const handleCardClick = (clubSociety) => {
-    navigate("/join-now-detailed-page", { state: { society: clubSociety, entity_id: 4 } });
+    navigate("/join-now-detailed-page", {
+      state: { society: clubSociety, entity_id: 4 },
+    });
   };
 
   const handleBack = () => {
     navigate(-1);
   };
 
+  useEffect(() => {
+    const getUserData = () => {
+      try {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+          const parsedUserData = JSON.parse(userData);
+          setIsLoggedIn(true)
+          if (
+            parsedUserData &&
+            parsedUserData.secretary_details &&
+            parsedUserData.secretary_details.reg_id
+          ) {
+            setRegId(parsedUserData.secretary_details.reg_id);
+          } else {
+            throw new Error("reg_id not found in user data");
+          }
+        } else {
+          throw new Error("User data not found in localStorage");
+        }
+      } catch (err) {
+        console.log(`Failed to get user data: ${err.message}`);
+      }
+    };
+
+    getUserData();
+  }, []);
+
   return (
     <div className={styles.container}>
-      <aside className={`${styles.sidebar} ${styles.communityTheme}`}>
+      <aside
+        className={`${styles.sidebar} ${
+          isLoggedIn === true ? styles.noSideBar : styles.communityTheme
+        }`}
+      >
         <div className={styles.sidebarContent}>
           <h2 className={styles.entityTitle}>Community</h2>
           <p className={styles.entityDescription}>
-            Join our most active Community and participate in exciting events and activities.
+            Join our most active Community and participate in exciting events
+            and activities.
           </p>
         </div>
       </aside>
 
-      <main className={styles.mainContent}>
+      <main
+        className={
+          isLoggedIn === true ? styles.noMainContent : styles.mainContent
+        }
+      >
         <div className={styles.searchContainer}>
           <div className={styles.searchWrapper}>
             <Search className={styles.searchIcon} />
@@ -70,8 +109,11 @@ const ComList = () => {
             />
           </div>
         </div>
-        
-        <button onClick={handleBack} className={`${styles.backButton} ${styles.communityThemeButton}`}>
+
+        <button
+          onClick={handleBack}
+          className={`${styles.backButton} ${styles.communityThemeButton}`}
+        >
           <MdOutlineArrowBack />
           <span>Back</span>
         </button>
@@ -85,23 +127,33 @@ const ComList = () => {
                 onClick={() => handleCardClick(clubSociety)}
               >
                 <div className={styles.cardHeader}>
-                  <div className={`${styles.cardAvatar} ${styles.communityThemeAvatar}`}>
+                  <div
+                    className={`${styles.cardAvatar} ${styles.communityThemeAvatar}`}
+                  >
                     <h1>{clubSociety.registration_name?.charAt(0)}</h1>
                   </div>
                   <div className={styles.cardContent}>
-                    <h3 className={styles.cardTitle}>{clubSociety.registration_name}</h3>
+                    <h3 className={styles.cardTitle}>
+                      {clubSociety.registration_name}
+                    </h3>
                     <p className={styles.cardOwner}>
                       Owner: {clubSociety.dept_name}
                     </p>
                     <div className={styles.cardStats}>
                       <div className={styles.stat}>
                         <MdGroup className={styles.statIcon} />
-                        <span>{clubSociety?.membership_count} Registered Member</span>
+                        <span>
+                          {clubSociety?.membership_count} Registered Member
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className={`${styles.cardAction} ${styles.communityThemeAction}`}>Know More</div>
+                <div
+                  className={`${styles.cardAction} ${styles.communityThemeAction}`}
+                >
+                  Know More
+                </div>
               </div>
             ))}
         </div>
