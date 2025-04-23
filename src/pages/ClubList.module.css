@@ -1,0 +1,425 @@
+/* Base Container */
+.container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    position: relative;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding-top: 4rem;
+  }
+  
+  /* Sidebar Styles */
+  .sidebar {
+    width: 300px;
+    padding: 2rem 1.5rem;
+    position: fixed;
+    height: 100vh;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-top: 58px;
+    color: white;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+  
+  /* Theme-specific sidebar styles */
+  .clubTheme {
+    background: linear-gradient(135deg, #e55d0e, #f08148);
+  }
+  
+  .communityTheme {
+    background: linear-gradient(135deg, #6a1b9a, #9c27b0);
+  }
+  
+  .departmentTheme {
+    background: linear-gradient(135deg, #0277bd, #29b6f6);
+  }
+  
+  .chapterTheme {
+    background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  }
+  
+  .sidebarContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .entityTitle {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    letter-spacing: -0.5px;
+  }
+  
+  .entityDescription {
+    font-size: 1rem;
+    line-height: 1.5;
+    opacity: 0.9;
+    font-weight: 400;
+    margin: 0;
+  }
+  
+  /* Main Content Styles */
+  .mainContent {
+    flex: 1;
+    padding: 2rem;
+    margin-left: 300px;
+    background: #f8f9fa;
+    min-height: 100vh;
+    overflow-y: auto;
+    position: relative;
+    padding-top: 5rem;
+  }
+  
+  /* Search Container */
+  .searchContainer {
+    margin-bottom: 2rem;
+  }
+  
+  .searchWrapper {
+    /* position: relative; */
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .searchInput {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 3rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+  }
+  
+  .searchInput:focus {
+    outline: none;
+    border-color: #a0aec0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .searchIcon {
+   display: none;
+  }
+  
+  /* Back Button */
+  .backButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 5;
+    margin-bottom: 1.5rem;
+  }
+  
+  .backButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Theme-specific back buttons */
+  .clubThemeButton {
+    background-color: #e55d0e;
+  }
+  
+  .communityThemeButton {
+    background-color: #9c27b0;
+  }
+  
+  .departmentThemeButton {
+    background-color: #0277bd;
+  }
+  
+  .chapterThemeButton {
+    background-color: #2e7d32;
+  }
+  
+  /* Cards Grid */
+  .cardsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  /* Card Styles */
+  .card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 1.5rem;
+    border-left: 5px solid transparent;
+    height: 100%;
+    cursor: pointer;
+  }
+  
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Theme-specific card styles */
+  .clubThemeCard:hover {
+    border-left-color: #e55d0e;
+  }
+  
+  .communityThemeCard:hover {
+    border-left-color: #9c27b0;
+  }
+  
+  .departmentThemeCard:hover {
+    border-left-color: #0277bd;
+  }
+  
+  .chapterThemeCard:hover {
+    border-left-color: #2e7d32;
+  }
+  
+  .cardHeader {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .cardAvatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    background-color: #f1f5f9;
+  }
+  
+  /* Theme-specific avatar styles */
+  .clubThemeAvatar {
+    color: #e55d0e;
+    background-color: rgba(229, 93, 14, 0.1);
+  }
+  
+  .communityThemeAvatar {
+    color: #9c27b0;
+    background-color: rgba(156, 39, 176, 0.1);
+  }
+  
+  .departmentThemeAvatar {
+    color: #0277bd;
+    background-color: rgba(2, 119, 189, 0.1);
+  }
+  
+  .chapterThemeAvatar {
+    color: #2e7d32;
+    background-color: rgba(46, 125, 50, 0.1);
+  }
+  
+  .cardContent {
+    flex: 1;
+  }
+  
+  .cardTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #1a202c;
+    transition: color 0.2s ease;
+  }
+  
+  /* Theme-specific title hover styles */
+  .clubThemeCard:hover .cardTitle {
+    color: #e55d0e;
+  }
+  
+  .communityThemeCard:hover .cardTitle {
+    color: #9c27b0;
+  }
+  
+  .departmentThemeCard:hover .cardTitle {
+    color: #0277bd;
+  }
+  
+  .chapterThemeCard:hover .cardTitle {
+    color: #2e7d32;
+  }
+  
+  .cardOwner {
+    font-size: 0.875rem;
+    color: #4a5568;
+    margin: 0 0 0.75rem 0;
+    font-weight: 500;
+  }
+  
+  .cardStats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.75rem;
+  }
+  
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #718096;
+  }
+  
+  .statIcon {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  .cardAction {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1.25rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 1.5rem;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+    align-self: flex-start;
+  }
+  
+  /* Theme-specific action button styles */
+  .clubThemeAction {
+    color: #718096;
+  }
+  
+  .clubThemeCard:hover .clubThemeAction {
+    color: #e55d0e;
+    border-color: #e55d0e;
+    background-color: rgba(229, 93, 14, 0.05);
+  }
+  
+  .communityThemeAction {
+    color: #718096;
+  }
+  
+  .communityThemeCard:hover .communityThemeAction {
+    color: #9c27b0;
+    border-color: #9c27b0;
+    background-color: rgba(156, 39, 176, 0.05);
+  }
+  
+  .departmentThemeAction {
+    color: #718096;
+  }
+  
+  .departmentThemeCard:hover .departmentThemeAction {
+    color: #0277bd;
+    border-color: #0277bd;
+    background-color: rgba(2, 119, 189, 0.05);
+  }
+  
+  .chapterThemeAction {
+    color: #718096;
+  }
+  
+  .chapterThemeCard:hover .chapterThemeAction {
+    color: #2e7d32;
+    border-color: #2e7d32;
+    background-color: rgba(46, 125, 50, 0.05);
+  }
+  
+  .scrollerWrapper {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 100;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .cardsGrid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .sidebar {
+      display: none;
+    }
+    
+    .mainContent {
+      margin-left: 0;
+      padding: 1.5rem;
+      padding-top: 6rem;
+    }
+    
+    .cardsGrid {
+      grid-template-columns: 1fr;
+    }
+    
+    .searchWrapper {
+      max-width: 100%;
+    }
+    
+    .card {
+      padding: 1.25rem;
+    }
+    
+    .cardAction {
+      padding: 0.375rem 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .cardHeader {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .cardAvatar {
+      margin-bottom: 0.75rem;
+    }
+    
+    .searchInput {
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      font-size: 0.875rem;
+    }
+    
+    .searchIcon {
+      left: 0.75rem;
+      width: 1rem;
+      height: 1rem;
+    }
+    
+    .backButton {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  .noSideBar{
+    display: none;
+  }
+  .noMainContent{
+    flex: 1;
+    padding: 2rem;
+    /* margin-left: 300px; */
+    background: #f8f9fa;
+    min-height: 100vh;
+    overflow-y: auto;
+    position: relative;
+    padding-top: 5rem;
+  }

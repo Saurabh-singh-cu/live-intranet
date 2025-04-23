@@ -1,0 +1,71 @@
+.configPanel {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .configPanel:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  .panelTitle {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 600;
+    border-bottom: 1px solid #e1e4e8;
+    padding-bottom: 12px;
+  }
+  
+  .configItems {
+    margin-bottom: 16px;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+  
+  .configItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  
+  .configItem:last-child {
+    border-bottom: none;
+  }
+  
+  .editButton {
+    background: none;
+    border: none;
+    color: #3498db;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .editButton:hover {
+    text-decoration: underline;
+  }
+  
+  .addButton {
+    background: #f8f9fa;
+    border: 1px dashed #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    color: #6c757d;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+  }
+  
+  .addButton:hover {
+    background: #e9ecef;
+    color: #495057;
+  }
+  

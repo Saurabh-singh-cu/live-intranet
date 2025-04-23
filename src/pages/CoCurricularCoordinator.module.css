@@ -1,0 +1,195 @@
+.dashboard {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  height: 100vh;
+  overflow: scroll;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background-color: #2c3e50;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 66px;
+}
+
+.userInfo {
+  text-align: right;
+}
+
+.notificationSection {
+  margin-bottom: 30px;
+}
+
+.notificationCards {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+.header h1 {
+  color: white;
+}
+.userInfo p,
+ul {
+  color: white;
+  margin-bottom: 5px;
+}
+.userInfo p strong {
+  color: #73ec8b;
+}
+.notificationCard {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  flex: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+margin-top: 30px;
+}
+
+.graphSection {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.graph {
+  width: 48%;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tableSection {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.dataTable th,
+.dataTable td {
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  text-align: left;
+}
+
+.dataTable th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.downloadButton {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.downloadButton:hover {
+  background-color: #45a049;
+}
+/* ... (previous styles remain the same) */
+
+.activitySection {
+  margin-bottom: 30px;
+}
+
+.activitySection h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.activityCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.activityCard {
+  background: #fff;
+  border-radius: 12px;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  box-shadow: 0 4px 6px -1px #0000001a, 0 2px 4px -1px #0000000f;
+}
+
+.activityCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.activityIcon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.activityTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.activityDescription {
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.activityCount {
+  /* flex-direction: column; */
+  gap: 4px;
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.activityCount span:first-child {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.activityLabel {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Make the cards responsive on smaller screens */
+@media (max-width: 768px) {
+  .activityCards {
+    grid-template-columns: 1fr;
+  }
+
+  .activityCard {
+    padding: 20px;
+  }
+}
