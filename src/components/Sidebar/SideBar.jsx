@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Tooltip } from "antd";
+
 import {
   FaBars,
   FaTimes,
@@ -35,7 +36,7 @@ import {
 } from "react-icons/bs";
 import { GiNewspaper } from "react-icons/gi";
 import styles from "./Sidebar.module.css";
-import { FaTable } from "react-icons/fa6";
+import { FaRupeeSign, FaTable } from "react-icons/fa6";
 
 const routes = [
   {
@@ -109,6 +110,12 @@ const routes = [
     allowedRoles: ["Admin"],
   },
   {
+    path: "ceremony-even-view",
+    name: "Ceremony Event View",
+    icon: <MdEmojiEvents />,
+    allowedRoles: ["Admin"],
+  },
+  {
     path: "/email/email-service",
     name: "Email",
     icon: <MdEmail />,
@@ -130,6 +137,12 @@ const routes = [
     path: "/student-secretary-dashboard",
     name: "Dashboard",
     icon: <MdOutlineDashboardCustomize />,
+    allowedRoles: ["Student Secretary"],
+  },
+  {
+    path: "/proposed-calendarby-secretary",
+    name: "Proposed Calendar",
+    icon: <FaRupeeSign />,
     allowedRoles: ["Student Secretary"],
   },
   {

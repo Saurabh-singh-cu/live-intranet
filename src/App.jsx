@@ -57,14 +57,13 @@ import RegisteredMemberList from "./student/RegisteredMemberList";
 import ProfilePictureCards from "./student/ProfilePictureCard";
 import SideBar from "./components/Sidebar/SideBar";
 
-
 import NewDashboard from "./NewDashboard/NewDashboard";
 import PushNotification from "./pages/PushNotiAndNews/PushNotification";
 import PushNewsAndViews from "./pages/PushNotiAndNews/PushNewsAndViews";
 import NewAdminDashboard from "./Admin/Dashboard/NewAdminDashboard";
 import MembershipAll from "./Admin/Dashboard/MembersPage/MembershipAll";
-
-
+import GrpEvententity from "./student/PDFUploadEvent/GrpEvententity";
+import CeremonyPdf from "./Admin/Dashboard/Ceremony/CeremonyPdf";
 
 function AppContent() {
   const location = useLocation();
@@ -80,7 +79,7 @@ function AppContent() {
   const [user, setUser] = useState([]);
   const [tokenExpire, setTokenExpire] = useState(false);
   const [expirationTime, setExpirationTime] = useState(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogin = () => {
     console.log("Login success");
@@ -172,7 +171,12 @@ function AppContent() {
   return (
     <div>
       {!isLoginPage && (
-        <NavBar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+        <NavBar
+          isMobileMenuOpen={isMobileMenuOpen}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
+          isLoggedIn={isLoggedIn}
+          onLogout={handleLogout}
+        />
       )}
 
       <div style={{ display: "flex" }}>
@@ -181,10 +185,14 @@ function AppContent() {
             isStudentSecretary ||
             isFaculty ||
             isCo ||
-            isExecutive) && <SideBar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />}
+            isExecutive) && (
+            <SideBar
+              isMobileMenuOpen={isMobileMenuOpen}
+              setIsMobileMenuOpen={setIsMobileMenuOpen}
+            />
+          )}
         <div style={{ flex: 1 }}>
           <Routes>
-         
             <Route
               path="/"
               // element={<Dashboard onShowLogin={handleShowLogin} />}
@@ -207,6 +215,26 @@ function AppContent() {
               element={
                 <ProtectedRoute allowedRoles={["Admin"]} user={user}>
                   <MembershipAll />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/ceremony-even-view"
+              element={
+                <ProtectedRoute allowedRoles={["Admin"]} user={user}>
+                  <CeremonyPdf />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/grouped-events-by-entity-form"
+              element={
+                <ProtectedRoute
+                  allowedRoles={["Student Secretary"]}
+                  user={user}
+                >
+                  <GrpEvententity onShowLogin={handleShowLogin} />
                 </ProtectedRoute>
               }
             />
@@ -289,7 +317,7 @@ function AppContent() {
               }
             />
             <Route
-              path="//push-news-views"
+              path="/push-news-views"
               element={
                 <ProtectedRoute allowedRoles={["Admin"]} user={user}>
                   <PushNewsAndViews />
@@ -374,7 +402,7 @@ function AppContent() {
             />
             <Route
               path="/home-new-dashboard-testing"
-              element={<NewDashboard  />}
+              element={<NewDashboard />}
             />
             <Route
               path="/student-secretary-dashboard"

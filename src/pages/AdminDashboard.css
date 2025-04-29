@@ -376,7 +376,7 @@
     border-bottom-right-radius: 5px !important;
 }
 .notification-item .tab {
-    padding: 10px 5px !important;
+
 }
 :where(.css-dev-only-do-not-override-nqoqt9).ant-badge .ant-badge-count{
 	min-width: 15px !important;
@@ -474,7 +474,7 @@
 }
 .notification-item,
 .discussion-item {
-  padding: 10px;
+
   border-bottom: 1px solid #eee;
 }
 

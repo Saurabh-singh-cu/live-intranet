@@ -739,3 +739,107 @@
     display: none;
   }
 }
+
+.mainNavItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 1.25rem;
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/* Remove the default hover color */
+.mainNavItem:hover {
+  /* Default hover removed - now using specific color classes */
+}
+
+/* Home tab can keep the original purple color */
+.mainNavItem:first-child:hover {
+  color: #7c3aed;
+}
+
+.activeNavItem {
+  /* Default active color removed - now using specific color classes */
+}
+
+/* Home tab active state keeps the original purple */
+.mainNavItem:first-child.activeNavItem {
+  color: #7c3aed;
+}
+
+.activeIndicator {
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  right: 25%;
+  height: 3px;
+  border-radius: 9999px;
+  /* Default indicator color removed - now using specific color classes */
+}
+
+/* Home tab indicator keeps the original purple */
+.mainNavItem:first-child .activeIndicator {
+  background-color: #7c3aed;
+}
+
+/* Add these new color classes for the different menu tabs */
+
+/* Club tab - Orange */
+.clubNavItem:hover {
+  color: #ff8c00;
+}
+
+.activeClubItem {
+  color: #ff8c00 !important;
+}
+
+.clubIndicator {
+  background-color: #ff8c00;
+}
+
+/* Department tab - Blue */
+.departmentNavItem:hover {
+  color: #3b82f6;
+}
+
+.activeDepartmentItem {
+  color: #3b82f6 !important;
+}
+
+.departmentIndicator {
+  background-color: #3b82f6;
+}
+
+/* Community tab - Dark Blue */
+.communityNavItem:hover {
+  color: #1e40af;
+}
+
+.activeCommunityItem {
+  color: #7e20a3 !important;
+}
+
+.communityIndicator {
+  background-color: #7e20a3;
+}
+
+/* Professional Society tab - Green */
+.professionalNavItem:hover {
+  color: #10b981;
+}
+
+.activeProfessionalItem {
+  color: #10b981 !important;
+}
+
+.professionalIndicator {
+  background-color: #10b981;
+}

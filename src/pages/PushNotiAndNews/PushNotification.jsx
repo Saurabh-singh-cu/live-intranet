@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Trash2, AlertCircle, Edit, Bell } from "lucide-react";
+import { Trash2, AlertCircle, Edit, Bell } from 'lucide-react';
 import tableStyles from "./PushNotification.module.css";
 
 import styles from "./PushNotification.module.css";
 import apiClient from "../../config/apiClient";
 import Toast from "./Toast";
 import PushConfirmModal from "./PushConfirmModal";
+import RichTextEditor from "./RichTextEditor";
+import notificationImage from "../../assets/images/Background.jpg";
 
 // MultiSelect component defined within the same file
 const MultiSelect = ({
@@ -491,9 +493,9 @@ const PushNotification = () => {
 
       {/* Main Content */}
       <div className={styles.mainContent}>
-        <div className={styles.dashboardContent}>
-          {/* Push Notification Section */}
-          <div className={styles.notificationSection}>
+        <div className={styles.splitLayout}>
+          {/* Form Section - Left Side */}
+          <div className={styles.formSection}>
             <div className={styles.notificationHeader}>
               <h2>{editingId ? "Edit Notification" : "Push Notification"}</h2>
               <p>
@@ -504,57 +506,51 @@ const PushNotification = () => {
             </div>
 
             <div className={styles.notificationForm}>
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label>Select Roles</label>
-                  <MultiSelect
-                    options={roles}
-                    selectedValues={selectedRoles}
-                    onChange={setSelectedRoles}
-                    displayProperty="role_name"
-                    placeholder="Select roles..."
-                  />
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Select Entities</label>
-                  <MultiSelect
-                    className={styles.selectedValuesData}
-                    options={entities}
-                    selectedValues={selectedEntities}
-                    onChange={setSelectedEntities}
-                    displayProperty="entity_name"
-                    placeholder="Select entities..."
-                  />
-                </div>
+              <div className={styles.formGroup}>
+                <label>Select Roles</label>
+                <MultiSelect
+                  options={roles}
+                  selectedValues={selectedRoles}
+                  onChange={setSelectedRoles}
+                  displayProperty="role_name"
+                  placeholder="Select roles..."
+                />
               </div>
 
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label>Select Categories</label>
-                  <MultiSelect
-                    options={categories}
-                    selectedValues={selectedCategories}
-                    onChange={setSelectedCategories}
-                    displayProperty="name"
-                    placeholder="Select categories..."
-                    showSelectAll={false}
-                  />
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Message</label>
-                  <textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Enter your notification message..."
-                    rows={3}
-                    className={styles.messageInput}
-                  />
-                </div>
+              <div className={styles.formGroup}>
+                <label>Select Entities</label>
+                <MultiSelect
+                  className={styles.selectedValuesData}
+                  options={entities}
+                  selectedValues={selectedEntities}
+                  onChange={setSelectedEntities}
+                  displayProperty="entity_name"
+                  placeholder="Select entities..."
+                />
               </div>
 
-              <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label>Select Categories</label>
+                <MultiSelect
+                  options={categories}
+                  selectedValues={selectedCategories}
+                  onChange={setSelectedCategories}
+                  displayProperty="name"
+                  placeholder="Select categories..."
+                  showSelectAll={false}
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Message</label>
+                <RichTextEditor
+                  value={message}
+                  onChange={setMessage}
+                  placeholder="Enter your notification message..."
+                />
+              </div>
+
+              <div className={styles.dateContainer}>
                 <div className={styles.formGroup}>
                   <label>Start Date</label>
                   <div className={styles.dateInputContainer}>
@@ -629,70 +625,93 @@ const PushNotification = () => {
             </div>
           </div>
 
-          {/* Notifications Table */}
-          <div className={styles.notificationSection}>
-            <div className={styles.notificationHeader}>
-              <h2>Notification History</h2>
-              <p>View and manage previously sent notifications</p>
-            </div>
-
-            <div className={tableStyles.tableContainer}>
-              {notifications.length > 0 ? (
-                <table className={tableStyles.dataTable}>
-                  <thead>
-                    <tr>
-                      <th>Message</th>
-                      <th>Categories</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {console.log("Notifications:", notifications)}
-                    {notifications.map((item) => (
-                      <tr key={item.id}>
-                        <td className={tableStyles.messageCell}>
-                          {item.message}
-                        </td>
-
-                        <td>
-                          {item.category?.split(",").map((cat, index) => (
-                            <span key={index} className={styles.categoryBadge}>
-                              {cat.trim()}
-                            </span>
-                          ))}
-                        </td>
-
-                        <td>
-                          {item.start_date ? formatDate(item.start_date) : "—"}
-                        </td>
-                        <td>
-                          {item.end_date ? formatDate(item.end_date) : "—"}
-                        </td>
-
-                        <td className={tableStyles.actionCell}>
-                         
-                          <button
-                            className={tableStyles.deleteButton}
-                            onClick={() => openDeleteModal(item)}
-                          >
-                            <Trash2 size={14} /> Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <div className={tableStyles.noData}>
-                  <div className={tableStyles.noDataIcon}>
-                    <AlertCircle size={36} />
+          {/* Image Section - Right Side */}
+          <div className={styles.imageSection}>
+            <div className={styles.imageContainer}>
+              <img src={notificationImage || "/placeholder.svg"} alt="Notification illustration" />
+              <div className={styles.imageOverlay}>
+                <h3>Keep Your Users Informed</h3>
+                <p>
+                  Create targeted notifications with rich text formatting to effectively communicate with your audience.
+                </p>
+                <div className={styles.featureList}>
+                  <div className={styles.featureItem}>
+                    <Bell size={18} />
+                    <span>Real-time delivery</span>
                   </div>
-                  No notifications found. Create your first notification above.
+                  <div className={styles.featureItem}>
+                    <AlertCircle size={18} />
+                    <span>Priority settings</span>
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
+          </div>
+        </div>
+
+        {/* Notifications Table */}
+        <div className={styles.notificationSection}>
+          <div className={styles.notificationHeader}>
+            <h2>Notification History</h2>
+            <p>View and manage previously sent notifications</p>
+          </div>
+
+          <div className={tableStyles.tableContainer}>
+            {notifications.length > 0 ? (
+              <table className={tableStyles.dataTable}>
+                <thead>
+                  <tr>
+                    <th>Message</th>
+                    <th>Categories</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {console.log("Notifications:", notifications)}
+                  {notifications.map((item) => (
+                    <tr key={item.id}>
+                      <td className={tableStyles.messageCell}>
+                        <div dangerouslySetInnerHTML={{ __html: item.message }} />
+                      </td>
+
+                      <td>
+                        {item.category?.split(",").map((cat, index) => (
+                          <span key={index} className={styles.categoryBadge}>
+                            {cat.trim()}
+                          </span>
+                        ))}
+                      </td>
+
+                      <td>
+                        {item.start_date ? formatDate(item.start_date) : "—"}
+                      </td>
+                      <td>
+                        {item.end_date ? formatDate(item.end_date) : "—"}
+                      </td>
+
+                      <td className={tableStyles.actionCell}>
+                       
+                        <button
+                          className={tableStyles.deleteButton}
+                          onClick={() => openDeleteModal(item)}
+                        >
+                          <Trash2 size={14} /> Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className={tableStyles.noData}>
+                <div className={tableStyles.noDataIcon}>
+                  <AlertCircle size={36} />
+                </div>
+                No notifications found. Create your first notification above.
+              </div>
+            )}
           </div>
         </div>
       </div>

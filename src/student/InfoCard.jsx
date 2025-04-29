@@ -2,12 +2,16 @@ import styles from "./InfoCard.module.css";
 import { Modal, Tabs, Badge, Empty, Timeline } from "antd";
 import { useEffect, useState } from "react";
 import apiClient from "../config/apiClient";
+import DOMPurify from "dompurify";
 
 const InfoCard = () => {
+  const [loading, setLoading] = useState(false);
   const [notificationData, setNotificationData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
   const [categories, setCategories] = useState([]);
+  const [pieData, setPie] = useState([]);
+  const [barData, setBarData] = useState([]);
 
   const getNotification = async () => {
     try {
@@ -16,6 +20,8 @@ const InfoCard = () => {
       // Extract role_id and entity_type_id from localStorage structure
       const userRoleId = userData?.user_role_id;
       const entId = userData?.secretary_details?.[0]?.entity_id;
+      const regId = userData?.secretary_details[0]?.reg_id;
+      console.log(regId, "EEEEEEEEEEEEEEEEEEEEE");
 
       if (!userRoleId || !entId) {
         console.warn("Missing user role or entity ID");
@@ -53,6 +59,7 @@ const InfoCard = () => {
 
   useEffect(() => {
     getNotification();
+    pieChartData();
   }, []);
 
   const handleCategoryClick = (category) => {
@@ -109,6 +116,32 @@ const InfoCard = () => {
     return filtered.slice(0, 5); // Show only 5 notifications in the card
   };
 
+  const getFirstNWordsFromHTML = (htmlString) => {
+    // First, strip all tags to count words safely
+    const tempElement = document.createElement("div");
+    tempElement.innerHTML = htmlString;
+    const textContent = tempElement.textContent || tempElement.innerText || "";
+
+    const words = textContent.split(/\s+/).slice(0, 60).join(" ");
+    return words + (textContent.split(/\s+/).length > 60 ? "..." : "");
+  };
+
+  const pieChartData = async () => {
+    setLoading(true);
+    try {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      const regId = userData?.secretary_details[0]?.reg_id;
+      const response = await apiClient.get(`/event_analytics?reg_id=${regId}`);
+      setPie(response?.data);
+      console.log(response?.data, "TTTTTTTTTTTTTTTTTTTTTTTTTT");
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.infoCardsContainer}>
       <div className={styles.infoCard}>
@@ -122,13 +155,16 @@ const InfoCard = () => {
         <div className={styles.cardContent}>
           <ul className={styles.activityList}>
             <li>
-              Flagship Events: <span className={styles.highlight}>0</span>
+              Flagship Events:{" "}
+              <span className={styles.highlight}>{pieData?.Flagship}</span>
             </li>
             <li>
-              Monthly Events: <span className={styles.count}>0</span>
+              Monthly Events:{" "}
+              <span className={styles.highlight}>{pieData?.Monthly}</span>
             </li>
             <li>
-              Regular Events: <span className={styles.count}>0</span>
+              Regular Events:{" "}
+              <span className={styles.highlight}>{pieData?.Regular}</span>
             </li>
           </ul>
         </div>
@@ -169,13 +205,19 @@ const InfoCard = () => {
             </span>
           ))}
         </div>
+
         <div className={styles.cardContent}>
           <ul className={styles.notificationList}>
             {getDisplayNotifications().length > 0 ? (
               getDisplayNotifications().map((item) => (
-                <li key={item.id}>
+                <li key={item.id} className={styles.notificationItem}>
                   <span className={styles.arrow}>▸</span>
-                  {item?.message?.slice(0, 40)}{"..."}
+                  <div className={styles.notificationMessage}>
+                    {getFirstNWordsFromHTML(
+                      DOMPurify.sanitize(item.message),
+                      60
+                    )}
+                  </div>
                   {!item.is_read && <span className={styles.unreadDot}></span>}
                 </li>
               ))
@@ -186,6 +228,7 @@ const InfoCard = () => {
             )}
           </ul>
         </div>
+
         <div className={styles.cardFooter}>
           <button className={styles.moreInfoBtn} onClick={showModal}>
             More info <span className={styles.arrowIcon}>→</span>
@@ -302,9 +345,15 @@ const NotificationTimeline = ({ notifications }) => {
                 <Timeline.Item key={notification.id} color={color}>
                   <div className="notification-item">
                     <div className="notification-content">
-                      <p className="notification-message">
+                      {/* <p className="notification-message">
                         {notification.message}
-                      </p>
+                      </p> */}
+                      <div
+                        className="notification-message"
+                        dangerouslySetInnerHTML={{
+                          __html: notification.message,
+                        }}
+                      />
                       <div className="notification-meta">
                         <span className="notification-time">
                           {new Date(notification.created_at).toLocaleTimeString(

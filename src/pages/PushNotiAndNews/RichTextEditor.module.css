@@ -1,0 +1,139 @@
+.editorContainer {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .toolbar {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+  }
+  
+  .toolbarButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #4a5568;
+    position: relative;
+  }
+  
+  .toolbarButton:hover {
+    background-color: #e2e8f0;
+  }
+  
+  .divider {
+    width: 1px;
+    height: 24px;
+    background-color: #e2e8f0;
+    margin: 0 8px;
+  }
+  
+  .editor {
+    min-height: 120px;
+    padding: 12px;
+    outline: none;
+    line-height: 1.5;
+  }
+  
+  .editor[data-placeholder]:empty:before {
+    content: attr(data-placeholder);
+    color: #a0aec0;
+    pointer-events: none;
+  }
+  
+  .linkInputContainer {
+    display: flex;
+    padding: 8px;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    gap: 8px;
+  }
+  
+  .linkInput {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .linkButton,
+  .cancelButton {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .linkButton {
+    background-color: #4299e1;
+    color: white;
+  }
+  
+  .linkButton:hover {
+    background-color: #3182ce;
+  }
+  
+  .cancelButton {
+    background-color: #e2e8f0;
+    color: #4a5568;
+  }
+  
+  .cancelButton:hover {
+    background-color: #cbd5e0;
+  }
+  
+  .colorPickerContainer {
+    position: relative;
+  }
+  
+  .colorIndicator {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  
+  .colorPicker {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    padding: 8px;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    margin-top: 4px;
+  }
+  
+  .colorOption {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  
+  .colorOption:hover {
+    transform: scale(1.1);
+  }
+  

@@ -20,7 +20,7 @@ const ComList = () => {
   const fetchSocieties = async () => {
     try {
       const response = await fetch(
-        "http://172.17.2.247:8080/intranetapp/entity-registration-summary/?entity_id=4"
+        "https://api.cuintranet.in/intranetapp/entity-registration-summary/?entity_id=4"
       );
       const data = await response.json();
       setSocieties(data);

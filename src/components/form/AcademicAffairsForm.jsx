@@ -18,7 +18,7 @@ const AcademicAffairsForm = () => {
     proposed_by: "",
     proposer_name: "",
     emp_code: "",
-    emp_code: "",
+   
     proposer_email: "",
     mobile: "",
     entity_nature: "",
@@ -310,7 +310,7 @@ const AcademicAffairsForm = () => {
   useEffect(() => {
     const fetchEntityData = async () => {
       const response = await fetch(
-        "http://172.17.2.247:8080/intranetapp/entity-types/"
+        "https://api.cuintranet.in/intranetapp/entity-types/"
       );
       const data = await response.json();
       setEntityData(data);

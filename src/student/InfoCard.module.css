@@ -6,6 +6,16 @@
   margin: 30px 0;
   width: 100%;
 }
+.notificationMessage {
+  display: inline-block;
+  max-width: 250px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+
 
 /* Card styling */
 .infoCard {
@@ -339,7 +349,7 @@
 
 /* Global styles for notification timeline */
 :global(.notification-timeline) {
-  padding: 20px 0;
+  /* padding: 20px 0; */
 }
 
 :global(.date-group) {
@@ -350,8 +360,8 @@
   font-size: 16px;
   font-weight: 600;
   color: #8b0000;
-  margin-bottom: 15px;
-  padding-bottom: 5px;
+
+
   border-bottom: 1px solid rgba(139, 0, 0, 0.1);
 }
 

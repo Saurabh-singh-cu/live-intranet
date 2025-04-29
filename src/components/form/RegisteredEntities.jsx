@@ -7,7 +7,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import mail from "../../assets/images/mail.png";
-import "./EntityTable.css";
+import "./EntityTable.module.css";
 import axios from "axios";
 import apiClient from "../../config/apiClient";
 import Swal from "sweetalert2";

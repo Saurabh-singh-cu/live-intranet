@@ -5,6 +5,9 @@
   padding: 20px;
   margin-bottom: 24px;
   transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .graphContainer:hover {

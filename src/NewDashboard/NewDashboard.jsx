@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react";
 import {
   ChevronDown,
   ChevronUp,
@@ -13,54 +13,56 @@ import {
   MessageCircle,
   Flag,
   Info,
-} from "lucide-react"
-import styles from "./NewDashboard.module.css"
-import cf from "../assets/images/cf.jpg"
-import am from "../assets/images/am.jpg"
-import not1 from "../assets/images/not1.png"
+} from "lucide-react";
+import styles from "./NewDashboard.module.css";
+import cf from "../assets/images/cf.jpg";
+import am from "../assets/images/am.jpg";
+import not1 from "../assets/images/not1.png";
 
-import apiClient from "../config/apiClient"
-import shark from "./images/shark.png"
-import ai from "./images/ai.png"
-import ali from "./images/ali.png"
-import sat from "./images/sat.png"
-import fest from "./images/fest.png"
-import alertI from "./images/alert.png"
+import apiClient from "../config/apiClient";
+import shark from "./images/shark.png";
+import ai from "./images/ai.png";
+import ali from "./images/ali.png";
+import sat from "./images/sat.png";
+import fest from "./images/fest.png";
+import alertI from "./images/alert.png";
 
 const NewDashboard = () => {
-  const [activeAccordion, setActiveAccordion] = useState(null)
-  const [currentMonth, setCurrentMonth] = useState("April")
-  const [currentYear, setCurrentYear] = useState(2025)
-  const [showCalendarModal, setShowCalendarModal] = useState(false)
-  const [showAnnouncementModal, setShowAnnouncementModal] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(null)
-  const [selectedEvent, setSelectedEvent] = useState(null)
-  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null)
-  const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0)
-  const [activeTab, setActiveTab] = useState("announcement")
-  const [currentNewsIndex, setCurrentNewsIndex] = useState(0)
-  const [activeCategory, setActiveCategory] = useState(null)
+  const [activeAccordion, setActiveAccordion] = useState(null);
+  const [currentMonth, setCurrentMonth] = useState("April");
+  const [currentYear, setCurrentYear] = useState(2025);
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
+  const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+  const [currentAnnouncementIndex, setCurrentAnnouncementIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState("announcement");
+  const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
+  const [activeCategory, setActiveCategory] = useState(null);
   const [entityCounts, setEntityCounts] = useState({
     club: 0,
     departmentSociety: 0,
     professionalSociety: 0,
     community: 0,
-  })
-  const [publicNotifications, setPublicNotifications] = useState([])
-  const [loggedInUser, setLoggedInUser] = useState(null)
-  const [categorie, setCategorie] = useState([])
-  const [newsAndViews, setNewsAndViews] = useState([])
-  const [isHovering, setIsHovering] = useState(false)
-  const announcementTimerRef = useRef(null)
-  const newsTimerRef = useRef(null)
-  const [availableCategories, setAvailableCategories] = useState([])
+  });
+  const [publicNotifications, setPublicNotifications] = useState([]);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [categorie, setCategorie] = useState([]);
+  const [newsAndViews, setNewsAndViews] = useState([]);
+  const [isHovering, setIsHovering] = useState(false);
+  const announcementTimerRef = useRef(null);
+  const newsTimerRef = useRef(null);
+  const [availableCategories, setAvailableCategories] = useState([]);
 
   // Fetch entity counts from API
   useEffect(() => {
     const fetchEntityCounts = async () => {
       try {
-        const response = await fetch("http://172.17.2.247:8080/intranetapp/entity_count/")
-        const data = await response.json()
+        const response = await fetch(
+          "https://api.cuintranet.in/intranetapp/entity_count/"
+        );
+        const data = await response.json();
 
         // Map the API response to our state structure
         const counts = {
@@ -68,30 +70,30 @@ const NewDashboard = () => {
           departmentSociety: 0,
           professionalSociety: 0,
           community: 0,
-        }
+        };
 
         data.forEach((item) => {
           if (item.entity_name === "CLUB") {
-            counts.club = item.entity_count
+            counts.club = item.entity_count;
           } else if (item.entity_name === "DEPARTMENT SOCIETY") {
-            counts.departmentSociety = item.entity_count
+            counts.departmentSociety = item.entity_count;
           } else if (item.entity_name === "PROFESSIONAL SOCIETY") {
-            counts.professionalSociety = item.entity_count
+            counts.professionalSociety = item.entity_count;
           } else if (item.entity_name === "COMMUNITY") {
-            counts.community = item.entity_count
+            counts.community = item.entity_count;
           }
-        })
+        });
 
-        setEntityCounts(counts)
+        setEntityCounts(counts);
       } catch (error) {
-        console.error("Error fetching entity counts:", error)
+        console.error("Error fetching entity counts:", error);
       }
-    }
+    };
 
-    fetchEntityCounts()
-    getPublicNotifications()
-    getNewsAndViews()
-  }, [])
+    fetchEntityCounts();
+    getPublicNotifications();
+    getNewsAndViews();
+  }, []);
 
   const announcements = [
     {
@@ -113,7 +115,8 @@ const NewDashboard = () => {
     {
       id: 1,
       title: "Meet The Shark",
-      content: "Join us for an exclusive session with Anupam Mittal, Founder & CEO of Shaadi.com",
+      content:
+        "Join us for an exclusive session with Anupam Mittal, Founder & CEO of Shaadi.com",
       from: "Professional Society: E-Cell",
       messageTime: "2hr ago",
       priority: "high",
@@ -128,7 +131,8 @@ const NewDashboard = () => {
     {
       id: 2,
       title: "AI in Healthcare: The Future is Now",
-      content: "Explore how AI is transforming the healthcare industry with Dr. Ritu Raj, Data Scientist at IBM.",
+      content:
+        "Explore how AI is transforming the healthcare industry with Dr. Ritu Raj, Data Scientist at IBM.",
       from: "Department of Computer Science",
       messageTime: "5hr ago",
       priority: "medium",
@@ -175,7 +179,8 @@ const NewDashboard = () => {
     {
       id: 5,
       title: "CU Fest 2025",
-      content: "CU Fest 2025 is about to hit all the right notes as the sensational Jubin Nautiyal takes the stage!",
+      content:
+        "CU Fest 2025 is about to hit all the right notes as the sensational Jubin Nautiyal takes the stage!",
       from: "CU FEST 2025",
       messageTime: "4 days ago",
       priority: "medium",
@@ -187,7 +192,7 @@ const NewDashboard = () => {
       location: "Exhibition Hall, Block C",
       registerLink: "#",
     },
-  ]
+  ];
 
   const discussions = [
     {
@@ -200,21 +205,24 @@ const NewDashboard = () => {
       title: "Community",
       participants: ["A", "Q", "S"],
       additionalCount: 3,
-      content: "Discussion forum for all Chandigarh University Student Tech Community & Community.",
+      content:
+        "Discussion forum for all Chandigarh University Student Tech Community & Community.",
     },
     {
       title: "Department Society",
       participants: ["C", "D", "P", "J"],
       additionalCount: 2,
-      content: "Discussion forum for all Chandigarh University Student Department Society.",
+      content:
+        "Discussion forum for all Chandigarh University Student Department Society.",
     },
     {
       title: "Professional Society (Student Chapters)",
       participants: ["C", "S"],
       additionalCount: 2,
-      content: "Discussion forum for all Chandigarh University Student Chapters.",
+      content:
+        "Discussion forum for all Chandigarh University Student Chapters.",
     },
-  ]
+  ];
 
   const events = [
     {
@@ -287,12 +295,13 @@ const NewDashboard = () => {
       attendees: ["user11", "user12"],
       color: "#34A853",
     },
-  ]
+  ];
 
   const newsItems = [
     {
       id: 1,
-      title: "Chandigarh University becomes India's First ABET Accredited Private University",
+      title:
+        "Chandigarh University becomes India's First ABET Accredited Private University",
       content:
         "CU has earned the Accreditation Board for Engineering and Technology (ABET) recognition for its nine engineering programmes, highest in India.",
       image: cf,
@@ -317,21 +326,21 @@ const NewDashboard = () => {
       date: "April 2, 2025",
       category: "Event",
     },
-  ]
+  ];
 
   // Calendar data generation
-  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   // Generate calendar days for current month
   const generateCalendarDays = () => {
-    const year = currentYear
-    const month = new Date(`${currentMonth} 1, ${currentYear}`).getMonth()
+    const year = currentYear;
+    const month = new Date(`${currentMonth} 1, ${currentYear}`).getMonth();
 
-    const firstDay = new Date(year, month, 1).getDay()
-    const daysInMonth = new Date(year, month + 1, 0).getDate()
-    const daysInPrevMonth = new Date(year, month, 0).getDate()
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
 
-    const calendarDays = []
+    const calendarDays = [];
 
     // Previous month days
     for (let i = firstDay - 1; i >= 0; i--) {
@@ -345,24 +354,24 @@ const NewDashboard = () => {
               }),
         current: false,
         events: [],
-      })
+      });
     }
 
     // Current month days
     for (let i = 1; i <= daysInMonth; i++) {
-      const date = new Date(year, month, i)
-      const dateString = date.toISOString().split("T")[0]
+      const date = new Date(year, month, i);
+      const dateString = date.toISOString().split("T")[0];
 
       calendarDays.push({
         day: i,
         month: currentMonth,
         current: true,
         events: events.filter((event) => event.date === dateString),
-      })
+      });
     }
 
     // Next month days
-    const remainingDays = 42 - calendarDays.length // 6 rows of 7 days
+    const remainingDays = 42 - calendarDays.length; // 6 rows of 7 days
     for (let i = 1; i <= remainingDays; i++) {
       calendarDays.push({
         day: i,
@@ -374,221 +383,247 @@ const NewDashboard = () => {
               }),
         current: false,
         events: [],
-      })
+      });
     }
 
-    return calendarDays
-  }
+    return calendarDays;
+  };
 
-  const calendarDays = generateCalendarDays()
+  const calendarDays = generateCalendarDays();
 
   const toggleAccordion = (index) => {
-    setActiveAccordion(activeAccordion === index ? null : index)
-  }
+    setActiveAccordion(activeAccordion === index ? null : index);
+  };
 
   const handlePrevMonth = () => {
-    const date = new Date(`${currentMonth} 1, ${currentYear}`)
-    date.setMonth(date.getMonth() - 1)
-    setCurrentMonth(date.toLocaleString("default", { month: "long" }))
-    setCurrentYear(date.getFullYear())
-  }
+    const date = new Date(`${currentMonth} 1, ${currentYear}`);
+    date.setMonth(date.getMonth() - 1);
+    setCurrentMonth(date.toLocaleString("default", { month: "long" }));
+    setCurrentYear(date.getFullYear());
+  };
 
   const handleNextMonth = () => {
-    const date = new Date(`${currentMonth} 1, ${currentYear}`)
-    date.setMonth(date.getMonth() + 1)
-    setCurrentMonth(date.toLocaleString("default", { month: "long" }))
-    setCurrentYear(date.getFullYear())
-  }
+    const date = new Date(`${currentMonth} 1, ${currentYear}`);
+    date.setMonth(date.getMonth() + 1);
+    setCurrentMonth(date.toLocaleString("default", { month: "long" }));
+    setCurrentYear(date.getFullYear());
+  };
 
   const handleDateClick = (day) => {
-    setSelectedDate(day)
-    setShowCalendarModal(true)
-  }
+    setSelectedDate(day);
+    setShowCalendarModal(true);
+  };
 
   const handleEventClick = (event) => {
-    setSelectedEvent(event)
-  }
+    setSelectedEvent(event);
+  };
 
   const handleAnnouncementClick = (announcement) => {
-    setSelectedAnnouncement(announcement)
-    setShowAnnouncementModal(true)
-  }
+    setSelectedAnnouncement(announcement);
+    setShowAnnouncementModal(true);
+  };
 
   const closeModal = () => {
-    setShowCalendarModal(false)
-    setShowAnnouncementModal(false)
-    setSelectedEvent(null)
-  }
+    setShowCalendarModal(false);
+    setShowAnnouncementModal(false);
+    setSelectedEvent(null);
+  };
 
   const getRandomColor = () => {
-    const letters = "0123456789ABCDEF"
-    let color = "#"
+    const letters = "0123456789ABCDEF";
+    let color = "#";
     for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)]
+      color += letters[Math.floor(Math.random() * 16)];
     }
-    return color
-  }
+    return color;
+  };
 
   const nextAnnouncement = () => {
     if (publicNotifications.length > 0) {
-      setCurrentAnnouncementIndex((prevIndex) => (prevIndex === publicNotifications.length - 1 ? 0 : prevIndex + 1))
+      setCurrentAnnouncementIndex((prevIndex) =>
+        prevIndex === publicNotifications.length - 1 ? 0 : prevIndex + 1
+      );
     } else {
-      setCurrentAnnouncementIndex((prevIndex) => (prevIndex === announcements.length - 1 ? 0 : prevIndex + 1))
+      setCurrentAnnouncementIndex((prevIndex) =>
+        prevIndex === announcements.length - 1 ? 0 : prevIndex + 1
+      );
     }
-  }
+  };
 
   const prevAnnouncement = () => {
     if (publicNotifications.length > 0) {
-      setCurrentAnnouncementIndex((prevIndex) => (prevIndex === 0 ? publicNotifications.length - 1 : prevIndex - 1))
+      setCurrentAnnouncementIndex((prevIndex) =>
+        prevIndex === 0 ? publicNotifications.length - 1 : prevIndex - 1
+      );
     } else {
-      setCurrentAnnouncementIndex((prevIndex) => (prevIndex === 0 ? announcements.length - 1 : prevIndex - 1))
+      setCurrentAnnouncementIndex((prevIndex) =>
+        prevIndex === 0 ? announcements.length - 1 : prevIndex - 1
+      );
     }
-  }
+  };
 
   const nextNews = () => {
-    setCurrentNewsIndex((prevIndex) => (prevIndex === newsItems.length - 1 ? 0 : prevIndex + 1))
-  }
+    setCurrentNewsIndex((prevIndex) =>
+      prevIndex === newsItems.length - 1 ? 0 : prevIndex + 1
+    );
+  };
 
   const prevNews = () => {
-    setCurrentNewsIndex((prevIndex) => (prevIndex === 0 ? newsItems.length - 1 : prevIndex - 1))
-  }
+    setCurrentNewsIndex((prevIndex) =>
+      prevIndex === 0 ? newsItems.length - 1 : prevIndex - 1
+    );
+  };
 
   // Redirect functions
   const redirectToClubs = () => {
-    window.location.href = "/clubs"
-  }
+    window.location.href = "/clubs";
+  };
 
   const redirectToCommunities = () => {
-    window.location.href = "/communities"
-  }
+    window.location.href = "/communities";
+  };
 
   const redirectToDepartmentSociety = () => {
-    window.location.href = "/department-society"
-  }
+    window.location.href = "/department-society";
+  };
 
   const redirectToProfessionalSociety = () => {
-    window.location.href = "/professional-society"
-  }
+    window.location.href = "/professional-society";
+  };
 
   const userData = () => {
-    const getUser = JSON.parse(localStorage.getItem("user"))
+    const getUser = JSON.parse(localStorage.getItem("user"));
     if (getUser?.user_name) {
-      setLoggedInUser(true)
+      setLoggedInUser(true);
     } else {
-      setLoggedInUser(false)
+      setLoggedInUser(false);
     }
-  }
+  };
 
   useEffect(() => {
-    userData()
-  }, [])
+    userData();
+  }, []);
 
   // Format date to readable format
   const formatDate = (dateString) => {
-    const date = new Date(dateString)
+    const date = new Date(dateString);
     return date.toLocaleString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    })
-  }
+    });
+  };
 
   // Get time difference from now
   const getTimeDifference = (dateString) => {
-    const now = new Date()
-    const date = new Date(dateString)
-    const diffMs = now - date
-    const diffMins = Math.floor(diffMs / 60000)
-    const diffHrs = Math.floor(diffMins / 60)
-    const diffDays = Math.floor(diffHrs / 24)
+    const now = new Date();
+    const date = new Date(dateString);
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHrs = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHrs / 24);
 
     if (diffMins < 60) {
-      return `${diffMins}min ago`
+      return `${diffMins}min ago`;
     } else if (diffHrs < 24) {
-      return `${diffHrs}hr ago`
+      return `${diffHrs}hr ago`;
     } else {
-      return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`
+      return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
     }
-  }
+  };
 
   useEffect(() => {
     if (availableCategories.length > 0 && !activeCategory) {
-      setActiveCategory(availableCategories[0])
+      setActiveCategory(availableCategories[0]);
     }
-  }, [availableCategories])
+  }, [availableCategories]);
 
   const getPublicNotifications = async () => {
     try {
       const payload = {
         role_id: [8],
-      }
-      const response = await apiClient.post("get-push-notifications/", payload)
-      const data = response.data
+      };
+      const response = await apiClient.post("get-push-notifications/", payload);
+      const data = response.data;
+      console.log(data, "YESSSSS");
 
       // Filter notifications with category "public"
-      const publicNotifs = data.filter((notification) => notification.roles[0] === 8)
-      console.log(publicNotifs, "NOOOOOO")
-      setPublicNotifications(publicNotifs)
+      const publicNotifs = data.filter(
+        (notification) => notification.roles[0] === 8
+      );
+      console.log(publicNotifs, "NOOOOOO");
+      setPublicNotifications(publicNotifs);
 
       // Extract unique categories
-      const uniqueCategories = [...new Set(publicNotifs.map((n) => n.category))]
-      setAvailableCategories(uniqueCategories)
+      const uniqueCategories = [
+        ...new Set(publicNotifs.map((n) => n.category)),
+      ];
+      setAvailableCategories(uniqueCategories);
     } catch (error) {
-      console.error("Error fetching notifications:", error)
+      console.error("Error fetching notifications:", error);
     }
-  }
+  };
 
   const getNewsAndViews = async () => {
     try {
-      const response = await apiClient.get("news-and-views/active/")
-      const data = response.data
-      console.log("News and Views data:", data)
-      setNewsAndViews(data)
+      const response = await apiClient.get("news-and-views/active/");
+      const data = response.data;
+      console.log("News and Views data:", data);
+      setNewsAndViews(data);
     } catch (error) {
-      console.error("Error fetching news and views:", error)
+      console.error("Error fetching news and views:", error);
     }
-  }
+  };
 
   // Update the auto-scrolling logic for the announcement carousel
   useEffect(() => {
     if (!isHovering) {
       announcementTimerRef.current = setInterval(() => {
-        const totalItems = announcements.length
+        const totalItems = announcements.length;
         if (totalItems > 0) {
-          setCurrentAnnouncementIndex((prevIndex) => (prevIndex + 1) % totalItems)
+          setCurrentAnnouncementIndex(
+            (prevIndex) => (prevIndex + 1) % totalItems
+          );
         }
-      }, 5000)
+      }, 5000);
     }
 
     return () => {
       if (announcementTimerRef.current) {
-        clearInterval(announcementTimerRef.current)
+        clearInterval(announcementTimerRef.current);
       }
-    }
-  }, [isHovering, announcements.length])
+    };
+  }, [isHovering, announcements.length]);
 
   // Update the auto-scrolling logic for the news carousel
   useEffect(() => {
     if (!isHovering) {
       newsTimerRef.current = setInterval(() => {
-        const totalItems = newsAndViews.length > 0 ? newsAndViews.length : newsItems.length
+        const totalItems =
+          newsAndViews.length > 0 ? newsAndViews.length : newsItems.length;
         if (totalItems > 0) {
-          setCurrentNewsIndex((prevIndex) => (prevIndex + 1) % totalItems)
+          setCurrentNewsIndex((prevIndex) => (prevIndex + 1) % totalItems);
         }
-      }, 5000)
+      }, 5000);
     }
 
     return () => {
       if (newsTimerRef.current) {
-        clearInterval(newsTimerRef.current)
+        clearInterval(newsTimerRef.current);
       }
-    }
-  }, [isHovering, newsAndViews.length, newsItems.length])
+    };
+  }, [isHovering, newsAndViews.length, newsItems.length]);
 
   return (
-    <div className={loggedInUser ? styles.dashboardContainerLoggedIn : styles.dashboardContainerLoggedOut}>
+    <div
+      className={
+        loggedInUser
+          ? styles.dashboardContainerLoggedIn
+          : styles.dashboardContainerLoggedOut
+      }
+    >
       <div className={styles.contentGrid}>
         <div className={styles.announcementSection}>
           <div className={styles.sectionHeader}>
@@ -602,7 +637,9 @@ const NewDashboard = () => {
                   <span
                     key={index}
                     className={`${styles.indicator} ${
-                      currentAnnouncementIndex === index ? styles.activeIndicator : ""
+                      currentAnnouncementIndex === index
+                        ? styles.activeIndicator
+                        : ""
                     }`}
                     onClick={() => setCurrentAnnouncementIndex(index)}
                   ></span>
@@ -628,7 +665,9 @@ const NewDashboard = () => {
               {announcements.map((announcement, index) => (
                 <div
                   key={index}
-                  className={`${styles.announcementCard} ${styles[`priority${announcement.priority}`]}`}
+                  className={`${styles.announcementCard} ${
+                    styles[`priority${announcement.priority}`]
+                  }`}
                   onClick={() => handleAnnouncementClick(announcement)}
                 >
                   <div className={styles.announcementImageContainer}>
@@ -637,14 +676,26 @@ const NewDashboard = () => {
                       alt={announcement.title}
                       className={styles.announcementImage}
                     />
-                    {announcement.priority === "high" && <div className={styles.announcementBadge}>Important</div>}
+                    {announcement.priority === "high" && (
+                      <div className={styles.announcementBadge}>Important</div>
+                    )}
                   </div>
                   <div className={styles.announcementCardContent}>
-                    {announcement.title && <h3 className={styles.announcementTitle}>{announcement.title}</h3>}
-                    <p className={styles.announcementContent}>{announcement.content}</p>
+                    {announcement.title && (
+                      <h3 className={styles.announcementTitle}>
+                        {announcement.title}
+                      </h3>
+                    )}
+                    <p className={styles.announcementContent}>
+                      {announcement.content}
+                    </p>
                     <div className={styles.announcementFooter}>
-                      <span className={styles.announcementFrom}>{announcement.from}</span>
-                      <span className={styles.announcementTime}>{announcement.messageTime}</span>
+                      <span className={styles.announcementFrom}>
+                        {announcement.from}
+                      </span>
+                      <span className={styles.announcementTime}>
+                        {announcement.messageTime}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -655,7 +706,10 @@ const NewDashboard = () => {
 
         <div className={styles.metricsSection}>
           <div className={styles.metricCardsGrid}>
-            <div onClick={redirectToClubs} className={`${styles.metricCard} ${styles.card1}`}>
+            <div
+              onClick={redirectToClubs}
+              className={`${styles.metricCard} ${styles.card1}`}
+            >
               <div className={styles.cardContent}>
                 <div className={styles.cardInfo}>
                   <h2 className={styles.cardCount}>{entityCounts.club}</h2>
@@ -671,7 +725,10 @@ const NewDashboard = () => {
               <div className={styles.cardShine}></div>
             </div>
 
-            <div onClick={redirectToCommunities} className={`${styles.metricCard} ${styles.card2}`}>
+            <div
+              onClick={redirectToCommunities}
+              className={`${styles.metricCard} ${styles.card2}`}
+            >
               <div className={styles.cardContent}>
                 <div className={styles.cardInfo}>
                   <h2 className={styles.cardCount}>{entityCounts.community}</h2>
@@ -687,10 +744,15 @@ const NewDashboard = () => {
               <div className={styles.cardShine}></div>
             </div>
 
-            <div onClick={redirectToDepartmentSociety} className={`${styles.metricCard} ${styles.card3}`}>
+            <div
+              onClick={redirectToDepartmentSociety}
+              className={`${styles.metricCard} ${styles.card3}`}
+            >
               <div className={styles.cardContent}>
                 <div className={styles.cardInfo}>
-                  <h2 className={styles.cardCount}>{entityCounts.departmentSociety}</h2>
+                  <h2 className={styles.cardCount}>
+                    {entityCounts.departmentSociety}
+                  </h2>
                   <div className={styles.cardCategory}>CO-CURRICULAR</div>
                   <p className={styles.cardTitle}>Department Society</p>
                 </div>
@@ -715,11 +777,18 @@ const NewDashboard = () => {
               <div className={styles.cardShine}></div>
             </div>
 
-            <div onClick={redirectToProfessionalSociety} className={`${styles.metricCard} ${styles.card4}`}>
+            <div
+              onClick={redirectToProfessionalSociety}
+              className={`${styles.metricCard} ${styles.card4}`}
+            >
               <div className={styles.cardContent}>
                 <div className={styles.cardInfo}>
-                  <h2 className={styles.cardCount}>{entityCounts.professionalSociety}</h2>
-                  <div className={styles.cardCategory}>PROFESSIONAL SOCIETY</div>
+                  <h2 className={styles.cardCount}>
+                    {entityCounts.professionalSociety}
+                  </h2>
+                  <div className={styles.cardCategory}>
+                    PROFESSIONAL SOCIETY
+                  </div>
                   <p className={styles.cardTitle}>Student Chapters</p>
                 </div>
                 <div className={styles.cardIconContainer}>
@@ -747,12 +816,15 @@ const NewDashboard = () => {
       </div>
       <div className={styles.contentGridSecond}>
         <div className={styles.calendarSection}>
-          <div className={styles.calendarHeader} onClick={() => setShowCalendarModal(true)}>
+          <div
+            className={styles.calendarHeader}
+            onClick={() => setShowCalendarModal(true)}
+          >
             <div className={styles.monthSelector}>
               <button
                 onClick={(e) => {
-                  e.stopPropagation()
-                  handlePrevMonth()
+                  e.stopPropagation();
+                  handlePrevMonth();
                 }}
                 className={styles.monthButton}
               >
@@ -763,8 +835,8 @@ const NewDashboard = () => {
               </h2>
               <button
                 onClick={(e) => {
-                  e.stopPropagation()
-                  handleNextMonth()
+                  e.stopPropagation();
+                  handleNextMonth();
                 }}
                 className={styles.monthButton}
               >
@@ -795,9 +867,17 @@ const NewDashboard = () => {
                 {day.events.length > 0 && (
                   <div className={styles.eventIndicators}>
                     {day.events.slice(0, 3).map((event, i) => (
-                      <span key={i} className={styles.eventDot} style={{ backgroundColor: event.color }}></span>
+                      <span
+                        key={i}
+                        className={styles.eventDot}
+                        style={{ backgroundColor: event.color }}
+                      ></span>
                     ))}
-                    {day.events.length > 3 && <span className={styles.moreEvents}>+{day.events.length - 3}</span>}
+                    {day.events.length > 3 && (
+                      <span className={styles.moreEvents}>
+                        +{day.events.length - 3}
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
@@ -808,36 +888,55 @@ const NewDashboard = () => {
         <div className={styles.tabsSection}>
           <div className={styles.tabsHeader}>
             <div
-              className={`${styles.tab} ${activeTab === "announcement" ? styles.activeTab : ""}`}
+              className={`${styles.tab} ${
+                activeTab === "announcement" ? styles.activeTab : ""
+              }`}
               onClick={() => setActiveTab("announcement")}
             >
               <MessageCircle size={16} />
-              <span>Announcements</span>
+              <span>Announcements1</span>
             </div>
           </div>
 
           <div className={styles.tabContent}>
             <div className={styles.categoryFilters}>
               <div
-                className={`${styles.categoryButton} ${activeCategory === "all" ? styles.activeCategory : ""}`}
+                className={`${styles.categoryButton} ${
+                  activeCategory === "all" ? styles.activeCategory : ""
+                }`}
                 onClick={() => setActiveCategory("all")}
               >
                 All ({publicNotifications.length})
                 {publicNotifications.filter((n) => !n.is_read).length > 0 && (
-                  <span className={styles.unreadBadge}>{publicNotifications.filter((n) => !n.is_read).length}</span>
+                  <span className={styles.unreadBadge}>
+                    {publicNotifications.filter((n) => !n.is_read).length}
+                  </span>
                 )}
               </div>
 
               {availableCategories.map((category) => (
                 <div
                   key={category}
-                  className={`${styles.categoryButton} ${activeCategory === category ? styles.activeCategory : ""}`}
+                  className={`${styles.categoryButton} ${
+                    activeCategory === category ? styles.activeCategory : ""
+                  }`}
                   onClick={() => setActiveCategory(category)}
                 >
-                  {category} ({publicNotifications.filter((n) => n.category === category).length})
-                  {publicNotifications.filter((n) => n.category === category && !n.is_read).length > 0 && (
+                  {category} (
+                  {
+                    publicNotifications.filter((n) => n.category === category)
+                      .length
+                  }
+                  )
+                  {publicNotifications.filter(
+                    (n) => n.category === category && !n.is_read
+                  ).length > 0 && (
                     <span className={styles.unreadBadge}>
-                      {publicNotifications.filter((n) => n.category === category && !n.is_read).length}
+                      {
+                        publicNotifications.filter(
+                          (n) => n.category === category && !n.is_read
+                        ).length
+                      }
                     </span>
                   )}
                 </div>
@@ -850,19 +949,38 @@ const NewDashboard = () => {
                   publicNotifications.map((notification, index) => (
                     <div
                       key={index}
-                      className={`${styles.announcementTabItem} ${!notification.is_read ? styles.unreadItem : ""}`}
+                      className={`${styles.announcementTabItem} ${
+                        !notification.is_read ? styles.unreadItem : ""
+                      }`}
                     >
                       <div className={styles.announcementTabHeader}>
                         <h3>
-                          {!notification.is_read && <span className={styles.newIndicator}>NEW</span>}
+                          {!notification.is_read && (
+                            <span className={styles.newIndicator}>NEW</span>
+                          )}
                           {/* {notification.message?.slice(0, 20)} */}
                         </h3>
-                        <span className={styles.publicNotificationBadge}>{notification?.category}</span>
+                        <span className={styles.publicNotificationBadge}>
+                          {notification?.category}
+                        </span>
                       </div>
-                      <p className={styles.announcementTabDescription}>{notification.message}</p>
+
+                      <div
+                        style={{ fontFamily: "sans-serif" }}
+                        className={styles.announcementTabDescription}
+                        dangerouslySetInnerHTML={{
+                          __html: notification.message,
+                        }}
+                      />
+
                       <div className={styles.announcementTabFooter}>
-                        <span> {getTimeDifference(notification.created_at)}</span>
-                        <button className={styles.viewDetailsButton}>End Date: {notification?.end_date}</button>{" "}
+                        <span>
+                          {" "}
+                          {getTimeDifference(notification.created_at)}
+                        </span>
+                        <button className={styles.viewDetailsButton}>
+                          End Date: {notification?.end_date}
+                        </button>{" "}
                       </div>
                     </div>
                   ))
@@ -871,28 +989,53 @@ const NewDashboard = () => {
                     <div className={styles.announcementTabHeader}>
                       <h3>No announcements</h3>
                     </div>
-                    <p className={styles.announcementTabDescription}>There are no announcements at this time.</p>
+                    <p className={styles.announcementTabDescription}>
+                      There are no announcements at this time.
+                    </p>
                   </div>
                 )
-              ) : publicNotifications.filter((n) => n.category === activeCategory).length > 0 ? (
+              ) : publicNotifications.filter(
+                  (n) => n.category === activeCategory
+                ).length > 0 ? (
                 publicNotifications
-                  .filter((notification) => notification.category === activeCategory)
+                  .filter(
+                    (notification) => notification.category === activeCategory
+                  )
                   .map((notification, index) => (
                     <div
                       key={index}
-                      className={`${styles.announcementTabItem} ${!notification.is_read ? styles.unreadItem : ""}`}
+                      className={`${styles.announcementTabItem} ${
+                        !notification.is_read ? styles.unreadItem : ""
+                      }`}
                     >
                       <div className={styles.announcementTabHeader}>
                         <h3>
-                          {!notification.is_read && <span className={styles.newIndicator}>NEW</span>}
+                          {!notification.is_read && (
+                            <span className={styles.newIndicator}>NEW</span>
+                          )}
                           {/* {notification.message?.slice(0, 20)} */}
                         </h3>
-                        <span className={styles.publicNotificationBadge}>{notification?.category}</span>
+                        <span className={styles.publicNotificationBadge}>
+                          {notification?.category}
+                        </span>
                       </div>
-                      <p className={styles.announcementTabDescription}>{notification.message}</p>
+
+                      <div
+                        style={{ fontFamily: "sans-serif" }}
+                        className={styles.announcementTabDescription}
+                        dangerouslySetInnerHTML={{
+                          __html: notification.message,
+                        }}
+                      />
+
                       <div className={styles.announcementTabFooter}>
-                        <span> {getTimeDifference(notification.created_at)}</span>
-                        <button className={styles.viewDetailsButton}>End Date: {notification?.end_date}</button>
+                        <span>
+                          {" "}
+                          {getTimeDifference(notification.created_at)}
+                        </span>
+                        <button className={styles.viewDetailsButton}>
+                          End Date: {notification?.end_date}
+                        </button>
                       </div>
                     </div>
                   ))
@@ -901,7 +1044,9 @@ const NewDashboard = () => {
                   <div className={styles.announcementTabHeader}>
                     <h3>No announcements in this category</h3>
                   </div>
-                  <p className={styles.announcementTabDescription}>There are no announcements at this time.</p>
+                  <p className={styles.announcementTabDescription}>
+                    There are no announcements at this time.
+                  </p>
                 </div>
               )}
             </div>
@@ -917,30 +1062,46 @@ const NewDashboard = () => {
             {discussions.map((discussion, index) => (
               <div key={index} className={styles.discussionItem}>
                 <button
-                  className={`${styles.discussionButton} ${activeAccordion === index ? styles.active : ""}`}
+                  className={`${styles.discussionButton} ${
+                    activeAccordion === index ? styles.active : ""
+                  }`}
                   onClick={() => toggleAccordion(index)}
                 >
-                  <span className={styles.discussionTitle}>{discussion.title}</span>
+                  <span className={styles.discussionTitle}>
+                    {discussion.title}
+                  </span>
                   <div className={styles.discussionMeta}>
                     <div className={styles.participantAvatars}>
                       {discussion.participants.map((letter, i) => (
-                        <div key={i} className={styles.avatar} style={{ backgroundColor: getRandomColor() }}>
+                        <div
+                          key={i}
+                          className={styles.avatar}
+                          style={{ backgroundColor: getRandomColor() }}
+                        >
                           {letter}
                         </div>
                       ))}
                       {discussion.additionalCount > 0 && (
-                        <span className={styles.additionalCount}>+{discussion.additionalCount}</span>
+                        <span className={styles.additionalCount}>
+                          +{discussion.additionalCount}
+                        </span>
                       )}
                     </div>
                     <span className={styles.accordionIcon}>
-                      {activeAccordion === index ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                      {activeAccordion === index ? (
+                        <ChevronUp size={18} />
+                      ) : (
+                        <ChevronDown size={18} />
+                      )}
                     </span>
                   </div>
                 </button>
                 {activeAccordion === index && (
                   <div className={styles.discussionContent}>
                     <p>{discussion.content}</p>
-                    <button className={styles.joinButton}>Join Discussion</button>
+                    <button className={styles.joinButton}>
+                      Join Discussion
+                    </button>
                   </div>
                 )}
               </div>
@@ -956,13 +1117,17 @@ const NewDashboard = () => {
                 <ChevronLeft size={20} />
               </button> */}
               <div className={styles.carouselIndicators}>
-                {(newsAndViews.length > 0 ? newsAndViews : newsItems).map((_, index) => (
-                  <span
-                    key={index}
-                    className={`${styles.indicator} ${currentNewsIndex === index ? styles.activeIndicator : ""}`}
-                    onClick={() => setCurrentNewsIndex(index)}
-                  ></span>
-                ))}
+                {(newsAndViews.length > 0 ? newsAndViews : newsItems).map(
+                  (_, index) => (
+                    <span
+                      key={index}
+                      className={`${styles.indicator} ${
+                        currentNewsIndex === index ? styles.activeIndicator : ""
+                      }`}
+                      onClick={() => setCurrentNewsIndex(index)}
+                    ></span>
+                  )
+                )}
               </div>
               {/* <button onClick={nextNews} className={styles.carouselButton}>
                 <ChevronRight size={20} />
@@ -975,7 +1140,10 @@ const NewDashboard = () => {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
-            <div className={styles.newsSlides} style={{ transform: `translateX(-${currentNewsIndex * 100}%)` }}>
+            <div
+              className={styles.newsSlides}
+              style={{ transform: `translateX(-${currentNewsIndex * 100}%)` }}
+            >
               {newsAndViews.length > 0
                 ? newsAndViews.map((news, index) => (
                     <div key={index} className={styles.newsCard}>
@@ -993,14 +1161,20 @@ const NewDashboard = () => {
                             className={styles.newsImage}
                           />
                         )}
-                        <div className={styles.newsCategory}>{news.category}</div>
+                        <div className={styles.newsCategory}>
+                          {news.category}
+                        </div>
                       </div>
                       <div className={styles.newsCardContent}>
                         <h3 className={styles.newsTitle}>{news.title}</h3>
                         <p className={styles.newsContent}>{news.content}</p>
                         <div className={styles.newsFooter}>
-                          <span className={styles.newsDate}>{new Date(news.start_date).toLocaleDateString()}</span>
-                          <button className={styles.readMoreButton}>Read More</button>
+                          <span className={styles.newsDate}>
+                            {new Date(news.start_date).toLocaleDateString()}
+                          </span>
+                          <button className={styles.readMoreButton}>
+                            Read More
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -1010,18 +1184,25 @@ const NewDashboard = () => {
                     <div key={index} className={styles.newsCard}>
                       <div className={styles.newsImageContainer}>
                         <img
-                          src={news.image || "/placeholder.svg?height=300&width=400"}
+                          src={
+                            news.image ||
+                            "/placeholder.svg?height=300&width=400"
+                          }
                           alt={news.title}
                           className={styles.newsImage}
                         />
-                        <div className={styles.newsCategory}>{news.category}</div>
+                        <div className={styles.newsCategory}>
+                          {news.category}
+                        </div>
                       </div>
                       <div className={styles.newsCardContent}>
                         <h3 className={styles.newsTitle}>{news.title}</h3>
                         <p className={styles.newsContent}>{news.content}</p>
                         <div className={styles.newsFooter}>
                           <span className={styles.newsDate}>{news.date}</span>
-                          <button className={styles.readMoreButton}>Read More</button>
+                          <button className={styles.readMoreButton}>
+                            Read More
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -1057,10 +1238,14 @@ const NewDashboard = () => {
                   {calendarDays.map((day, index) => (
                     <div
                       key={index}
-                      className={`${styles.modalCalendarDay} ${!day.current ? styles.modalOtherMonth : ""} 
+                      className={`${styles.modalCalendarDay} ${
+                        !day.current ? styles.modalOtherMonth : ""
+                      } 
                         ${day.events.length > 0 ? styles.modalHasEvents : ""} 
                         ${
-                          selectedDate && selectedDate.day === day.day && selectedDate.month === day.month
+                          selectedDate &&
+                          selectedDate.day === day.day &&
+                          selectedDate.month === day.month
                             ? styles.modalSelectedDay
                             : ""
                         }`}
@@ -1077,7 +1262,9 @@ const NewDashboard = () => {
                             ></span>
                           ))}
                           {day.events.length > 3 && (
-                            <span className={styles.modalMoreEvents}>+{day.events.length - 3}</span>
+                            <span className={styles.modalMoreEvents}>
+                              +{day.events.length - 3}
+                            </span>
                           )}
                         </div>
                       )}
@@ -1096,7 +1283,11 @@ const NewDashboard = () => {
                     selectedDate.events.map((event) => (
                       <div
                         key={event.id}
-                        className={`${styles.eventItem} ${selectedEvent?.id === event.id ? styles.selectedEvent : ""}`}
+                        className={`${styles.eventItem} ${
+                          selectedEvent?.id === event.id
+                            ? styles.selectedEvent
+                            : ""
+                        }`}
                         onClick={() => handleEventClick(event)}
                       >
                         <div className={styles.eventHeader}>
@@ -1109,19 +1300,23 @@ const NewDashboard = () => {
                         <div className={styles.eventDetails}>
                           <div className={styles.eventAttendees}>
                             <div className={styles.attendeeAvatars}>
-                              {event.attendees.slice(0, 3).map((attendee, i) => (
-                                <div
-                                  key={i}
-                                  className={styles.attendeeAvatar}
-                                  style={{
-                                    backgroundColor: getRandomColor(),
-                                  }}
-                                >
-                                  {attendee.charAt(0).toUpperCase()}
-                                </div>
-                              ))}
+                              {event.attendees
+                                .slice(0, 3)
+                                .map((attendee, i) => (
+                                  <div
+                                    key={i}
+                                    className={styles.attendeeAvatar}
+                                    style={{
+                                      backgroundColor: getRandomColor(),
+                                    }}
+                                  >
+                                    {attendee.charAt(0).toUpperCase()}
+                                  </div>
+                                ))}
                               {event.attendees.length > 3 && (
-                                <span className={styles.moreAttendees}>+{event.attendees.length - 3}</span>
+                                <span className={styles.moreAttendees}>
+                                  +{event.attendees.length - 3}
+                                </span>
                               )}
                             </div>
                           </div>
@@ -1130,18 +1325,27 @@ const NewDashboard = () => {
                         {selectedEvent?.id === event.id && (
                           <div className={styles.eventExpandedDetails}>
                             <div className={styles.ticketsInfo}>
-                              <span className={styles.ticketsLabel}>Tickets left:</span>
-                              <span className={styles.ticketsCount}>{event.ticketsLeft}</span>
+                              <span className={styles.ticketsLabel}>
+                                Tickets left:
+                              </span>
+                              <span className={styles.ticketsCount}>
+                                {event.ticketsLeft}
+                              </span>
                             </div>
                             <div className={styles.progressBar}>
                               <div
                                 className={styles.progressFill}
                                 style={{
-                                  width: `${Math.min(100, (event.ticketsLeft / 30) * 100)}%`,
+                                  width: `${Math.min(
+                                    100,
+                                    (event.ticketsLeft / 30) * 100
+                                  )}%`,
                                 }}
                               ></div>
                             </div>
-                            <button className={styles.registerButton}>Register Now</button>
+                            <button className={styles.registerButton}>
+                              Register Now
+                            </button>
                           </div>
                         )}
                       </div>
@@ -1152,7 +1356,10 @@ const NewDashboard = () => {
                     </div>
                   ) : (
                     <div className={styles.noDateSelected}>
-                      <Calendar size={48} className={styles.calendarPlaceholderIcon} />
+                      <Calendar
+                        size={48}
+                        className={styles.calendarPlaceholderIcon}
+                      />
                       <p>Select a date from the calendar to view events</p>
                     </div>
                   )}
@@ -1226,14 +1433,18 @@ const NewDashboard = () => {
                   <span>{selectedAnnouncement.from}</span>
                 </div>
 
-                {selectedAnnouncement.registerLink && <button className={styles.registerButton}>Register Now</button>}
+                {selectedAnnouncement.registerLink && (
+                  <button className={styles.registerButton}>
+                    Register Now
+                  </button>
+                )}
               </div>
             </div>
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default NewDashboard
+export default NewDashboard;

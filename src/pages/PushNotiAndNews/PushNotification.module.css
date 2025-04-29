@@ -1,78 +1,82 @@
 .dashboardContainer {
   width: 100%;
   min-height: 100vh;
-  /* background-color: #f5f7fa; */
   padding: 20px;
 }
 
 .mainContent {
   max-width: 1400px;
-  margin: 0 auto;
+  margin-top: 4rem;
 }
 
-.dashboardContent {
-  width: 100%;
-  padding-top: 4rem;
-}
-
-.dashboardSummary {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+/* Split Layout - 50/50 */
+.splitLayout {
+  display: flex;
+  gap: 30px;
   margin-bottom: 30px;
 }
 
-.summaryCard {
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.summaryCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.summaryCard h3 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #4a5568;
-  margin-bottom: 10px;
-}
-
-.summaryNumber {
-  font-size: 32px;
-  font-weight: 700;
-  color: #2d3748;
-  margin-bottom: 15px;
-}
-
-.cardDetails {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.detailItem {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  color: #718096;
-}
-
-.detailItem span:first-child {
-  font-weight: 500;
-}
-
-/* Push Notification Section Styles */
-.notificationSection {
+.formSection {
+  flex: 1;
   background-color: white;
   border-radius: 10px;
   padding: 24px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  margin-bottom: 30px;
+}
+
+.imageSection {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.imageContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  padding: 30px 20px;
+  color: white;
+}
+
+.imageOverlay h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.imageOverlay p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .notificationHeader {
@@ -91,32 +95,9 @@
   color: #718096;
 }
 
-.notificationAlert {
-  padding: 12px 16px;
-  border-radius: 6px;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-.success {
-  background-color: #c6f6d5;
-  color: #2f855a;
-}
-
-.error {
-  background-color: #fed7d7;
-  color: #c53030;
-}
-
 .notificationForm {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-.formRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
@@ -132,26 +113,17 @@
   color: #4a5568;
 }
 
-.messageInput {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: 14px;
-  resize: vertical;
-  transition: border-color 0.2s;
-}
-
-.messageInput:focus {
-  outline: none;
-  border-color: #4299e1;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+.dateContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
 .formActions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+  margin-top: 10px;
 }
 
 .sendButton {
@@ -201,6 +173,12 @@
   border-radius: 50%;
   border-top-color: white;
   animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* MultiSelect Component Styles */
@@ -332,6 +310,15 @@
   margin-top: 4px;
 }
 
+/* Notification Section Styles */
+.notificationSection {
+  background-color: white;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
 /* Table styles */
 .tableContainer {
   width: 100%;
@@ -395,16 +382,6 @@
   text-overflow: ellipsis;
 }
 
-.contentCell {
-  max-width: 300px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-height: 1.5;
-}
-
 .categoryBadge {
   display: inline-block;
   padding: 4px 10px;
@@ -435,25 +412,6 @@
   display: flex;
   gap: 8px;
   white-space: nowrap;
-}
-
-.editButton {
-  padding: 6px 12px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.editButton:hover {
-  background-color: #2563eb;
-  transform: translateY(-1px);
 }
 
 .deleteButton {
@@ -495,11 +453,19 @@
 }
 
 @media (max-width: 768px) {
+  .splitLayout {
+    flex-direction: column;
+  }
+
+  .dateContainer {
+    grid-template-columns: 1fr;
+  }
+
   .dataTable th,
   .dataTable td {
     padding: 12px 10px;
   }
-  
+
   .actionCell {
     flex-direction: column;
   }

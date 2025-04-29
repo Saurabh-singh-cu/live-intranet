@@ -1,0 +1,91 @@
+.uploadContainer {
+    margin-top: 0.5rem;
+  }
+  
+  .dropArea {
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #f9f9f9;
+  }
+  
+  .dropArea:hover {
+    border-color: #4a90e2;
+    background-color: #f0f7ff;
+  }
+  
+  .dragging {
+    border-color: #4a90e2;
+    background-color: #f0f7ff;
+  }
+  
+  .hasFile {
+    border-color: #4caf50;
+    background-color: #f1f8e9;
+  }
+  
+  .uploadPrompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .uploadIcon {
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  
+  .browse {
+    color: #4a90e2;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  
+  .fileLimit {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 0.5rem;
+  }
+  
+  .fileInput {
+    display: none;
+  }
+  
+  .fileInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .fileName {
+    font-weight: 600;
+    color: #333;
+    word-break: break-all;
+  }
+  
+  .fileSize {
+    font-size: 0.8rem;
+    color: #666;
+  }
+  
+  .removeButton {
+    margin-top: 0.75rem;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    color: #d32f2f;
+    border: 1px solid #d32f2f;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .removeButton:hover {
+    background-color: #ffebee;
+  }
+  

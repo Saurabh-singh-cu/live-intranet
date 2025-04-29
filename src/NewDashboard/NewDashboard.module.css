@@ -29,7 +29,9 @@
     --small-font-size: 0.9rem;
   }
 }
-
+.navbarContainer p {
+  font-family: monospace !important;
+}
 /* Dashboard Container */
 .dashboardContainer {
   padding: 24px;
@@ -768,11 +770,12 @@
   border-radius: 12px;
 }
 
-.announcementTabDescription {
+p.announcementTabDescription {
   font-size: 0.9rem;
   color: #666;
   margin: 0 0 12px 0;
 }
+
 
 .announcementTabFooter {
   display: flex;

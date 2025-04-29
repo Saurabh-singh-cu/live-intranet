@@ -42,39 +42,58 @@ const ProposedCalendar = () => {
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData?.department_id) {
-      setDepId(userData.department_id);
-      fetchBudget(userData.department_id);
-      fetchCategories();
-      setRegId(userData?.secretary_details?.reg_id);
-    }
+    const loadData = async () => {
+      setLoading(true); // Start loading
+      try {
+        const userData = JSON.parse(localStorage.getItem("user"));
+        if (userData?.department_id) {
+          setDepId(userData.department_id);
+          await Promise.all([
+            fetchBudget(userData.department_id),
+            fetchCategories(),
+          ]);
+          setRegId(userData?.secretary_details?.reg_id);
+        }
+      } catch (error) {
+        console.error("Error loading data", error);
+      } finally {
+        setLoading(false); // End loading
+      }
+    };
+  
+    loadData();
   }, []);
+  
 
   const fetchBudget = async (departmentId) => {
-    setLoading(true);
     try {
+      setLoading(true); // <-- set loading to true when fetch starts
       const response = await apiClient.get(
         `get-budget-by-department/${departmentId}/`
       );
+  
       setBudgetList(
         Array.isArray(response.data) ? response.data : [response.data]
       );
     } catch (error) {
-      console.log(error);
+      console.log(error?.response?.data?.error);
     } finally {
-      setLoading(false);
+      setLoading(false); // <-- set loading to false when fetch ends (whether success or fail)
     }
   };
-
+  
   const fetchCategories = async () => {
     try {
+      setLoading(true);
       const response = await apiClient.get(`entity-activities/`);
       setCategories(response.data || []);
     } catch (error) {
       console.error("Error fetching categories:", error);
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   const handleInputChange = (index, event) => {
     const { name, value } = event.target;
@@ -277,7 +296,9 @@ const ProposedCalendar = () => {
           <div className={styles.budgetItem}>
             <span>Remaining Budget:</span>
             <span className={styles.budgetValue}>
-              ₹{budgetList[0]?.total_budget - budgetList[0]?.total_proposed || "Not Found"}
+              ₹
+              {budgetList[0]?.total_budget - budgetList[0]?.total_proposed ||
+                "Not Found"}
             </span>
           </div>
         </div>
@@ -366,7 +387,10 @@ const ProposedCalendar = () => {
                 <input
                   type="date"
                   name="endDate"
-                  min={activities[activities.length - 1].startDate || new Date().toISOString().split("T")[0]}
+                  min={
+                    activities[activities.length - 1].startDate ||
+                    new Date().toISOString().split("T")[0]
+                  }
                   value={activities[activities.length - 1].endDate}
                   onChange={(e) => handleInputChange(activities.length - 1, e)}
                   required
@@ -383,7 +407,7 @@ const ProposedCalendar = () => {
                 onChange={(e) => handleInputChange(activities.length - 1, e)}
                 required
               />
-              <p style={{fontSize:"12px", color:"grey", float:"right"}}>
+              <p style={{ fontSize: "12px", color: "grey", float: "right" }}>
                 {" "}
                 {
                   activities[activities.length - 1].description
@@ -405,9 +429,12 @@ const ProposedCalendar = () => {
             </div>
           </div>
         </form>
-        <div className={styles.calendetTable}> <ProposedCalendarTable /></div>
+        <div className={styles.calendetTable}>
+          {" "}
+          <ProposedCalendarTable />
+        </div>
       </div>
-     
+
       <div className={styles.infoBox}>
         <FixedInfoBox
           activityCount={cart.length}
@@ -418,15 +445,20 @@ const ProposedCalendar = () => {
           <h3>Events Added</h3>
           {cart.map((activity, index) => (
             <div key={index} className={styles.cartItem}>
-             <div> <span>{activity.name}</span></div>
-             <div>
-             <span style={{display:"flex", justifyContent:"center"}}>₹{activity.proposedBudget}</span>
-              <button
-                onClick={() => removeFromCart(index)}
-                className={styles.removeFromCartButton}
-              >
-                Remove
-              </button>
+              <div>
+                {" "}
+                <span>{activity.name}</span>
+              </div>
+              <div>
+                <span style={{ display: "flex", justifyContent: "center" }}>
+                  ₹{activity.proposedBudget}
+                </span>
+                <button
+                  onClick={() => removeFromCart(index)}
+                  className={styles.removeFromCartButton}
+                >
+                  Remove
+                </button>
               </div>
             </div>
           ))}
@@ -440,7 +472,6 @@ const ProposedCalendar = () => {
           </button>
         </div>
       </div>
-     
     </div>
   );
 };
