@@ -1,5 +1,5 @@
 <h1 align="center">Hi 👋, I'm Saurabh Kumar Singh</h1>
-<h3 align="center">Frontend develover at Chandigarh University ex:- Classic Informatics</h3>
+<h3 align="center">Frontend develover. ex:- Classic Informatics</h3>
 <h3 align="left">Connect with me:</h3>
 <p align="left">
 <a href="https://www.instagram.com/s.rajvan" target="_blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="saurabh33028457" height="30" width="40" /></a>
@@ -20,7 +20,7 @@
 
 <p align="left"> <a href="https://www.linkedin.com/in/saurabh-kumar-singh-904a11190/" target="blank"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="s.rajvansh.96" /> </a> </p>
 
-- 🔭 I’m currently working in  **Chandigarh University** ex:- **Classic Informatics**
+- 🔭 I’m currently working in  **Chandigarh University Web Development Team** ex:- **Classic Informatics**
 
 - 🌱 I’m Software Developer create Website for your business 🔥🔥 
 
