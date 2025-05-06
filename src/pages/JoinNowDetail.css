@@ -8,11 +8,11 @@
 /* Hero Section */
 .hero-section {
   position: relative;
-  height: 450px;
+  height: 500px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  overflow: hidden;
+  /* overflow: hidden; */
   padding: 40px;
   display: flex;
   align-items: center;

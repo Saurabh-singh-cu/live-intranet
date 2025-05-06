@@ -1,0 +1,483 @@
+/* Existing styles from your original CSS */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  /* max-width: 800px; */
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.modalBody {
+  padding: 24px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.questionProgress {
+  margin-bottom: 24px;
+}
+
+.progressText {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.progressBar {
+  height: 6px;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.3s ease;
+}
+
+.questionContainer {
+  margin-bottom: 24px;
+}
+
+.question {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.weightInfo {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.criteriaContainer {
+  margin-bottom: 24px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 16px;
+  background-color: #f9f9f9;
+}
+
+.criteriaTitle {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.criteriaItem {
+  display: flex;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.criteriaItem:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.criteriaRange {
+  flex: 0 0 60px;
+  font-weight: bold;
+  color: #333;
+}
+
+.criteriaDescription {
+  flex: 1;
+  color: #555;
+  line-height: 1.4;
+}
+
+.ratingContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.ratingButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  background-color: #f5f5f5;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ratingButton:hover {
+  transform: scale(1.1);
+  border-color: #aaa;
+}
+
+.ratingButton.selected {
+  border-color: transparent;
+  color: white;
+}
+
+.ratingLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.questionNav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #2196f3;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.navButton:hover {
+  background-color: #1976d2;
+}
+
+.navButton:disabled {
+  background-color: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.submitButton {
+  background-color: #4caf50;
+}
+
+.submitButton:hover {
+  background-color: #388e3c;
+}
+
+.ratingSummary {
+  padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+}
+
+.ratingSummary h4 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.ratingDots {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ratingDot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.ratingDot:hover {
+  transform: scale(1.1);
+}
+
+.ratingDot.rated {
+  color: white;
+}
+
+.confirmationOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+.confirmationContent {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  padding: 24px;
+}
+
+.confirmationContent h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.confirmationSummary {
+  margin: 24px 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.confirmationTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.confirmationHeader {
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  padding: 12px;
+  background-color: #f5f5f5;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+
+.confirmationRow {
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.confirmationRating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.confirmationTotal {
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  padding: 12px;
+  border-top: 2px solid #ddd;
+  font-weight: bold;
+}
+
+.confirmationButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cancelButton {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  color: #333;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancelButton:hover {
+  background-color: #f5f5f5;
+}
+
+.confirmButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.confirmButton:hover {
+  background-color: #388e3c;
+}
+
+/* New styles for event counts display */
+.eventCountsContainer {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f0f8ff;
+  border-radius: 8px;
+  border: 1px solid #d0e3ff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.eventCountsTitle {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #2c5282;
+}
+
+.eventCountsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.eventCountCard {
+  background-color: white;
+  border-radius: 6px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  transition: transform 0.2s ease;
+}
+
+.eventCountCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.eventCountValue {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2b6cb0;
+  margin-bottom: 5px;
+}
+
+.eventCountLabel {
+  font-size: 0.85rem;
+  color: #4a5568;
+}
+
+.eventCountTotal {
+  background-color: #ebf4ff;
+  border-color: #bee3f8;
+}
+
+.eventCountTotal .eventCountValue {
+  color: #2c5282;
+}
+
+.eventsList {
+  margin-top: 20px;
+  border-top: 1px solid #d0e3ff;
+  padding-top: 15px;
+}
+
+.eventsListTitle {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #2c5282;
+}
+
+.eventsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.eventsTableHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  background-color: #ebf8ff;
+  padding: 10px;
+  font-weight: bold;
+  border-bottom: 2px solid #bee3f8;
+  color: #2c5282;
+}
+
+.eventsTableRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  padding: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.eventsTableRow:nth-child(even) {
+  background-color: #f7fafc;
+}
+
+.eventsTableRow:hover {
+  background-color: #ebf8ff;
+}
+
+.noEvents {
+  padding: 20px;
+  text-align: center;
+  color: #718096;
+  font-style: italic;
+  background-color: #f7fafc;
+  border-radius: 4px;
+  border: 1px dashed #cbd5e0;
+}

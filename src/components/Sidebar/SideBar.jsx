@@ -12,6 +12,9 @@ import {
   FaRegListAlt,
   FaWpforms,
   FaDatabase,
+  FaFileUpload,
+  FaTrophy,
+  FaCalendarAlt,
 } from "react-icons/fa";
 
 import {
@@ -140,9 +143,15 @@ const routes = [
     allowedRoles: ["Student Secretary"],
   },
   {
+    path: "/grouped-events-by-entity-form",
+    name: "Club Nomination Form",
+    icon: <FaTrophy />,
+    allowedRoles: ["Student Secretary"],
+  },
+  {
     path: "/proposed-calendarby-secretary",
     name: "Proposed Calendar",
-    icon: <FaRupeeSign />,
+    icon: <FaCalendarAlt />,
     allowedRoles: ["Student Secretary"],
   },
   {

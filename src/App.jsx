@@ -64,6 +64,7 @@ import NewAdminDashboard from "./Admin/Dashboard/NewAdminDashboard";
 import MembershipAll from "./Admin/Dashboard/MembersPage/MembershipAll";
 import GrpEvententity from "./student/PDFUploadEvent/GrpEvententity";
 import CeremonyPdf from "./Admin/Dashboard/Ceremony/CeremonyPdf";
+import ClubRatingPage from "./clubrate/ClubRatingPage";
 
 function AppContent() {
   const location = useLocation();
@@ -488,6 +489,7 @@ function AppContent() {
                 )
               }
             />
+            <Route path="/club-rating" element={<ClubRatingPage />} />
             <Route
               path="/order"
               element={
