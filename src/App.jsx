@@ -78,8 +78,6 @@ function AppContent() {
   const [isCo, setIsCo] = useState(false);
   const [isExecutive, setIsExecutive] = useState(false);
   const [user, setUser] = useState([]);
-  const [tokenExpire, setTokenExpire] = useState(false);
-  const [expirationTime, setExpirationTime] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogin = () => {
