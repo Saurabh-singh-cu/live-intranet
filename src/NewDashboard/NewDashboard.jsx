@@ -48,7 +48,6 @@ const NewDashboard = () => {
   });
   const [publicNotifications, setPublicNotifications] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState(null);
-  const [categorie, setCategorie] = useState([]);
   const [newsAndViews, setNewsAndViews] = useState([]);
   const [isHovering, setIsHovering] = useState(false);
   const announcementTimerRef = useRef(null);
@@ -60,7 +59,7 @@ const NewDashboard = () => {
     const fetchEntityCounts = async () => {
       try {
         const response = await fetch(
-          "https://api.cuintranet.in/intranetapp/entity_count/"
+          "http://172.17.2.247:8080/intranetapp/entity_count/"
         );
         const data = await response.json();
 
@@ -438,42 +437,6 @@ const NewDashboard = () => {
     return color;
   };
 
-  const nextAnnouncement = () => {
-    if (publicNotifications.length > 0) {
-      setCurrentAnnouncementIndex((prevIndex) =>
-        prevIndex === publicNotifications.length - 1 ? 0 : prevIndex + 1
-      );
-    } else {
-      setCurrentAnnouncementIndex((prevIndex) =>
-        prevIndex === announcements.length - 1 ? 0 : prevIndex + 1
-      );
-    }
-  };
-
-  const prevAnnouncement = () => {
-    if (publicNotifications.length > 0) {
-      setCurrentAnnouncementIndex((prevIndex) =>
-        prevIndex === 0 ? publicNotifications.length - 1 : prevIndex - 1
-      );
-    } else {
-      setCurrentAnnouncementIndex((prevIndex) =>
-        prevIndex === 0 ? announcements.length - 1 : prevIndex - 1
-      );
-    }
-  };
-
-  const nextNews = () => {
-    setCurrentNewsIndex((prevIndex) =>
-      prevIndex === newsItems.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const prevNews = () => {
-    setCurrentNewsIndex((prevIndex) =>
-      prevIndex === 0 ? newsItems.length - 1 : prevIndex - 1
-    );
-  };
-
   // Redirect functions
   const redirectToClubs = () => {
     window.location.href = "/clubs";
@@ -503,18 +466,6 @@ const NewDashboard = () => {
   useEffect(() => {
     userData();
   }, []);
-
-  // Format date to readable format
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   // Get time difference from now
   const getTimeDifference = (dateString) => {
@@ -627,7 +578,7 @@ const NewDashboard = () => {
       <div className={styles.contentGrid}>
         <div className={styles.announcementSection}>
           <div className={styles.sectionHeader}>
-            <h2>Announcements</h2>
+            <h2>Feature Events</h2>
             <div className={styles.carouselControls}>
               {/* <button onClick={prevAnnouncement} className={styles.carouselButton}>
                 <ChevronLeft size={20} />
@@ -894,7 +845,7 @@ const NewDashboard = () => {
               onClick={() => setActiveTab("announcement")}
             >
               <MessageCircle size={16} />
-              <span>Announcements1</span>
+              <span>Announcements</span>
             </div>
           </div>
 

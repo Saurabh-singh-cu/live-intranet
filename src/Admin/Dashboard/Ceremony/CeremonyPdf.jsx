@@ -35,8 +35,6 @@
 //   );
 // };
 
-
-
 // const CeremonyPdf = () => {
 //   const [eventsData, setEventsData] = useState([]);
 //   const [isLoading, setIsLoading] = useState(true);
@@ -124,11 +122,10 @@
 //       );
 //       return;
 //     }
-  
+
 //     // Open PDF in a new browser tab
 //     window.open(pdfUrl, "_blank", "noopener,noreferrer");
 //   };
-  
 
 //   const closePdfViewer = () => {
 //     setSelectedPdf(null);
@@ -485,7 +482,7 @@
 //                   </th>
 //                   <th onClick={() => handleSort("entity_names")}>
 //                     Entity {getSortIndicator("entity_names")}
-//                   </th> 
+//                   </th>
 //                   <th onClick={() => handleSort("level_of_activitys")}>
 //                     Level of Activity {getSortIndicator("level_of_activitys")}
 //                   </th>
@@ -737,7 +734,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FiAlertCircle, FiCheck, FiX, FiEye, FiFilter, FiSearch } from "react-icons/fi";
+import {
+  FiAlertCircle,
+  FiCheck,
+  FiX,
+  FiEye,
+  FiFilter,
+  FiSearch,
+} from "react-icons/fi";
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
 import styles from "./CeremonyPdf.module.css";
 import PdfViewer from "./PdfViewer";
@@ -790,7 +794,6 @@ const CeremonyPdf = () => {
   const [entityRatings, setEntityRatings] = useState([]);
   const [isLoadingRatings, setIsLoadingRatings] = useState(false);
   const [activeTab, setActiveTab] = useState("giveMarks"); // giveMarks | seeMarks
-  const [editingEntity, setEditingEntity] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
 
   const [sortConfig, setSortConfig] = useState({
@@ -862,11 +865,11 @@ const CeremonyPdf = () => {
       );
       return;
     }
-  
+
     // Open PDF in a new browser tab
     window.open(pdfUrl, "_blank", "noopener,noreferrer");
   };
-  
+
   const closePdfViewer = () => {
     setSelectedPdf(null);
   };
@@ -953,37 +956,43 @@ const CeremonyPdf = () => {
       );
 
       const matchesCluster = !filterCluster || item.clusters === filterCluster;
-      const matchesDepartment = !filterDepartment || item.departments === filterDepartment;
-      const matchesEntityType = !filterEntityType || item.entity_types === filterEntityType;
-      const matchesEntityName = !filterEntityName || item.entity_names === filterEntityName;
-      const matchesActivityType = !filterActivityType || item.activity_types === filterActivityType;
-      const matchesLevelOfActivity = !filterLevelOfActivity || item.level_of_activitys === filterLevelOfActivity;
+      const matchesDepartment =
+        !filterDepartment || item.departments === filterDepartment;
+      const matchesEntityType =
+        !filterEntityType || item.entity_types === filterEntityType;
+      const matchesEntityName =
+        !filterEntityName || item.entity_names === filterEntityName;
+      const matchesActivityType =
+        !filterActivityType || item.activity_types === filterActivityType;
+      const matchesLevelOfActivity =
+        !filterLevelOfActivity ||
+        item.level_of_activitys === filterLevelOfActivity;
       const matchesPdfFilter =
         pdfFilter === "all" ||
         (pdfFilter === "uploaded" && item.pdf_url !== "Not Uploaded") ||
         (pdfFilter === "not_uploaded" && item.pdf_url === "Not Uploaded");
 
       return (
-        matchesSearch && 
-        matchesCluster && 
-        matchesDepartment && 
-        matchesEntityType && 
-        matchesEntityName && 
-        matchesActivityType && 
-        matchesLevelOfActivity && 
+        matchesSearch &&
+        matchesCluster &&
+        matchesDepartment &&
+        matchesEntityType &&
+        matchesEntityName &&
+        matchesActivityType &&
+        matchesLevelOfActivity &&
         matchesPdfFilter
       );
     });
   }, [
-    sortedData, 
-    searchTerm, 
-    filterCluster, 
-    filterDepartment, 
-    filterEntityType, 
-    filterEntityName, 
-    filterActivityType, 
-    filterLevelOfActivity, 
-    pdfFilter
+    sortedData,
+    searchTerm,
+    filterCluster,
+    filterDepartment,
+    filterEntityType,
+    filterEntityName,
+    filterActivityType,
+    filterLevelOfActivity,
+    pdfFilter,
   ]);
 
   // Group events by entity to handle entity-based operations
@@ -1028,13 +1037,9 @@ const CeremonyPdf = () => {
       ratings: ratings,
     };
 
-    console.log("Submitting ratings:", payload);
-    console.log("Submitting ratings:", JSON.stringify(payload, null, 2));
-
     apiClient
       .post("/submit-entity-rating/", payload)
       .then((response) => {
-        console.log("Ratings submitted successfully", response);
         openNotification(
           "success",
           "Ratings submitted successfully",
@@ -1046,7 +1051,6 @@ const CeremonyPdf = () => {
         }
       })
       .catch((error) => {
-        console.error("Error submitting ratings", error);
         openNotification(
           "error",
           "Error submitting ratings",
@@ -1128,6 +1132,12 @@ const CeremonyPdf = () => {
   });
   const ratedCount = uniqueRatedEntities.size;
 
+  const totalCountRate = filteredData.length;
+  const uploadedCountrate = filteredData.filter(
+    (event) => event.average_rating !== "No Rating"
+  ).length;
+  const notUploadedCountRating = totalCountRate - uploadedCountrate;
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Ceremony Events PDF Management</h1>
@@ -1182,15 +1192,15 @@ const CeremonyPdf = () => {
             </div>
 
             <div className={styles.filterToggle}>
-              <button 
-                className={styles.filterToggleButton} 
+              <button
+                className={styles.filterToggleButton}
                 onClick={() => setShowFilters(!showFilters)}
               >
-                <FiFilter /> {showFilters ? 'Hide Filters' : 'Show Filters'}
+                <FiFilter /> {showFilters ? "Hide Filters" : "Show Filters"}
               </button>
               {showFilters && (
-                <button 
-                  className={styles.resetFiltersButton} 
+                <button
+                  className={styles.resetFiltersButton}
                   onClick={resetFilters}
                 >
                   Reset Filters
@@ -1201,30 +1211,32 @@ const CeremonyPdf = () => {
 
           {/* Enhanced Count Summary */}
           <div className={styles.enhancedCountSummary}>
-            <div 
-              className={`${styles.countCard} ${pdfFilter === "all" ? styles.activeCountCard : ""}`}
+            <div
+              className={`${styles.countCard} ${
+                pdfFilter === "all" ? styles.activeCountCard : ""
+              }`}
               onClick={() => setPdfFilter("all")}
             >
               <div className={styles.countValue}>{totalCount}</div>
               <div className={styles.countLabel}>Total Events</div>
             </div>
-            <div 
-              className={`${styles.countCard} ${pdfFilter === "uploaded" ? styles.activeCountCard : ""}`}
+            <div
+              className={`${styles.countCard} ${
+                pdfFilter === "uploaded" ? styles.activeCountCard : ""
+              }`}
               onClick={() => setPdfFilter("uploaded")}
             >
               <div className={styles.countValue}>{uploadedCount}</div>
               <div className={styles.countLabel}>Uploaded PDFs</div>
             </div>
-            <div 
-              className={`${styles.countCard} ${pdfFilter === "not_uploaded" ? styles.activeCountCard : ""}`}
+            <div
+              className={`${styles.countCard} ${
+                pdfFilter === "not_uploaded" ? styles.activeCountCard : ""
+              }`}
               onClick={() => setPdfFilter("not_uploaded")}
             >
               <div className={styles.countValue}>{notUploadedCount}</div>
               <div className={styles.countLabel}>Not Uploaded</div>
-            </div>
-            <div className={`${styles.countCard} ${styles.ratedCountCard}`}>
-              <div className={styles.countValue}>{ratedCount > 0 ? ratedCount : 0}</div>
-              <div className={styles.countLabel}>Rated Entities</div>
             </div>
           </div>
 
@@ -1346,7 +1358,7 @@ const CeremonyPdf = () => {
                   </th>
                   <th onClick={() => handleSort("entity_names")}>
                     Entity {getSortIndicator("entity_names")}
-                  </th> 
+                  </th>
                   <th onClick={() => handleSort("level_of_activitys")}>
                     Level of Activity {getSortIndicator("level_of_activitys")}
                   </th>

@@ -18,7 +18,7 @@ const AcademicAffairsForm = () => {
     proposed_by: "",
     proposer_name: "",
     emp_code: "",
-   
+
     proposer_email: "",
     mobile: "",
     entity_nature: "",
@@ -126,10 +126,7 @@ const AcademicAffairsForm = () => {
     setIsModalVisible(true);
 
     try {
-      const response = await apiClient.post(
-        "entity-requests/",
-        formData
-      );
+      const response = await apiClient.post("entity-requests/", formData);
 
       setIsLoading(false);
       setIsModalVisible(false);
@@ -310,16 +307,14 @@ const AcademicAffairsForm = () => {
   useEffect(() => {
     const fetchEntityData = async () => {
       const response = await fetch(
-        "https://api.cuintranet.in/intranetapp/entity-types/"
+        "http://172.17.2.247:8080/intranetapp/entity-types/"
       );
       const data = await response.json();
       setEntityData(data);
     };
     const fetchDepartments = async () => {
       try {
-        const response = await apiClient.get(
-          "departments/"
-        );
+        const response = await apiClient.get("departments/");
         setDepartments(response.data);
         console.log(response.data, "depart");
       } catch (error) {
@@ -329,19 +324,15 @@ const AcademicAffairsForm = () => {
 
     fetchEntityData();
     fetchDepartments();
-  
   }, []);
 
   const getCurrentSession = async () => {
-    try{
-      const response = await apiClient.get(
-        "current_session/"
-      );
+    try {
+      const response = await apiClient.get("current_session/");
       setCurrentSession(response?.data?.session_code);
-    }catch(error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-   
   };
 
   useEffect(() => {
@@ -356,8 +347,6 @@ const AcademicAffairsForm = () => {
       }));
     }
   }, [currentSession]);
-
-
 
   return (
     <div style={{ display: "flex", marginTop: "57px" }}>
@@ -397,8 +386,6 @@ const AcademicAffairsForm = () => {
           </button>
         </div>
 
-
-      
         <form className="form-scroller" onSubmit={handleSubmit}>
           {activeTab === "universityBody" && (
             <div className="form-content">

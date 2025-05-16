@@ -13,8 +13,6 @@ const FacultyDashboard = () => {
   const [userName, setUserName] = useState([]);
   const [availableEntities, setAvailableEntities] = useState([]);
 
-
-
   useEffect(() => {
     if (regId) {
       approvedMedia(regId);
@@ -46,7 +44,6 @@ const FacultyDashboard = () => {
     if (getuser && getuser.role_name === "Faculty Advisory") {
       setUserDetails(getuser);
 
-     
       if (
         getuser.faculty_advisory_details &&
         getuser.faculty_advisory_details.length > 0
@@ -128,9 +125,11 @@ const FacultyDashboard = () => {
                   <span className="detail-value">{detail.entity_name}</span>
                 </div>
                 <div className="detail-item">
-                      <span className="detail-label">Registration Code:</span>
-                      <span className="detail-value">{detail?.registration_code}</span>
-                    </div>
+                  <span className="detail-label">Registration Code:</span>
+                  <span className="detail-value">
+                    {detail?.registration_code}
+                  </span>
+                </div>
                 <div className="detail-item">
                   <span className="detail-label">Registration Name:</span>
                   <span className="detail-value">
@@ -151,11 +150,8 @@ const FacultyDashboard = () => {
         </div>
 
         <div style={{ marginTop: "-27px" }} className="club-details-page-1">
-      
-
-
           <div className="faculty-committee-container">
-          <CommitteeCards />
+            <CommitteeCards />
           </div>
         </div>
       </div>

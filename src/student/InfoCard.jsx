@@ -1,6 +1,6 @@
 import styles from "./InfoCard.module.css";
 import { Modal, Tabs, Badge, Empty, Timeline } from "antd";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import apiClient from "../config/apiClient";
 import DOMPurify from "dompurify";
 
@@ -12,15 +12,27 @@ const InfoCard = () => {
   const [categories, setCategories] = useState([]);
   const [pieData, setPie] = useState([]);
   const [barData, setBarData] = useState([]);
+  const [commity, setCommity] = useState([]);
+  const [filteredData, setFilteredData] = useState({
+    club: 0,
+    community: 0,
+    professionalSociety: 0,
+    departmentSociety: 0,
+    all: 0,
+  });
 
   const getNotification = async () => {
     try {
       const userData = JSON.parse(localStorage.getItem("user"));
 
       // Extract role_id and entity_type_id from localStorage structure
-      const userRoleId = userData?.user_role_id;
-      const entId = userData?.secretary_details?.[0]?.entity_id;
-      const regId = userData?.secretary_details[0]?.reg_id;
+      const userRoleId = userData.user_role_id;
+      const entId =
+        userData.secretary_details[0].entity_id ||
+        userData.faculty_advisory_details[0].entity_id;
+      const regId =
+        userData.secretary_details[0].reg_id ||
+        userData.faculty_advisory_details[0].reg_id;
       console.log(regId, "EEEEEEEEEEEEEEEEEEEEE");
 
       if (!userRoleId || !entId) {
@@ -140,6 +152,63 @@ const InfoCard = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const grtCommitiData = useCallback(
+    async (regIds) => {
+      try {
+        if (!regIds || regIds.length === 0) return; // Prevent empty calls
+
+        const allCommityMember = [];
+        for (const regId of regIds) {
+          console.log(`Fetching data for reg_id: ${regId}`);
+
+          const response = await apiClient.get(
+            `entity-registration-detailed-page/?reg_id=${regId}`
+          );
+
+          if (response?.data) {
+            allCommityMember.push(response.data);
+          }
+        }
+
+        if (JSON.stringify(allCommityMember) !== JSON.stringify(commity)) {
+          setCommity(allCommityMember); // Only update if data is different
+        }
+
+        console.log(allCommityMember, "[commityMember]");
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    },
+    [commity]
+  );
+
+  const dashboardCardCount = async () => {
+    try {
+      const response = await apiClient.get("entity_count/");
+      setDashboardCount(response.data);
+      filterData(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filterData = (data) => {
+    const filtered = {
+      club: data.find((item) => item.entity_name === "CLUB")?.entity_count || 0,
+      community:
+        data.find((item) => item.entity_name === "COMMUNITY")?.entity_count ||
+        0,
+      professionalSociety:
+        data.find((item) => item.entity_name === "PROFESSIONAL SOCIETY")
+          ?.entity_count || 0,
+      departmentSociety:
+        data.find((item) => item.entity_name === "DEPARTMENT SOCIETY")
+          ?.entity_count || 0,
+      all: data.reduce((sum, item) => sum + item.entity_count, 0),
+    };
+    setFilteredData(filtered);
   };
 
   return (

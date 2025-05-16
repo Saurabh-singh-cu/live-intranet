@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Modal, notification } from "antd"
-import { ExclamationCircleOutlined } from "@ant-design/icons"
-import axios from "axios"
-import styles from "./EntityRegistrationForm.module.css"
+import { useEffect, useState } from "react";
+import { Modal, notification } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import axios from "axios";
+import styles from "./EntityRegistrationForm.module.css";
 
-const { confirm } = Modal
+const { confirm } = Modal;
 
 const EntityRegistrationForm = () => {
-  const [entityData, setEntityData] = useState([])
-  const [departments, setDepartments] = useState([])
-  const [currentSession, setCurrentSession] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [formSubmitting, setFormSubmitting] = useState(false)
-  const [activeSection, setActiveSection] = useState(1)
+  const [entityData, setEntityData] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [currentSession, setCurrentSession] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [formSubmitting, setFormSubmitting] = useState(false);
+  const [activeSection, setActiveSection] = useState(1);
 
   const [formData, setFormData] = useState({
     entity: "",
@@ -38,27 +38,28 @@ const EntityRegistrationForm = () => {
     Joint_Secretary_email: "",
     Joint_Secretary_mobile: "",
     remarks: "",
-  })
+  });
 
   const apiUrls = {
-    "entity-types": "https://api.cuintranet.in/intranetapp/entity-types/",
-    departments: "https://api.cuintranet.in/intranetapp/departments/",
-    currentSession: "https://api.cuintranet.in/intranetapp/current_session/",
-  }
+    "entity-types": "http://172.17.2.247:8080/intranetapp/entity-types/",
+    departments: "http://172.17.2.247:8080/intranetapp/departments/",
+    currentSession: "http://172.17.2.247:8080/intranetapp/current_session/",
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const showConfirm = () => {
     confirm({
       title: "Confirm Submission",
       icon: <ExclamationCircleOutlined />,
-      content: "Are you sure you want to submit this registration form? Please verify all information is correct.",
+      content:
+        "Are you sure you want to submit this registration form? Please verify all information is correct.",
       okText: "Submit",
       okButtonProps: {
         className: styles.confirmButton,
@@ -67,27 +68,31 @@ const EntityRegistrationForm = () => {
         className: styles.cancelButton,
       },
       onOk() {
-        handleSubmit()
+        handleSubmit();
       },
-    })
-  }
+    });
+  };
 
   const handleSubmit = async () => {
-    setFormSubmitting(true)
+    setFormSubmitting(true);
     try {
-      const response = await axios.post("https://api.cuintranet.in/intranetapp/entity-registration/", {
-        ...formData,
-        // session_code: currentSession,
-      })
+      const response = await axios.post(
+        "http://172.17.2.247:8080/intranetapp/entity-registration/",
+        {
+          ...formData,
+          // session_code: currentSession,
+        }
+      );
 
       if (response.status === 201) {
         notification.success({
           message: "Registration Successful",
-          description: "Your entity registration has been submitted successfully!",
+          description:
+            "Your entity registration has been submitted successfully!",
           placement: "topRight",
           duration: 5,
           className: styles.successNotification,
-        })
+        });
 
         // Reset form after successful submission
         setFormData({
@@ -112,123 +117,134 @@ const EntityRegistrationForm = () => {
           Joint_Secretary_email: "",
           Joint_Secretary_mobile: "",
           remarks: "",
-        })
+        });
 
-        setActiveSection(1)
+        setActiveSection(1);
       } else {
         notification.error({
           message: "Submission Failed",
-          description: "There was an issue submitting your registration. Please try again.",
+          description:
+            "There was an issue submitting your registration. Please try again.",
           placement: "topRight",
           duration: 5,
           className: styles.errorNotification,
-        })
+        });
       }
     } catch (error) {
-      console.error("Error:", error)
+      console.error("Error:", error);
       notification.error({
         message: "Submission Error",
-        description: error.response?.data?.message || "An unexpected error occurred. Please try again later.",
+        description:
+          error.response?.data?.message ||
+          "An unexpected error occurred. Please try again later.",
         placement: "topRight",
         duration: 5,
         className: styles.errorNotification,
-      })
+      });
     } finally {
-      setFormSubmitting(false)
+      setFormSubmitting(false);
     }
-  }
+  };
 
   const fetchDepartments = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const response = await axios.get(apiUrls.departments)
-      setDepartments(response.data)
+      const response = await axios.get(apiUrls.departments);
+      setDepartments(response.data);
     } catch (error) {
-      console.error("Error fetching departments:", error)
+      console.error("Error fetching departments:", error);
       notification.error({
         message: "Data Loading Error",
         description: "Failed to load departments. Please refresh the page.",
         placement: "topRight",
         className: styles.errorNotification,
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const fetchEntityData = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const response = await axios.get(apiUrls["entity-types"])
-      setEntityData(response.data)
+      const response = await axios.get(apiUrls["entity-types"]);
+      setEntityData(response.data);
     } catch (error) {
-      console.error("Error fetching entity data:", error)
+      console.error("Error fetching entity data:", error);
       notification.error({
         message: "Data Loading Error",
         description: "Failed to load entity types. Please refresh the page.",
         placement: "topRight",
         className: styles.errorNotification,
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const getCurrentSession = async () => {
     try {
-      const response = await axios.get(apiUrls.currentSession)
-      setCurrentSession(response.data.session_code)
+      const response = await axios.get(apiUrls.currentSession);
+      setCurrentSession(response.data.session_code);
     } catch (error) {
-      console.error("Error fetching current session:", error)
+      console.error("Error fetching current session:", error);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchDepartments()
-    fetchEntityData()
-    getCurrentSession()
-  }, [])
+    fetchDepartments();
+    fetchEntityData();
+    getCurrentSession();
+  }, []);
 
   const nextSection = () => {
     if (activeSection < 5) {
-      setActiveSection(activeSection + 1)
-      window.scrollTo({ top: 0, behavior: "smooth" })
+      setActiveSection(activeSection + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }
+  };
 
   const prevSection = () => {
     if (activeSection > 1) {
-      setActiveSection(activeSection - 1)
-      window.scrollTo({ top: 0, behavior: "smooth" })
+      setActiveSection(activeSection - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }
+  };
 
   const validateSection = (section) => {
     switch (section) {
       case 1:
-        return formData.entity && formData.registeration_code && formData.department && formData.registeration_name
+        return (
+          formData.entity &&
+          formData.registeration_code &&
+          formData.department &&
+          formData.registeration_name
+        );
       case 2:
         return (
           formData.faculty_advisory_name &&
           formData.faculty_advisory_empcode &&
           formData.faculty_advisory_email &&
           formData.faculty_advisory_mobile
-        )
+        );
       case 3:
         return (
           formData.faculty_co_advisory_name &&
           formData.faculty_co_advisory_empcode &&
           formData.faculty_co_advisory_email &&
           formData.faculty_co_advisory_mobile
-        )
+        );
       case 4:
         return (
-          formData.Secretary_name && formData.Secretary_uid && formData.Secretary_email && formData.Secretary_mobile
-        )
+          formData.Secretary_name &&
+          formData.Secretary_uid &&
+          formData.Secretary_email &&
+          formData.Secretary_mobile
+        );
       default:
-        return true
+        return true;
     }
-  }
+  };
 
   return (
     <div className={styles.formWrapper}>
@@ -236,14 +252,21 @@ const EntityRegistrationForm = () => {
         <h1 className={styles.formTitle}>Entity Registration</h1>
         <div className={styles.progressContainer}>
           <div className={styles.progressBar}>
-            <div className={styles.progressFill} style={{ width: `${(activeSection / 5) * 100}%` }}></div>
+            <div
+              className={styles.progressFill}
+              style={{ width: `${(activeSection / 5) * 100}%` }}
+            ></div>
           </div>
           <div className={styles.progressSteps}>
             {[1, 2, 3, 4, 5].map((step) => (
               <div
                 key={step}
-                className={`${styles.progressStep} ${activeSection >= step ? styles.activeStep : ""}`}
-                onClick={() => validateSection(activeSection) && setActiveSection(step)}
+                className={`${styles.progressStep} ${
+                  activeSection >= step ? styles.activeStep : ""
+                }`}
+                onClick={() =>
+                  validateSection(activeSection) && setActiveSection(step)
+                }
               >
                 {step}
               </div>
@@ -261,8 +284,9 @@ const EntityRegistrationForm = () => {
 
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          validateSection(activeSection) && (activeSection === 5 ? showConfirm() : nextSection())
+          e.preventDefault();
+          validateSection(activeSection) &&
+            (activeSection === 5 ? showConfirm() : nextSection());
         }}
       >
         <div className={styles.requiredLegend}>* Required Fields</div>
@@ -375,7 +399,10 @@ const EntityRegistrationForm = () => {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.label} htmlFor="faculty_advisory_empcode">
+                <label
+                  className={styles.label}
+                  htmlFor="faculty_advisory_empcode"
+                >
                   Employee Code <span className={styles.required}>*</span>
                 </label>
                 <input
@@ -393,7 +420,10 @@ const EntityRegistrationForm = () => {
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label className={styles.label} htmlFor="faculty_advisory_email">
+                <label
+                  className={styles.label}
+                  htmlFor="faculty_advisory_email"
+                >
                   Email <span className={styles.required}>*</span>
                 </label>
                 <input
@@ -409,7 +439,10 @@ const EntityRegistrationForm = () => {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.label} htmlFor="faculty_advisory_mobile">
+                <label
+                  className={styles.label}
+                  htmlFor="faculty_advisory_mobile"
+                >
                   Mobile <span className={styles.required}>*</span>
                 </label>
                 <input
@@ -434,7 +467,10 @@ const EntityRegistrationForm = () => {
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label className={styles.label} htmlFor="faculty_co_advisory_name">
+                <label
+                  className={styles.label}
+                  htmlFor="faculty_co_advisory_name"
+                >
                   Name <span className={styles.required}>*</span>
                 </label>
                 <input
@@ -450,7 +486,10 @@ const EntityRegistrationForm = () => {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.label} htmlFor="faculty_co_advisory_empcode">
+                <label
+                  className={styles.label}
+                  htmlFor="faculty_co_advisory_empcode"
+                >
                   Employee Code <span className={styles.required}>*</span>
                 </label>
                 <input
@@ -468,7 +507,10 @@ const EntityRegistrationForm = () => {
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label className={styles.label} htmlFor="faculty_co_advisory_email">
+                <label
+                  className={styles.label}
+                  htmlFor="faculty_co_advisory_email"
+                >
                   Email <span className={styles.required}>*</span>
                 </label>
                 <input
@@ -484,7 +526,10 @@ const EntityRegistrationForm = () => {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.label} htmlFor="faculty_co_advisory_mobile">
+                <label
+                  className={styles.label}
+                  htmlFor="faculty_co_advisory_mobile"
+                >
                   Mobile <span className={styles.required}>*</span>
                 </label>
                 <input
@@ -634,7 +679,10 @@ const EntityRegistrationForm = () => {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.label} htmlFor="Joint_Secretary_mobile">
+                <label
+                  className={styles.label}
+                  htmlFor="Joint_Secretary_mobile"
+                >
                   Mobile <span className={styles.required}>*</span>
                 </label>
                 <input
@@ -671,13 +719,21 @@ const EntityRegistrationForm = () => {
 
         <div className={styles.formNavigation}>
           {activeSection > 1 && (
-            <button type="button" className={styles.prevButton} onClick={prevSection}>
+            <button
+              type="button"
+              className={styles.prevButton}
+              onClick={prevSection}
+            >
               Previous
             </button>
           )}
 
           {activeSection < 5 ? (
-            <button type="submit" className={styles.nextButton} disabled={!validateSection(activeSection)}>
+            <button
+              type="submit"
+              className={styles.nextButton}
+              disabled={!validateSection(activeSection)}
+            >
               Next
             </button>
           ) : (
@@ -692,8 +748,7 @@ const EntityRegistrationForm = () => {
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default EntityRegistrationForm
-
+export default EntityRegistrationForm;

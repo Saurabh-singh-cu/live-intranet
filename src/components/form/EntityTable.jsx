@@ -11,6 +11,7 @@ import {
   Button,
   Modal,
   message,
+  Popover,
 } from "antd";
 import "react-quill/dist/quill.snow.css";
 import moment from "moment";
@@ -25,6 +26,7 @@ import {
   usePagination,
   useGlobalFilter,
 } from "react-table";
+import Swal from "sweetalert2";
 
 const { TextArea } = Input;
 
@@ -546,6 +548,27 @@ function EntityTable() {
     usePagination
   );
 
+  const handleApprove = async () => {
+    try {
+      const response = await apiClient.post("convert-json/");
+      if (response?.status === 201) {
+        message.success("Approved Request will be regestered.");
+        Swal.fire({
+          icon: "success",
+          title: "Requests Approved",
+          text: "Approved Request will be regestered.",
+        });
+      }
+    } catch (error) {
+      console.error("Error approving request:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong!",
+        text: "Please try again later.",
+      });
+    }
+  };
+
   return (
     <div className={styles.entityTableContainer}>
       <h3>Entity Request</h3>
@@ -598,6 +621,7 @@ function EntityTable() {
         >
           Request Hold
         </div>
+      
       </div>
 
       <div className={styles.searchAndFilterContainer}>
@@ -623,6 +647,11 @@ function EntityTable() {
           <button className={styles.downloadButton} onClick={downloadCSV}>
             Download CSV
           </button>
+          <Popover title="Register all entity with single click!">
+       <button onClick={handleApprove} className={styles.downloadButton}>
+            Confirm Approval
+          </button>
+       </Popover>
         </div>
       </div>
 

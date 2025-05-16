@@ -5,7 +5,7 @@ import { IoIosLogOut } from "react-icons/io";
 import logonew from "../assets/images/intralogonew.jpeg";
 import { SettingOutlined } from "@ant-design/icons";
 import { Dropdown } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CreditModal from "../CreditScore/CreditModal";
 import TokenExpireTime from "../tokenExpire/TokenExpireTime";
 import styles from "./NavBar.module.css";
@@ -37,6 +37,7 @@ import {
   BsFillCCircleFill,
   BsFillExplicitFill,
 } from "react-icons/bs";
+import ProfilePage from "../profile/ProfilePage";
 
 const NavBar = ({ isLoggedIn, onLogout }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -50,20 +51,20 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
   const [mobileMenuItems, setMobileMenuItems] = useState([]);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState({});
   const [activeTab, setActiveTab] = useState("home");
-  const [animate, setAnimate] = useState(false)
+  const [animate, setAnimate] = useState(false);
 
   // Animation effect for the button
   useEffect(() => {
     const interval = setInterval(() => {
-      setAnimate((prev) => !prev)
-    }, 1500)
+      setAnimate((prev) => !prev);
+    }, 1500);
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
   const handleRateClubClick = () => {
-    window.location.href = "/club-rating"
-  }
+    window.location.href = "/club-rating";
+  };
 
   const searchRef = useRef(null);
   const navigate = useNavigate();
@@ -311,17 +312,17 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
     },
     {
       key: "2",
-      label: "Profile",
+      label: <Link to="/my-profile">Profile</Link>,
       extra: "⌘P",
     },
     {
       key: "3",
       label: <TokenExpireTime />,
-      extra: `⌘L`,
+      extra: "⌘L",
     },
     {
       key: "4",
-      label: `${userName?.role_name}`,
+      label: `${userName?.role_name || "Guest"}`,
       icon: <SettingOutlined />,
       extra: "⌘S",
     },
@@ -690,6 +691,15 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
               "Co Curricular Coordinator",
             ].includes(userName?.role_name) && (
               <div className={styles.mobileActionButtons}>
+                <button
+                  className={`${styles.rateButton} ${
+                    animate ? styles.pulse : ""
+                  }`}
+                  onClick={handleRateClubClick}
+                >
+                  <span className={styles.rateText}>Rate Clubs</span>
+                  <span className={styles.rateIcon}>★</span>
+                </button>
                 <button
                   onClick={() => navigate("/join-now")}
                   className={styles.mobileJoinButton}

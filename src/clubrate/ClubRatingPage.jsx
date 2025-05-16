@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import styles from "./ClubRatingPage.module.css"
-import { FaStar, FaCheckCircle, FaTimes } from "react-icons/fa"
-import PopupMessage from "./PopupMessage"
+import { useState, useEffect } from "react";
+import styles from "./ClubRatingPage.module.css";
+import { FaStar, FaCheckCircle, FaTimes } from "react-icons/fa";
+import PopupMessage from "./PopupMessage";
 
 const ClubRatingPage = () => {
-  const [clubs, setClubs] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [selectedClub, setSelectedClub] = useState(null)
-  const [showModal, setShowModal] = useState(false)
-  const [ratings, setRatings] = useState(Array(10).fill(0))
-  const [feedback, setFeedback] = useState("")
-  const [hoveredStars, setHoveredStars] = useState(Array(10).fill(null))
-  const [submitted, setSubmitted] = useState(false)
-  const [feedbacks, setFeedbacks] = useState([])
-  const [email, setEmail] = useState("")
-  const [emailError, setEmailError] = useState("")
-  const [submitting, setSubmitting] = useState(false)
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false)
+  const [clubs, setClubs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedClub, setSelectedClub] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [ratings, setRatings] = useState(Array(10).fill(0));
+  const [feedback, setFeedback] = useState("");
+  const [hoveredStars, setHoveredStars] = useState(Array(10).fill(null));
+  const [submitted, setSubmitted] = useState(false);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   // Questions for the rating modal
   const questions = [
@@ -33,67 +33,69 @@ const ClubRatingPage = () => {
     "How would you rate the club's leadership in terms of responsiveness to your concerns?",
     "How beneficial do you find the club's networking opportunities?",
     "How would you rate the club's overall impact on your personal or professional development?",
-  ]
+  ];
 
   useEffect(() => {
     // Fetch clubs data from API
-    fetch("https://api.cuintranet.in/intranetapp/entity-registration-summary/?entity_id=1")
+    fetch(
+      "http://172.17.2.247:8080/intranetapp/entity-registration-summary/?entity_id=1"
+    )
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to load clubs data")
+          throw new Error("Failed to load clubs data");
         }
-        return response.json()
+        return response.json();
       })
       .then((data) => {
-        setClubs(data)
-        setLoading(false)
+        setClubs(data);
+        setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching clubs:", error)
-        setError(error.message)
-        setLoading(false)
-      })
-  }, [])
+        console.error("Error fetching clubs:", error);
+        setError(error.message);
+        setLoading(false);
+      });
+  }, []);
 
   const handleRateClub = (club) => {
-    setSelectedClub(club)
-    setShowModal(true)
-    setRatings(Array(10).fill(0))
-    setFeedback("")
-    setSubmitted(false)
-    setEmail("")
-    setEmailError("")
-  }
+    setSelectedClub(club);
+    setShowModal(true);
+    setRatings(Array(10).fill(0));
+    setFeedback("");
+    setSubmitted(false);
+    setEmail("");
+    setEmailError("");
+  };
 
   const handleCloseModal = () => {
-    setShowModal(false)
-    setSelectedClub(null)
-  }
+    setShowModal(false);
+    setSelectedClub(null);
+  };
 
   const handleStarClick = (questionIndex, rating) => {
-    const newRatings = [...ratings]
-    newRatings[questionIndex] = rating
-    setRatings(newRatings)
-  }
+    const newRatings = [...ratings];
+    newRatings[questionIndex] = rating;
+    setRatings(newRatings);
+  };
 
   const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return re.test(email)
-  }
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
 
   const handleSubmit = async () => {
     if (!email) {
-      setEmailError("Email is required")
-      return
+      setEmailError("Email is required");
+      return;
     }
 
     if (!validateEmail(email)) {
-      setEmailError("Please enter a valid email address")
-      return
+      setEmailError("Please enter a valid email address");
+      return;
     }
 
-    setEmailError("")
-    setSubmitting(true)
+    setEmailError("");
+    setSubmitting(true);
 
     // Prepare payload according to the required format
     const payload = {
@@ -109,20 +111,23 @@ const ClubRatingPage = () => {
       ques_8: ratings[7],
       ques_9: ratings[8],
       ques_10: ratings[9],
-    }
+    };
 
     try {
       // Send the rating data to the API
-      const response = await fetch("https://api.cuintranet.in/intranetapp/overall-rating/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
+      const response = await fetch(
+        "http://172.17.2.247:8080/intranetapp/overall-rating/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Failed to submit rating")
+        throw new Error("Failed to submit rating");
       }
 
       // Add to local feedbacks for display
@@ -134,44 +139,46 @@ const ClubRatingPage = () => {
         feedback,
         userName: email.split("@")[0],
         date: new Date().toLocaleDateString(),
-      }
+      };
 
-      setFeedbacks([newFeedback, ...feedbacks])
-      setSubmitted(true)
+      setFeedbacks([newFeedback, ...feedbacks]);
+      setSubmitted(true);
 
       // Show success popup after a short delay
       setTimeout(() => {
-        setShowSuccessPopup(true)
-      }, 1000)
+        setShowSuccessPopup(true);
+      }, 1000);
     } catch (error) {
-      console.error("Error submitting rating:", error)
-      
-      alert("Failed to submit rating. Please try again.")
+      console.error("Error submitting rating:", error);
+
+      alert("Failed to submit rating. Please try again.");
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   const calculateAverageRating = () => {
-    const validRatings = ratings.filter((r) => r > 0)
-    if (validRatings.length === 0) return 0
-    return validRatings.reduce((a, b) => a + b, 0) / validRatings.length
-  }
+    const validRatings = ratings.filter((r) => r > 0);
+    if (validRatings.length === 0) return 0;
+    return validRatings.reduce((a, b) => a + b, 0) / validRatings.length;
+  };
 
   const areAllQuestionsRated = () => {
-    return ratings.every((rating) => rating > 0)
-  }
+    return ratings.every((rating) => rating > 0);
+  };
 
   const getRatingLabel = (rating) => {
-    const labels = ["", "Poor", "Fair", "Good", "Very Good", "Excellent"]
-    return labels[rating]
-  }
+    const labels = ["", "Poor", "Fair", "Good", "Very Good", "Excellent"];
+    return labels[rating];
+  };
 
   return (
     <div className={styles.clubRatingPage}>
       <div className={styles.pageHeader}>
         <h1 className={styles.pageTitle}>University Clubs Rating</h1>
-        <p className={styles.pageSubtitle}>Rate and review your favorite university clubs</p>
+        <p className={styles.pageSubtitle}>
+          Rate and review your favorite university clubs
+        </p>
       </div>
 
       {loading ? (
@@ -182,7 +189,10 @@ const ClubRatingPage = () => {
       ) : error ? (
         <div className={styles.errorContainer}>
           <p className={styles.errorMessage}>Error: {error}</p>
-          <button className={styles.retryButton} onClick={() => window.location.reload()}>
+          <button
+            className={styles.retryButton}
+            onClick={() => window.location.reload()}
+          >
             Retry
           </button>
         </div>
@@ -193,7 +203,8 @@ const ClubRatingPage = () => {
               <div className={styles.clubInfo}>
                 <h3 className={styles.clubName}>{club.registration_name}</h3>
                 <p className={styles.clubDescription}>
-                  {club.description || "Join this amazing club and participate in exciting activities!"}
+                  {club.description ||
+                    "Join this amazing club and participate in exciting activities!"}
                 </p>
 
                 <div className={styles.clubStats}></div>
@@ -210,7 +221,10 @@ const ClubRatingPage = () => {
                       </span>
                     ))}
                   </div>
-                  <button className={styles.rateNowButton} onClick={() => handleRateClub(club)}>
+                  <button
+                    className={styles.rateNowButton}
+                    onClick={() => handleRateClub(club)}
+                  >
                     Rate Now
                   </button>
                 </div>
@@ -223,13 +237,17 @@ const ClubRatingPage = () => {
       {feedbacks.length > 0 && (
         <div className={styles.feedbackSection}>
           <h2 className={styles.feedbackTitle}>What People Say</h2>
-          <p className={styles.feedbackSubtitle}>Your feedback helps clubs improve their activities and events</p>
+          <p className={styles.feedbackSubtitle}>
+            Your feedback helps clubs improve their activities and events
+          </p>
           <div className={styles.feedbackList}>
             {feedbacks.map((feedback) => (
               <div key={feedback.id} className={styles.feedbackCard}>
                 <div className={styles.feedbackHeader}>
                   <div className={styles.userInfo}>
-                    <div className={styles.userAvatar}>{feedback.userName.charAt(0).toUpperCase()}</div>
+                    <div className={styles.userAvatar}>
+                      {feedback.userName.charAt(0).toUpperCase()}
+                    </div>
                     <div>
                       <div className={styles.userName}>{feedback.userName}</div>
                       <div className={styles.feedbackDate}>{feedback.date}</div>
@@ -245,7 +263,11 @@ const ClubRatingPage = () => {
                       <span
                         key={i}
                         className={`${styles.star} ${
-                          i < Math.round(feedback.rating.reduce((a, b) => a + b, 0) / feedback.rating.length)
+                          i <
+                          Math.round(
+                            feedback.rating.reduce((a, b) => a + b, 0) /
+                              feedback.rating.length
+                          )
                             ? styles.filled
                             : ""
                         }`}
@@ -254,11 +276,16 @@ const ClubRatingPage = () => {
                       </span>
                     ))}
                   <span className={styles.ratingValue}>
-                    {(feedback.rating.reduce((a, b) => a + b, 0) / feedback.rating.length).toFixed(1)}
+                    {(
+                      feedback.rating.reduce((a, b) => a + b, 0) /
+                      feedback.rating.length
+                    ).toFixed(1)}
                   </span>
                 </div>
 
-                {feedback.feedback && <div className={styles.feedbackText}>{feedback.feedback}</div>}
+                {feedback.feedback && (
+                  <div className={styles.feedbackText}>{feedback.feedback}</div>
+                )}
               </div>
             ))}
           </div>
@@ -268,12 +295,19 @@ const ClubRatingPage = () => {
       {/* Rating Modal */}
       {showModal && selectedClub && (
         <div className={styles.modalOverlay}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
             {!submitted ? (
               <>
                 <div className={styles.modalHeader}>
                   <h2>Rate {selectedClub.registration_name}</h2>
-                  <button className={styles.closeButton} onClick={handleCloseModal} aria-label="Close">
+                  <button
+                    className={styles.closeButton}
+                    onClick={handleCloseModal}
+                    aria-label="Close"
+                  >
                     <FaTimes />
                   </button>
                 </div>
@@ -287,18 +321,21 @@ const ClubRatingPage = () => {
                           <span
                             key={star}
                             className={`${styles.ratingStar} ${
-                              hoveredStars[index] >= star || ratings[index] >= star ? styles.active : ""
+                              hoveredStars[index] >= star ||
+                              ratings[index] >= star
+                                ? styles.active
+                                : ""
                             }`}
                             onClick={() => handleStarClick(index, star)}
                             onMouseEnter={() => {
-                              const newHoveredStars = [...hoveredStars]
-                              newHoveredStars[index] = star
-                              setHoveredStars(newHoveredStars)
+                              const newHoveredStars = [...hoveredStars];
+                              newHoveredStars[index] = star;
+                              setHoveredStars(newHoveredStars);
                             }}
                             onMouseLeave={() => {
-                              const newHoveredStars = [...hoveredStars]
-                              newHoveredStars[index] = null
-                              setHoveredStars(newHoveredStars)
+                              const newHoveredStars = [...hoveredStars];
+                              newHoveredStars[index] = null;
+                              setHoveredStars(newHoveredStars);
                             }}
                           >
                             <FaStar />
@@ -306,7 +343,9 @@ const ClubRatingPage = () => {
                         ))}
                       </div>
                       <div className={styles.ratingText}>
-                        {ratings[index] > 0 ? getRatingLabel(ratings[index]) : ""}
+                        {ratings[index] > 0
+                          ? getRatingLabel(ratings[index])
+                          : ""}
                       </div>
                     </div>
                   ))}
@@ -323,12 +362,14 @@ const ClubRatingPage = () => {
                     placeholder="Enter your email address"
                     value={email}
                     onChange={(e) => {
-                      setEmail(e.target.value)
-                      if (emailError) setEmailError("")
+                      setEmail(e.target.value);
+                      if (emailError) setEmailError("");
                     }}
                     required
                   />
-                  {emailError && <p className={styles.emailError}>{emailError}</p>}
+                  {emailError && (
+                    <p className={styles.emailError}>{emailError}</p>
+                  )}
                 </div>
 
                 <div className={styles.feedbackContainer}>
@@ -357,7 +398,10 @@ const ClubRatingPage = () => {
                   <FaCheckCircle />
                 </div>
                 <h2>Thank You!</h2>
-                <p>Your rating for {selectedClub.registration_name} has been submitted successfully.</p>
+                <p>
+                  Your rating for {selectedClub.registration_name} has been
+                  submitted successfully.
+                </p>
                 <div className={styles.finalRating}>
                   <div className={styles.averageRating}>
                     {Array(5)
@@ -366,7 +410,9 @@ const ClubRatingPage = () => {
                         <span
                           key={i}
                           className={`${styles.ratingStar} ${
-                            i < Math.round(calculateAverageRating()) ? styles.active : ""
+                            i < Math.round(calculateAverageRating())
+                              ? styles.active
+                              : ""
                           }`}
                         >
                           <FaStar />
@@ -375,7 +421,10 @@ const ClubRatingPage = () => {
                   </div>
                   <p>Average Rating: {calculateAverageRating().toFixed(1)}/5</p>
                 </div>
-                <button className={styles.closeModalButton} onClick={handleCloseModal}>
+                <button
+                  className={styles.closeModalButton}
+                  onClick={handleCloseModal}
+                >
                   Close
                 </button>
               </div>
@@ -389,11 +438,13 @@ const ClubRatingPage = () => {
         isOpen={showSuccessPopup}
         onClose={() => setShowSuccessPopup(false)}
         title="Awesome Achievement!"
-        message={`Thank you for rating ${selectedClub?.registration_name || "this club"}! Your feedback helps make our university community better.`}
+        message={`Thank you for rating ${
+          selectedClub?.registration_name || "this club"
+        }! Your feedback helps make our university community better.`}
         type="achievement"
       />
     </div>
-  )
-}
+  );
+};
 
-export default ClubRatingPage
+export default ClubRatingPage;

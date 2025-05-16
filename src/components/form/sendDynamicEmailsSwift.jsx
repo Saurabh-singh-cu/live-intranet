@@ -13,7 +13,7 @@ export const sendDynamicEmailsSwift = async (receiverEmails, subject, body) => {
     };
 
     const response = await fetch(
-      `https://api.cuintranet.in/intranetapp/send-email/`,
+      `http://172.17.2.247:8080/intranetapp/send-email/`,
       {
         method: "post",
         headers: {
@@ -52,7 +52,7 @@ export const sendDynamicEmailsSwift = async (receiverEmails, subject, body) => {
 };
 
 const sendMail = () => {
-    Swal.fire({
-        text: "Allow user to copy paste from excel email and bind auto @cuchd.in auto at the back"
-    })
-}
+  Swal.fire({
+    text: "Allow user to copy paste from excel email and bind auto @cuchd.in auto at the back",
+  });
+};

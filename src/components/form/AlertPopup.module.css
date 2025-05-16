@@ -1,0 +1,165 @@
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  backdrop-filter: blur(3px);
+}
+
+.popup {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: popupFadeIn 0.3s ease;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.popupHeader {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.popupTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.popupIcon {
+  flex-shrink: 0;
+}
+
+.popupCloseBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: inherit;
+  opacity: 0.7;
+}
+
+.popupCloseBtn:hover {
+  opacity: 1;
+}
+
+.popupContent {
+  padding: 20px;
+}
+
+.popupMessage {
+  margin-bottom: 20px;
+}
+
+.popupMessage p {
+  margin-top: 0;
+  line-height: 1.5;
+}
+
+.downloadInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f1f1f1;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.popupCountdown {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.countdownCircle {
+  background: #3498db;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  gap: 5px;
+}
+
+.countdownText {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.popupFooter {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #e0e0e0;
+}
+
+.popupBtn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.popupBtn:hover {
+  background: #2980b9;
+}
+
+@media (max-width: 768px) {
+  .popup {
+    width: 95%;
+  }
+
+  .popupContent {
+    padding: 15px;
+  }
+
+  .popupCountdown {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,4 +1,13 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import styles from "./ActivityBarGraph.module.css";
 import { useEffect, useState } from "react";
 import apiClient from "../config/apiClient";
@@ -15,14 +24,20 @@ const ActivityBarGraph = () => {
     setLoading(true);
     try {
       const userData = JSON.parse(localStorage.getItem("user"));
-      const regId = userData?.secretary_details[0]?.reg_id;
-      const response = await apiClient.get(`/monthly_activity_analytics/?reg_id=${regId}`);
-      
+      const regId =
+        userData.secretary_details[0].reg_id ||
+        userData.faculty_advisory_details.reg_id;
+      const response = await apiClient.get(
+        `/monthly_activity_analytics/?reg_id=${regId}`
+      );
+
       console.log(response?.data, "((((((((((((((((((((((((((");
 
       if (response?.data?.monthly_activity) {
-        const transformedData = Object.entries(response.data.monthly_activity).map(([month, value]) => ({
-          name: month,      
+        const transformedData = Object.entries(
+          response.data.monthly_activity
+        ).map(([month, value]) => ({
+          name: month,
           activity: value,
         }));
         setMonthlyActivity(transformedData);
@@ -60,7 +75,11 @@ const ActivityBarGraph = () => {
               <XAxis dataKey="name" angle={-45} textAnchor="end" height={70} />
               <YAxis />
               <Tooltip
-                contentStyle={{ backgroundColor: "#fff", borderRadius: "8px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)" }}
+                contentStyle={{
+                  backgroundColor: "#fff",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+                }}
                 formatter={(value) => [`${value}`, "Activities"]}
               />
               <Legend

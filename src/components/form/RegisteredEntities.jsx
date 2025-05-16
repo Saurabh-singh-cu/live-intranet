@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Drawer, Form, Input, Button, Modal, message, Tag, Select } from "antd"
+import { Drawer, Form, Input, Button, Modal, message, Tag, Select, Popover } from "antd"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import mail from "../../assets/images/mail.png"
@@ -11,6 +11,7 @@ import apiClient from "../../config/apiClient"
 
 // Import modern table components
 import { useTable, useSortBy, useFilters, usePagination, useGlobalFilter } from "react-table"
+import Swal from "sweetalert2"
 
 function RegisteredEntities() {
   const [entities, setEntities] = useState([])
@@ -549,6 +550,36 @@ function RegisteredEntities() {
   const topEntityTypes = getTopEntityTypes()
   const topDepartments = getTopDepartments()
 
+
+  const bulkUploadUser = async () => {
+    try {
+      const response = await apiClient.post("/api/bulk-upload-users/");
+      if (response?.status === 201) {
+        message.success("User uploaded successfully");
+        Swal.fire({
+          icon: "success",
+          title: "User uploaded successfully",
+          text: "User creation process completed",
+        });
+      } else {
+        message.error("Failed to upload user");
+        Swal.fire({
+          icon: "error",
+          title: "Something went wrong!",
+          text: "Please try again later.",
+        })
+      }
+    } catch (error) {
+      console.error("Error uploading user:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong!",
+        text: "Please try again later.",
+      })
+    }
+  };
+
+
   return (
     <div className={styles.entityTableContainer}>
       <h3>Registered Entities</h3>
@@ -590,6 +621,11 @@ function RegisteredEntities() {
           <button className={styles.downloadButton} onClick={downloadCSV}>
             Download CSV
           </button>
+          <Popover title="Bulk user creation for registered entities.">
+          <button onClick={bulkUploadUser} className={styles.downloadButton}>
+            Bulk Upload User
+          </button>
+          </Popover>
         </div>
       </div>
 

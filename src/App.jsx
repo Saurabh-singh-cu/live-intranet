@@ -65,6 +65,9 @@ import MembershipAll from "./Admin/Dashboard/MembersPage/MembershipAll";
 import GrpEvententity from "./student/PDFUploadEvent/GrpEvententity";
 import CeremonyPdf from "./Admin/Dashboard/Ceremony/CeremonyPdf";
 import ClubRatingPage from "./clubrate/ClubRatingPage";
+import Calendar from "./pages/Calendar";
+import CalenderPush from "./Admin/Dashboard/CalenderPush";
+import ProfilePage from "./profile/ProfilePage";
 
 function AppContent() {
   const location = useLocation();
@@ -332,6 +335,14 @@ function AppContent() {
               }
             />
             <Route
+              path="/push-calender"
+              element={
+                <ProtectedRoute allowedRoles={["Admin"]} user={user}>
+                  <CalenderPush onShowLogin={handleShowLogin} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/event-published-request"
               element={
                 <ProtectedRoute allowedRoles={["Admin"]} user={user}>
@@ -411,6 +422,10 @@ function AppContent() {
             <Route
               path="/media-update-request"
               element={<ProfilePictureCards onShowLogin={handleShowLogin} />}
+            />
+            <Route
+              path="/my-profile"
+              element={<ProfilePage onShowLogin={handleShowLogin} />}
             />
             <Route
               path="/faculty-advisory-dashboard"

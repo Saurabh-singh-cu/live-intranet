@@ -1,0 +1,642 @@
+/* Main Container Styles */
+.registrationContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1200px; /* Add max-width to prevent stretching */
+  margin: 0 auto;
+  padding: 30px; /* Reduced padding */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.registrationCard {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  padding: 25px; /* Reduced padding */
+  margin-bottom: 30px; /* Reduced margin */
+  transition: all 0.3s ease;
+  margin-top: 5rem; /* Reduced margin */
+}
+
+.registrationTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  text-align: center;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.registrationTitle:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  border-radius: 2px;
+}
+
+.registrationForm {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Section Styles */
+.formSection {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px; /* Reduced padding */
+  margin-bottom: 15px; /* Reduced margin */
+  border-left: 5px solid #3498db;
+  transition: all 0.3s ease;
+}
+
+.formSection:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sectionDescription {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Form Elements */
+.formGroup {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.formLabel {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #34495e;
+  font-size: 0.95rem;
+}
+
+.formInput,
+.formSelect,
+.formTextarea {
+  width: 100%;
+  padding: 8px 10px; /* Reduced padding */
+  border: 2px solid #e0e0e0;
+  border-radius: 6px; /* Smaller radius */
+  font-size: 0.95rem; /* Smaller font */
+  transition: all 0.3s ease;
+  background-color: #fff;
+  color: #333;
+}
+
+.formInput:focus,
+.formSelect:focus,
+.formTextarea:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  outline: none;
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 80px; /* Reduced height */
+}
+
+.inputError {
+  border-color: #e74c3c !important;
+}
+
+.errorMessage {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.requiredStar {
+  color: #e74c3c;
+  margin-left: 3px;
+}
+
+.helperText {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  margin-left: 10px;
+  font-weight: normal;
+}
+
+.charCounter {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  float: right;
+  margin-top: 3px;
+}
+
+/* Form Layout */
+.formTripleRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 992px) {
+  .formTripleRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .formTripleRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Phone Input */
+.phoneInput {
+  display: flex;
+  align-items: center;
+}
+
+.phonePrefix {
+  background-color: #f1f1f1;
+  padding: 8px 12px; /* Reduced padding */
+  border: 2px solid #e0e0e0;
+  border-right: none;
+  border-radius: 6px 0 0 6px; /* Smaller radius */
+  font-weight: 600;
+  color: #555;
+  font-size: 0.95rem; /* Smaller font */
+}
+
+.phoneInput .formInput {
+  border-radius: 0 6px 6px 0; /* Smaller radius */
+}
+
+/* Card Styles */
+.formCard {
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px; /* Reduced padding */
+  margin-bottom: 15px; /* Reduced margin */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+}
+
+.cardTitle {
+  font-size: 1.1rem; /* Smaller font */
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* SDG Grid */
+.sdgGrid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(120px, 1fr)
+  ); /* Smaller cards */
+  gap: 10px; /* Reduced gap */
+  margin-bottom: 15px;
+}
+
+.sdgCard {
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px; /* Reduced padding */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 150px; /* Reduced height */
+}
+
+.sdgCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-color: #3498db;
+}
+
+.sdgSelected {
+  border-color: #2ecc71;
+  background-color: rgba(46, 204, 113, 0.05);
+  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.2);
+}
+
+.sdgHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px; /* Reduced margin */
+}
+
+.sdgNumber {
+  background: #f1f1f1;
+  color: #333;
+  width: 22px; /* Smaller size */
+  height: 22px; /* Smaller size */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem; /* Smaller font */
+}
+
+.sdgCheckIcon {
+  color: #2ecc71;
+}
+
+.sdgLogo {
+  width: 50px; /* Smaller logo size */
+  height: 50px; /* Smaller logo size */
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sdgLogoImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.sdgName {
+  font-size: 0.85rem; /* Smaller font */
+  font-weight: 600;
+  color: #333;
+  line-height: 1.3;
+}
+
+/* Vision & Objective Points */
+.objectivePointContainer {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px; /* Reduced margin */
+  gap: 8px; /* Reduced gap */
+}
+
+.objectivePointNumber {
+  background: #3498db;
+  color: white;
+  width: 25px; /* Smaller size */
+  height: 25px; /* Smaller size */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-top: 5px;
+  font-size: 0.85rem; /* Smaller font */
+}
+
+.objectivePointInputWrapper {
+  flex-grow: 1;
+  position: relative;
+}
+
+/* Acknowledgement */
+.acknowledgementBox {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px; /* Reduced padding */
+  margin-bottom: 12px; /* Reduced margin */
+}
+
+.acknowledgementText {
+  font-size: 0.9rem; /* Smaller font */
+  line-height: 1.5;
+  color: #555;
+}
+
+.checkboxGroup {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.checkboxGroup input[type="checkbox"] {
+  width: 18px; /* Smaller size */
+  height: 18px; /* Smaller size */
+  cursor: pointer;
+}
+
+.checkboxLabel {
+  font-size: 0.9rem; /* Smaller font */
+  color: #333;
+  cursor: pointer;
+}
+
+/* Buttons */
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  padding: 10px 20px; /* Reduced padding */
+  border-radius: 6px; /* Smaller radius */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem; /* Smaller font */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btnPrimary:hover {
+  background: linear-gradient(135deg, #2980b9, #3498db);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btnPrimary:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btnOutline {
+  background: transparent;
+  color: #3498db;
+  border: 2px solid #3498db;
+  padding: 10px 20px; /* Reduced padding */
+  border-radius: 6px; /* Smaller radius */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem; /* Smaller font */
+}
+
+.btnOutline:hover {
+  background: rgba(52, 152, 219, 0.1);
+}
+
+/* Help Button */
+.helpButton {
+  position: fixed;
+  bottom: 25px; /* Reduced position */
+  right: 25px; /* Reduced position */
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 18px; /* Reduced padding */
+  border-radius: 25px; /* Smaller radius */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem; /* Smaller font */
+}
+
+.helpButton:hover {
+  background: #2980b9;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom Popup */
+.customPopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  backdrop-filter: blur(3px);
+}
+
+.customPopup {
+  background: white;
+  border-radius: 10px; /* Smaller radius */
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: popupFadeIn 0.3s ease;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.popupHeader {
+  background: #f8f9fa;
+  padding: 12px 18px; /* Reduced padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.popupTitle {
+  font-size: 1.1rem; /* Smaller font */
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.popupIcon {
+  color: #2ecc71;
+}
+
+.popupCloseBtn {
+  background: transparent;
+  border: none;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.popupCloseBtn:hover {
+  color: #e74c3c;
+}
+
+.popupContent {
+  padding: 18px; /* Reduced padding */
+}
+
+.popupMessage {
+  margin-bottom: 18px; /* Reduced margin */
+  font-size: 0.95rem; /* Smaller font */
+}
+
+.downloadInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f1f1f1;
+  padding: 8px 12px; /* Reduced padding */
+  border-radius: 6px; /* Smaller radius */
+  margin-top: 12px; /* Reduced margin */
+  font-size: 0.9rem; /* Smaller font */
+}
+
+.popupCountdown {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Reduced gap */
+  background: #f8f9fa;
+  padding: 8px 12px; /* Reduced padding */
+  border-radius: 6px; /* Smaller radius */
+  font-size: 0.9rem; /* Smaller font */
+}
+
+.countdownCircle {
+  background: #3498db;
+  color: white;
+  width: 30px; /* Smaller size */
+  height: 30px; /* Smaller size */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  gap: 5px;
+  font-size: 0.85rem; /* Smaller font */
+}
+
+.countdownText {
+  font-size: 0.85rem; /* Smaller font */
+  color: #7f8c8d;
+}
+
+.popupFooter {
+  padding: 12px 18px; /* Reduced padding */
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #e0e0e0;
+}
+
+.popupBtn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 6px 18px; /* Reduced padding */
+  border-radius: 5px; /* Smaller radius */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem; /* Smaller font */
+}
+
+.popupBtn:hover {
+  background: #2980b9;
+}
+
+/* JSON Output Section */
+.jsonOutputSection {
+  background: #f8f9fa;
+  border-radius: 8px; /* Smaller radius */
+  padding: 18px; /* Reduced padding */
+  margin-top: 25px; /* Reduced margin */
+  border-left: 5px solid #9b59b6;
+}
+
+.jsonOutput {
+  background: #2c3e50;
+  color: #ecf0f1;
+  padding: 12px; /* Reduced padding */
+  border-radius: 6px; /* Smaller radius */
+  overflow-x: auto;
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem; /* Smaller font */
+  line-height: 1.5;
+  max-height: 350px; /* Reduced height */
+  overflow-y: auto;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .registrationCard {
+    padding: 15px; /* Further reduced padding for mobile */
+  }
+
+  .formSection {
+    padding: 12px; /* Further reduced padding for mobile */
+  }
+
+  .sdgGrid {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(100px, 1fr)
+    ); /* Even smaller cards for mobile */
+  }
+
+  .sdgCard {
+    height: 140px; /* Further reduced height for mobile */
+    padding: 8px; /* Further reduced padding for mobile */
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+
+  .btnPrimary,
+  .btnOutline {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .helpButton {
+    bottom: 15px; /* Further reduced position for mobile */
+    right: 15px; /* Further reduced position for mobile */
+    padding: 8px 12px; /* Further reduced padding for mobile */
+    font-size: 0.85rem; /* Further reduced font for mobile */
+  }
+}

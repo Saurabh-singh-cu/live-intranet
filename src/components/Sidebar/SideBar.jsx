@@ -36,6 +36,7 @@ import {
   BsExplicitFill,
   BsFillCCircleFill,
   BsFillExplicitFill,
+  BsRCircleFill,
 } from "react-icons/bs";
 import { GiNewspaper } from "react-icons/gi";
 import styles from "./Sidebar.module.css";
@@ -137,6 +138,12 @@ const routes = [
     allowedRoles: ["Admin"],
   },
   {
+    path: "/push-calender",
+    name: "Calender",
+    icon: <GiNewspaper />,
+    allowedRoles: ["Admin"],
+  },
+  {
     path: "/student-secretary-dashboard",
     name: "Dashboard",
     icon: <MdOutlineDashboardCustomize />,
@@ -199,13 +206,13 @@ const routes = [
   {
     path: "/entityTable",
     name: "Entity Request",
-    icon: <FaDatabase  />,
+    icon: <BsExplicitFill />,
     allowedRoles: ["Admin"],
   },
   {
     path: "/registered-entities",
     name: "Registered Entities",
-    icon: <FaDatabase  />,
+    icon: <BsRCircleFill />,
     allowedRoles: ["Admin"],
   },
   {
