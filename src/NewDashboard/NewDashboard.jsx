@@ -53,6 +53,7 @@ const NewDashboard = () => {
   const announcementTimerRef = useRef(null);
   const newsTimerRef = useRef(null);
   const [availableCategories, setAvailableCategories] = useState([]);
+  const [featureEvents, setFeatureEvents] = useState([]);
 
   // Fetch entity counts from API
   useEffect(() => {
@@ -528,6 +529,59 @@ const NewDashboard = () => {
     }
   };
 
+  const getFeatureEvent = async () => {
+    try {
+      const response = await apiClient.get("feature-event/active/");
+      const data = response.data;
+      console.log("Feature Events data:", data);
+      setFeatureEvents(data);
+    } catch (error) {
+      console.error("Error fetching feature events:", error);
+    }
+  };
+
+  const getCalenderEvent = async () => {
+    try {
+      const response = await apiClient.get(
+        `/api/events/monthly-approved-events/?month=1`
+      );
+      console.log(response, "Calender");
+    } catch (error) {
+      console.log(error, "calender");
+    }
+  };
+
+  // Call this function in useEffect
+  useEffect(() => {
+    getPublicNotifications();
+    getNewsAndViews();
+    getFeatureEvent(); // Add this line to fetch feature events
+    getCalenderEvent();
+  }, []);
+
+  // Update the auto-scrolling logic to use feature events
+  useEffect(() => {
+    if (!isHovering) {
+      announcementTimerRef.current = setInterval(() => {
+        const totalItems =
+          featureEvents.length > 0
+            ? featureEvents.length
+            : announcements.length;
+        if (totalItems > 0) {
+          setCurrentAnnouncementIndex(
+            (prevIndex) => (prevIndex + 1) % totalItems
+          );
+        }
+      }, 5000);
+    }
+
+    return () => {
+      if (announcementTimerRef.current) {
+        clearInterval(announcementTimerRef.current);
+      }
+    };
+  }, [isHovering, featureEvents.length, announcements.length]);
+
   // Update the auto-scrolling logic for the announcement carousel
   useEffect(() => {
     if (!isHovering) {
@@ -580,25 +634,21 @@ const NewDashboard = () => {
           <div className={styles.sectionHeader}>
             <h2>Feature Events</h2>
             <div className={styles.carouselControls}>
-              {/* <button onClick={prevAnnouncement} className={styles.carouselButton}>
-                <ChevronLeft size={20} />
-              </button> */}
               <div className={styles.carouselIndicators}>
-                {announcements.map((_, index) => (
-                  <span
-                    key={index}
-                    className={`${styles.indicator} ${
-                      currentAnnouncementIndex === index
-                        ? styles.activeIndicator
-                        : ""
-                    }`}
-                    onClick={() => setCurrentAnnouncementIndex(index)}
-                  ></span>
-                ))}
+                {(featureEvents.length > 0 ? featureEvents : announcements).map(
+                  (_, index) => (
+                    <span
+                      key={index}
+                      className={`${styles.indicator} ${
+                        currentAnnouncementIndex === index
+                          ? styles.activeIndicator
+                          : ""
+                      }`}
+                      onClick={() => setCurrentAnnouncementIndex(index)}
+                    ></span>
+                  )
+                )}
               </div>
-              {/* <button onClick={nextAnnouncement} className={styles.carouselButton}>
-                <ChevronRight size={20} />
-              </button> */}
             </div>
           </div>
 
@@ -613,44 +663,90 @@ const NewDashboard = () => {
                 transform: `translateX(-${currentAnnouncementIndex * 100}%)`,
               }}
             >
-              {announcements.map((announcement, index) => (
-                <div
-                  key={index}
-                  className={`${styles.announcementCard} ${
-                    styles[`priority${announcement.priority}`]
-                  }`}
-                  onClick={() => handleAnnouncementClick(announcement)}
-                >
-                  <div className={styles.announcementImageContainer}>
-                    <img
-                      src={announcement.image || "/placeholder.svg"}
-                      alt={announcement.title}
-                      className={styles.announcementImage}
-                    />
-                    {announcement.priority === "high" && (
-                      <div className={styles.announcementBadge}>Important</div>
-                    )}
-                  </div>
-                  <div className={styles.announcementCardContent}>
-                    {announcement.title && (
-                      <h3 className={styles.announcementTitle}>
-                        {announcement.title}
-                      </h3>
-                    )}
-                    <p className={styles.announcementContent}>
-                      {announcement.content}
-                    </p>
-                    <div className={styles.announcementFooter}>
-                      <span className={styles.announcementFrom}>
-                        {announcement.from}
-                      </span>
-                      <span className={styles.announcementTime}>
-                        {announcement.messageTime}
-                      </span>
+              {featureEvents.length > 0
+                ? featureEvents.map((event, index) => (
+                    <div
+                      key={index}
+                      className={`${styles.announcementCard} ${
+                        styles[
+                          `priority${
+                            event.status === "active" ? "high" : "medium"
+                          }`
+                        ]
+                      }`}
+                      onClick={() => handleAnnouncementClick(event)}
+                    >
+                      <div className={styles.announcementImageContainer}>
+                        <img
+                          src={event.banner || "/placeholder.svg"}
+                          alt={event.title}
+                          className={styles.announcementImage}
+                        />
+                        {event.status === "active" && (
+                          <div className={styles.announcementBadge}>Active</div>
+                        )}
+                      </div>
+                      <div className={styles.announcementCardContent}>
+                        {event.title && (
+                          <h3 className={styles.announcementTitle}>
+                            {event.title}
+                          </h3>
+                        )}
+                        <p className={styles.announcementContent}>
+                          {event.description}
+                        </p>
+                        <div className={styles.announcementFooter}>
+                          <span className={styles.announcementFrom}>
+                            Feature Event
+                          </span>
+                          <span className={styles.announcementTime}>
+                            {new Date(event.date).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  ))
+                : announcements.map((announcement, index) => (
+                    // Existing announcement rendering code
+                    <div
+                      key={index}
+                      className={`${styles.announcementCard} ${
+                        styles[`priority${announcement.priority}`]
+                      }`}
+                      onClick={() => handleAnnouncementClick(announcement)}
+                    >
+                      <div className={styles.announcementImageContainer}>
+                        <img
+                          src={announcement.image || "/placeholder.svg"}
+                          alt={announcement.title}
+                          className={styles.announcementImage}
+                        />
+                        {announcement.priority === "high" && (
+                          <div className={styles.announcementBadge}>
+                            Important
+                          </div>
+                        )}
+                      </div>
+                      <div className={styles.announcementCardContent}>
+                        {announcement.title && (
+                          <h3 className={styles.announcementTitle}>
+                            {announcement.title}
+                          </h3>
+                        )}
+                        <p className={styles.announcementContent}>
+                          {announcement.content}
+                        </p>
+                        <div className={styles.announcementFooter}>
+                          <span className={styles.announcementFrom}>
+                            {announcement.from}
+                          </span>
+                          <span className={styles.announcementTime}>
+                            {announcement.messageTime}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
             </div>
           </div>
         </div>
@@ -1334,7 +1430,11 @@ const NewDashboard = () => {
             <div className={styles.announcementModalContent}>
               <div className={styles.announcementModalImageContainer}>
                 <img
-                  src={selectedAnnouncement.image || "/placeholder.svg"}
+                  src={
+                    selectedAnnouncement.banner || // featureEvents
+                    selectedAnnouncement.image || // announcements
+                    "/placeholder.svg"
+                  }
                   alt={selectedAnnouncement.title}
                   className={styles.announcementModalImage}
                 />
@@ -1342,10 +1442,16 @@ const NewDashboard = () => {
 
               <div className={styles.announcementModalDetails}>
                 <div className={styles.announcementModalInfo}>
-                  {selectedAnnouncement.date && (
+                  {(selectedAnnouncement.date ||
+                    selectedAnnouncement.messageTime) && (
                     <div className={styles.announcementModalInfoItem}>
                       <Calendar size={18} />
-                      <span>{selectedAnnouncement.date}</span>
+                      <span>
+                        {selectedAnnouncement.date ||
+                          new Date(
+                            selectedAnnouncement.messageTime
+                          ).toLocaleDateString()}
+                      </span>
                     </div>
                   )}
                   {selectedAnnouncement.time && (
@@ -1376,18 +1482,26 @@ const NewDashboard = () => {
 
                 <div className={styles.announcementModalDescription}>
                   <h3>Description</h3>
-                  <p>{selectedAnnouncement.description}</p>
+                  <p>
+                    {selectedAnnouncement.description ||
+                      selectedAnnouncement.content}
+                  </p>
                 </div>
 
                 <div className={styles.announcementModalFrom}>
                   <Info size={18} />
-                  <span>{selectedAnnouncement.from}</span>
+                  <span>{selectedAnnouncement.from || "Feature Event"}</span>
                 </div>
 
                 {selectedAnnouncement.registerLink && (
-                  <button className={styles.registerButton}>
+                  <a
+                    href={selectedAnnouncement.registerLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.registerButton}
+                  >
                     Register Now
-                  </button>
+                  </a>
                 )}
               </div>
             </div>

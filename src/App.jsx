@@ -68,6 +68,7 @@ import ClubRatingPage from "./clubrate/ClubRatingPage";
 import Calendar from "./pages/Calendar";
 import CalenderPush from "./Admin/Dashboard/CalenderPush";
 import ProfilePage from "./profile/ProfilePage";
+import PushFeatureEvent from "./pages/PushNotiAndNews/PushFeatureEvent";
 
 function AppContent() {
   const location = useLocation();
@@ -347,6 +348,14 @@ function AppContent() {
               element={
                 <ProtectedRoute allowedRoles={["Admin"]} user={user}>
                   <EventPublishedRequest onShowLogin={handleShowLogin} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/push-feature-events"
+              element={
+                <ProtectedRoute allowedRoles={["Admin"]} user={user}>
+                  <PushFeatureEvent onShowLogin={handleShowLogin} />
                 </ProtectedRoute>
               }
             />

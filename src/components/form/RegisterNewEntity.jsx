@@ -777,8 +777,8 @@ const RegisterNewEntity = () => {
 
     doc.setFontSize(9);
     doc.setFont("helvetica", "bold");
-    doc.text("Student Advisory Board", leftColX, leftColY);
-    doc.text("Faculty Advisory Board", rightColX, rightColY);
+    doc.text("Student Advisory  ", leftColX, leftColY);
+    doc.text("Faculty Advisory  ", rightColX, rightColY);
     leftColY += lineHeight;
     rightColY += lineHeight;
     doc.setFontSize(8);
@@ -869,14 +869,15 @@ const RegisterNewEntity = () => {
 
     const signatureWidth = 35;
     const signaturesPerRow = 3;
-    const signatureMargin = 15;
+    const signatureMargin = 30; // increased horizontal gap
+    const rowGap = 20; // increased vertical gap
 
     for (let i = 0; i < signatureRoles.length; i++) {
       const row = Math.floor(i / signaturesPerRow);
       const col = i % signaturesPerRow;
 
       const x = 15 + col * (signatureWidth + signatureMargin);
-      const y = signatureStartY + 8 + row * 15;
+      const y = signatureStartY + 8 + row * rowGap;
 
       doc.line(x, y, x + signatureWidth, y);
       doc.setFontSize(7);
@@ -1051,7 +1052,7 @@ const RegisterNewEntity = () => {
         >
           {/* University Body Details Section */}
           <div className={styles.formSection}>
-            <h2 className={styles.sectionTitle}>University Body Details</h2>
+            <h2 className={styles.sectionTitle}>University Details</h2>
 
             <div className={styles.formTripleRow}>
               <div className={styles.formGroup}>
@@ -1384,36 +1385,39 @@ const RegisterNewEntity = () => {
           </div>
 
           {/* SDGs Section */}
-          <div className={styles.sdgGrid}>
-            {sdgData &&
-              sdgData.map((sdg) => (
-                <div
-                  key={sdg.sdg_id}
-                  className={`${styles.sdgCard} ${
-                    sdg.selected ? styles.sdgSelected : ""
-                  }`}
-                  onClick={() => handleSDGSelect(sdg.sdg_id)}
-                >
-                  <div className={styles.sdgHeader}>
-                    <div className={styles.sdgNumber}>{sdg.sdg_id}</div>
-                    {sdg.selected && (
-                      <Check className={styles.sdgCheckIcon} size={16} />
-                    )}
+          <div className={styles.formSection}>
+            <h2 className={styles.sectionTitle}>Select SDGs</h2>
+            <div className={styles.sdgGrid}>
+              {sdgData &&
+                sdgData.map((sdg) => (
+                  <div
+                    key={sdg.sdg_id}
+                    className={`${styles.sdgCard} ${
+                      sdg.selected ? styles.sdgSelected : ""
+                    }`}
+                    onClick={() => handleSDGSelect(sdg.sdg_id)}
+                  >
+                    <div className={styles.sdgHeader}>
+                      <div className={styles.sdgNumber}>{sdg.sdg_id}</div>
+                      {sdg.selected && (
+                        <Check className={styles.sdgCheckIcon} size={16} />
+                      )}
+                    </div>
+                    <div className={styles.sdgLogo}>
+                      <img
+                        src={sdgLogos[sdg.sdg_id] || "/placeholder.svg"}
+                        alt={`SDG ${sdg.sdg_id}`}
+                        className={styles.sdgLogoImage}
+                      />
+                    </div>
+                    <div className={styles.sdgName}>{sdg.sdg_name}</div>
                   </div>
-                  <div className={styles.sdgLogo}>
-                    <img
-                      src={sdgLogos[sdg.sdg_id] || "/placeholder.svg"}
-                      alt={`SDG ${sdg.sdg_id}`}
-                      className={styles.sdgLogoImage}
-                    />
-                  </div>
-                  <div className={styles.sdgName}>{sdg.sdg_name}</div>
-                </div>
-              ))}
+                ))}
+            </div>
+            {errors.selected_sdg && touched.selected_sdg && (
+              <div className={styles.errorMessage}>{errors.selected_sdg}</div>
+            )}
           </div>
-          {errors.selected_sdg && touched.selected_sdg && (
-            <div className={styles.errorMessage}>{errors.selected_sdg}</div>
-          )}
 
           {/* Mission & Vision Section */}
           <div className={styles.formSection}>
@@ -1514,11 +1518,9 @@ const RegisterNewEntity = () => {
             </div>
           </div>
 
-          {/* Student Advisory Board Section */}
+          {/* Student Advisory   Section */}
           <div className={styles.formSection}>
-            <h2 className={styles.sectionTitle}>
-              Student Advisory Board Details
-            </h2>
+            <h2 className={styles.sectionTitle}>Student Advisory Details</h2>
 
             <div className={styles.formCard}>
               <h3 className={styles.cardTitle}>Student Secretary</h3>
@@ -1866,11 +1868,9 @@ const RegisterNewEntity = () => {
             </div>
           </div>
 
-          {/* Faculty Advisory Board Section */}
+          {/* Faculty Advisory   Section */}
           <div className={styles.formSection}>
-            <h2 className={styles.sectionTitle}>
-              Faculty Advisory Board Details
-            </h2>
+            <h2 className={styles.sectionTitle}>Faculty Advisory Details</h2>
 
             <div className={styles.formCard}>
               <h3 className={styles.cardTitle}>Faculty Advisor</h3>
@@ -2268,14 +2268,6 @@ const RegisterNewEntity = () => {
             </button>
           </div>
         </form>
-
-        {/* JSON Output Section */}
-        {submittedData && (
-          <div className={styles.jsonOutputSection}>
-            <h2 className={styles.sectionTitle}>Submitted Data (JSON)</h2>
-            <pre className={styles.jsonOutput}>{submittedData}</pre>
-          </div>
-        )}
       </div>
 
       {/* Alert Popup */}

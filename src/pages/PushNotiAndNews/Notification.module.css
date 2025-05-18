@@ -1,0 +1,126 @@
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  min-width: 300px;
+  max-width: 450px;
+  padding: 16px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  z-index: 1000;
+  transform: translateX(120%);
+  transition: transform 0.3s ease-out;
+  opacity: 0.95;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.message {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #fff;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-left: 12px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.closeButton:hover {
+  opacity: 1;
+}
+
+.closeButton svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Notification types */
+.success {
+  background-color: #2ecc71;
+}
+
+.success .icon,
+.success .closeButton svg {
+  stroke: #fff;
+}
+
+.error {
+  background-color: #e74c3c;
+}
+
+.error .icon,
+.error .closeButton svg {
+  stroke: #fff;
+}
+
+.warning {
+  background-color: #f39c12;
+}
+
+.warning .icon,
+.warning .closeButton svg {
+  stroke: #fff;
+}
+
+.info {
+  background-color: #3498db;
+}
+
+.info .icon,
+.info .closeButton svg {
+  stroke: #fff;
+}
+
+/* Animation for notification */
+@keyframes slideIn {
+  from {
+    transform: translateX(120%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@media (max-width: 768px) {
+  .notification {
+    min-width: auto;
+    max-width: calc(100% - 40px);
+    width: calc(100% - 40px);
+  }
+}

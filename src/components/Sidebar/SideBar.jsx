@@ -60,7 +60,7 @@ const routes = [
     icon: <MdOutlineDashboardCustomize />,
     allowedRoles: ["Admin"],
   },
- 
+
   {
     path: "/COORD",
     name: "COORD",
@@ -126,6 +126,12 @@ const routes = [
     allowedRoles: ["Admin"],
   },
   {
+    path: "/push-feature-events",
+    name: "Feature Event",
+    icon: <AiFillNotification />,
+    allowedRoles: ["Admin"],
+  },
+  {
     path: "/push-notification",
     name: "Push Notification",
     icon: <AiFillNotification />,
@@ -170,7 +176,7 @@ const routes = [
   {
     path: "/configuration",
     name: "Configuration",
-    icon: <MdOutlineSettings  />,
+    icon: <MdOutlineSettings />,
     allowedRoles: ["Admin"],
   },
   {
