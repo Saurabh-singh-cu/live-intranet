@@ -69,6 +69,7 @@ import Calendar from "./pages/Calendar";
 import CalenderPush from "./Admin/Dashboard/CalenderPush";
 import ProfilePage from "./profile/ProfilePage";
 import PushFeatureEvent from "./pages/PushNotiAndNews/PushFeatureEvent";
+import AllThreeInOne from "./pages/PushNotiAndNews/AllThreeInOne";
 
 function AppContent() {
   const location = useLocation();
@@ -364,6 +365,14 @@ function AppContent() {
               element={
                 <ProtectedRoute allowedRoles={["Admin"]} user={user}>
                   <EventPublished onShowLogin={handleShowLogin} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/notification-create-feature-news-admin"
+              element={
+                <ProtectedRoute allowedRoles={["Admin"]} user={user}>
+                  <AllThreeInOne onShowLogin={handleShowLogin} />
                 </ProtectedRoute>
               }
             />

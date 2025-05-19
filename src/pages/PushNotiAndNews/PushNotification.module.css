@@ -1,15 +1,18 @@
+/* Main container styles */
 .dashboardContainer {
   width: 100%;
-  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
 }
 
 .mainContent {
-  max-width: 1400px;
-  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 1rem;
 }
 
-/* Split Layout - 50/50 */
 .splitLayout {
   display: flex;
   gap: 30px;
@@ -18,10 +21,10 @@
 
 .formSection {
   flex: 1;
-  background-color: white;
-  border-radius: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 24px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .imageSection {
@@ -35,9 +38,9 @@
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 10px;
+  min-height: 400px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .imageContainer img {
@@ -48,29 +51,33 @@
 
 .imageOverlay {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  padding: 30px 20px;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8));
   color: white;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .imageOverlay h3 {
   font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 
 .imageOverlay p {
   font-size: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  line-height: 1.5;
 }
 
 .featureList {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .featureItem {
@@ -79,20 +86,20 @@
   gap: 10px;
 }
 
+/* Form styles */
 .notificationHeader {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .notificationHeader h2 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #2d3748;
+  font-size: 24px;
   margin-bottom: 8px;
+  color: #333;
 }
 
 .notificationHeader p {
+  color: #666;
   font-size: 14px;
-  color: #718096;
 }
 
 .notificationForm {
@@ -108,196 +115,32 @@
 }
 
 .formGroup label {
-  font-size: 14px;
   font-weight: 500;
-  color: #4a5568;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .dateContainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.formActions {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 10px;
+  gap: 16px;
 }
 
-.sendButton {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  background-color: #4299e1;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
+.dateContainer .formGroup {
+  flex: 1;
 }
 
-.sendButton:hover {
-  background-color: #3182ce;
-}
-
-.sendButton:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.cancelButton {
-  padding: 10px 20px;
-  background-color: #e2e8f0;
-  color: #4a5568;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.cancelButton:hover {
-  background-color: #cbd5e0;
-}
-
-.loadingSpinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* MultiSelect Component Styles */
-.multiSelectContainer {
-  position: relative;
-  width: 100%;
-}
-
-.multiSelectHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  background-color: white;
-  cursor: pointer;
-  transition: border-color 0.2s;
-  min-height: 42px;
-}
-
-.multiSelectHeader:hover {
-  border-color: #cbd5e0;
-}
-
-.placeholder {
-  color: #a0aec0;
-}
-
-.selectedItems {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  max-width: 95%;
-}
-
-.selectedNames {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.arrow {
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s;
-  flex-shrink: 0;
-}
-
-.arrow svg {
-  width: 16px;
-  height: 16px;
-  stroke: #718096;
-}
-
-.dropdownList {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  margin-top: 5px;
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-height: 250px;
-  overflow-y: auto;
-  z-index: 10;
-}
-
-.dropdownItem {
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.dropdownItem:hover {
-  background-color: #f7fafc;
-}
-
-.selectAllOption {
-  border-bottom: 1px solid #e2e8f0;
-  font-weight: 500;
-}
-
-.checkbox {
-  margin-right: 10px;
-}
-
-/* Date input styles */
 .dateInputContainer {
   position: relative;
-  width: 100%;
 }
 
 .dateInput {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   font-size: 14px;
-  transition: border-color 0.2s;
-}
-
-.dateInput:focus {
-  outline: none;
-  border-color: #4299e1;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
-}
-
-.dateInput:disabled {
-  background-color: #f7fafc;
-  cursor: not-allowed;
 }
 
 .inputError {
@@ -310,163 +153,272 @@
   margin-top: 4px;
 }
 
-/* Notification Section Styles */
-.notificationSection {
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.cancelButton {
+  padding: 10px 16px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.cancelButton:hover {
+  background-color: #e5e7eb;
+}
+
+.sendButton {
+  padding: 10px 16px;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sendButton:hover {
+  background-color: #0055aa;
+}
+
+.sendButton:disabled {
+  background-color: #a3a3a3;
+  cursor: not-allowed;
+}
+
+.loadingSpinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* MultiSelect styles */
+.multiSelectContainer {
+  position: relative;
+  width: 100%;
+}
+
+.multiSelectHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   background-color: white;
-  border-radius: 10px;
-  padding: 24px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  margin-bottom: 30px;
+  cursor: pointer;
+  min-height: 42px;
+}
+
+.selectedItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.selectedNames {
+  font-size: 14px;
+  color: #333;
+}
+
+.placeholder {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
+}
+
+.arrow svg {
+  width: 16px;
+  height: 16px;
+  color: #6b7280;
+}
+
+.dropdownList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 4px;
+  z-index: 10;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdownItem:hover {
+  background-color: #f3f4f6;
+}
+
+.selectAllOption {
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: 500;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
 }
 
 /* Table styles */
+.notificationSection {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
 .tableContainer {
-  width: 100%;
   overflow-x: auto;
-  margin-top: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-top: 16px;
 }
 
 .dataTable {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   font-size: 14px;
 }
 
-.dataTable th,
-.dataTable td {
-  padding: 16px;
-  text-align: left;
-}
-
 .dataTable th {
-  background-color: #f8fafc;
-  font-weight: 600;
-  color: #334155;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  border-bottom: 2px solid #e2e8f0;
-}
-
-.dataTable th:first-child {
-  border-top-left-radius: 10px;
-}
-
-.dataTable th:last-child {
-  border-top-right-radius: 10px;
-}
-
-.dataTable tr {
-  transition: background-color 0.2s;
-}
-
-.dataTable tr:nth-child(even) {
-  background-color: #f8fafc;
-}
-
-.dataTable tr:hover {
-  background-color: #f1f5f9;
+  background-color: #f9fafb;
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 500;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .dataTable td {
-  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #4b5563;
 }
 
 .messageCell {
-  max-width: 250px;
-  white-space: nowrap;
+  max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.categoryBadge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-  text-align: center;
-  margin-right: 4px;
-  margin-bottom: 4px;
-}
-
-.infoBadge {
-  background-color: #e0f2fe;
-  color: #0369a1;
-}
-
-.urgentBadge {
-  background-color: #fee2e2;
-  color: #b91c1c;
-}
-
-.deadlineBadge {
-  background-color: #fef3c7;
-  color: #92400e;
+  white-space: nowrap;
 }
 
 .actionCell {
   display: flex;
   gap: 8px;
-  white-space: nowrap;
 }
 
+.editButton,
 .deleteButton {
-  padding: 6px 12px;
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  transition: all 0.2s;
   display: flex;
   align-items: center;
   gap: 4px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: none;
+}
+
+.editButton {
+  background-color: #e5e7eb;
+  color: #4b5563;
+}
+
+.editButton:hover {
+  background-color: #d1d5db;
+}
+
+.deleteButton {
+  background-color: #fee2e2;
+  color: #b91c1c;
 }
 
 .deleteButton:hover {
-  background-color: #dc2626;
-  transform: translateY(-1px);
+  background-color: #fecaca;
+}
+
+.categoryBadge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #e5e7eb;
+  color: #4b5563;
+  margin-right: 4px;
+  margin-bottom: 4px;
 }
 
 .noData {
-  padding: 40px 24px;
-  text-align: center;
-  color: #64748b;
-  background-color: #f8fafc;
-  border-radius: 10px;
-  font-size: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  padding: 40px 0;
+  color: #6b7280;
+  text-align: center;
 }
 
 .noDataIcon {
-  font-size: 36px;
-  color: #94a3b8;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
+  color: #9ca3af;
 }
 
-@media (max-width: 768px) {
+/* Responsive styles */
+@media (max-width: 1024px) {
   .splitLayout {
     flex-direction: column;
   }
 
+  .imageSection {
+    order: -1;
+  }
+
+  .imageContainer {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
   .dateContainer {
-    grid-template-columns: 1fr;
-  }
-
-  .dataTable th,
-  .dataTable td {
-    padding: 12px 10px;
-  }
-
-  .actionCell {
     flex-direction: column;
   }
 }

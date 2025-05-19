@@ -1,9 +1,10 @@
+/* Main container styles */
 .container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  margin-top: 4rem;
+  margin-top: 1rem;
 }
 
 .header {
@@ -12,8 +13,8 @@
 
 .header h1 {
   font-size: 24px;
-  font-weight: 600;
   margin-bottom: 8px;
+  color: #333;
 }
 
 .header p {
@@ -21,12 +22,21 @@
   font-size: 14px;
 }
 
+.errorMessage {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+/* Form styles */
 .form {
   background-color: #fff;
   border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 32px;
+  margin-bottom: 30px;
 }
 
 .formGroup {
@@ -34,13 +44,12 @@
 }
 
 .formGroup label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  font-size: 14px;
   display: flex;
   align-items: center;
   gap: 6px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #333;
 }
 
 .formGroup input[type="text"],
@@ -54,49 +63,43 @@
 
 .formGroup textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 120px;
 }
 
 .statusSelector {
   display: flex;
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid #ddd;
+  gap: 10px;
 }
 
 .statusOption {
   flex: 1;
-  text-align: center;
   padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   cursor: pointer;
-  background-color: #f5f5f5;
   transition: all 0.2s;
 }
 
+.statusOption:hover {
+  background-color: #f5f5f5;
+}
+
 .activeStatus {
-  background-color: #ff6b6b;
+  background-color: #0066cc;
   color: white;
-  font-weight: 500;
+  border-color: #0066cc;
 }
 
 .inactiveStatus {
-  background-color: #868e96;
-  color: white;
-  font-weight: 500;
-}
-
-.dateContainer {
-  display: flex;
-  gap: 16px;
-}
-
-.dateContainer .formGroup {
-  flex: 1;
+  background-color: #f3f4f6;
+  color: #6b7280;
 }
 
 .imageUploadContainer {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .fileInput {
@@ -106,63 +109,73 @@
 .uploadButton {
   display: inline-block;
   padding: 8px 16px;
-  background-color: #f1f1f1;
+  background-color: #f3f4f6;
+  color: #4b5563;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  border: 1px solid #ddd;
-  margin-right: 10px;
+  transition: background-color 0.2s;
+}
+
+.uploadButton:hover {
+  background-color: #e5e7eb;
 }
 
 .fileName {
   font-size: 14px;
-  color: #666;
+  color: #6b7280;
 }
 
 .imagePreviewContainer {
-  margin-top: 10px;
+  margin-top: 16px;
   margin-bottom: 20px;
 }
 
 .imagePreview {
   position: relative;
-  display: inline-block;
-  max-width: 200px;
+  width: 200px;
+  height: 120px;
   border-radius: 4px;
   overflow: hidden;
-  border: 1px solid #ddd;
 }
 
 .imagePreview img {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
+  object-fit: cover;
 }
 
 .removeImageButton {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: rgba(255, 255, 255, 0.8);
-  border: none;
-  border-radius: 50%;
+  top: 8px;
+  right: 8px;
   width: 24px;
   height: 24px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.removeImageButton:hover {
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .formActions {
-  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .submitButton {
-  background-color: #ff6b6b;
+  padding: 10px 20px;
+  background-color: #0066cc;
   color: white;
   border: none;
-  padding: 10px 20px;
   border-radius: 4px;
   font-weight: 500;
   cursor: pointer;
@@ -170,26 +183,20 @@
 }
 
 .submitButton:hover {
-  background-color: #fa5252;
+  background-color: #0055aa;
 }
 
 .submitButton:disabled {
-  background-color: #adb5bd;
+  background-color: #a3a3a3;
   cursor: not-allowed;
 }
 
-.errorMessage {
-  background-color: #ffe3e3;
-  color: #e03131;
-  padding: 12px;
-  border-radius: 4px;
-  margin-bottom: 16px;
-  font-size: 14px;
-}
-
-/* Events Section */
+/* Table styles */
 .eventsSection {
-  margin-top: 40px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
 }
 
 .eventsHeader {
@@ -198,8 +205,8 @@
 
 .eventsHeader h2 {
   font-size: 20px;
-  font-weight: 600;
   margin-bottom: 4px;
+  color: #333;
 }
 
 .eventsHeader p {
@@ -208,28 +215,28 @@
 }
 
 .tableContainer {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 .dataTable {
   width: 100%;
   border-collapse: collapse;
-}
-
-.dataTable th,
-.dataTable td {
-  padding: 12px 16px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
+  font-size: 14px;
 }
 
 .dataTable th {
-  background-color: #f8f9fa;
-  font-weight: 600;
-  font-size: 14px;
+  background-color: #f9fafb;
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 500;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dataTable td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #4b5563;
 }
 
 .imageCell {
@@ -241,7 +248,7 @@
   height: 60px;
   border-radius: 4px;
   overflow: hidden;
-  background-color: #f1f1f1;
+  background-color: #f3f4f6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -254,23 +261,26 @@
 }
 
 .noImage {
-  color: #adb5bd;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
+  color: #9ca3af;
 }
 
 .titleCell {
-  font-weight: 500;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .descriptionCell {
   max-width: 300px;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .statusBadge {
@@ -281,50 +291,76 @@
   font-weight: 500;
 }
 
+.activeStatus {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.inactiveStatus {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
 .actionCell {
   white-space: nowrap;
-}
-
-.deleteButton {
-  background-color: #ffe3e3;
-  color: #e03131;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: 8px;
-}
-
-.deleteButton:hover {
-  background-color: #ffc9c9;
+  display: flex;
+  gap: 8px;
 }
 
 .statusToggleButton {
-  background-color: #e9ecef;
-  color: #495057;
-  border: none;
-  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background-color: #e5e7eb;
+  color: #4b5563;
   border-radius: 4px;
   font-size: 12px;
+  border: none;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .statusToggleButton:hover {
-  background-color: #dee2e6;
+  background-color: #d1d5db;
+}
+
+.deleteButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border-radius: 4px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.deleteButton:hover {
+  background-color: #fecaca;
 }
 
 .noData {
-  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  color: #6b7280;
   text-align: center;
-  color: #868e96;
-  font-size: 14px;
 }
 
 .noDataIcon {
   margin-bottom: 16px;
-  color: #adb5bd;
+  color: #9ca3af;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .statusSelector {
+    flex-direction: column;
+  }
 }

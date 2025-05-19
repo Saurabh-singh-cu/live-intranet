@@ -125,30 +125,14 @@ const routes = [
     icon: <MdEmail />,
     allowedRoles: ["Admin"],
   },
+
   {
-    path: "/push-feature-events",
-    name: "Feature Event",
+    path: "/notification-create-feature-news-admin",
+    name: "Notification Center",
     icon: <AiFillNotification />,
     allowedRoles: ["Admin"],
   },
-  {
-    path: "/push-notification",
-    name: "Push Notification",
-    icon: <AiFillNotification />,
-    allowedRoles: ["Admin"],
-  },
-  {
-    path: "/push-news-views",
-    name: "Push News & Views",
-    icon: <GiNewspaper />,
-    allowedRoles: ["Admin"],
-  },
-  {
-    path: "/push-calender",
-    name: "Calender",
-    icon: <GiNewspaper />,
-    allowedRoles: ["Admin"],
-  },
+
   {
     path: "/student-secretary-dashboard",
     name: "Dashboard",
