@@ -28,7 +28,7 @@
 //   const fetchSocieties = async () => {
 //     try {
 //       const response = await fetch(
-//         "http://172.17.2.247:8080/intranetapp/entity-registration-summary/?entity_id=1"
+//         "https://api.cuintranet.in/intranetapp/entity-registration-summary/?entity_id=1"
 //       );
 //       const data = await response.json();
 //       setSocieties(data);
@@ -92,7 +92,7 @@
 //   const approvedMedia = async (regId) => {
 //     try {
 //       const fetch = await axios.get(
-//         `http://172.17.2.247:8080/intranetapp/entity_media_approved/${regId}/`
+//         `https://api.cuintranet.in/intranetapp/entity_media_approved/${regId}/`
 //       );
 //       setMediaData(fetch?.data[0]);
 //       console.log(fetch?.data[0], "FETCH MEDIA");
@@ -218,7 +218,7 @@ const ClubList = () => {
   const fetchSocieties = async () => {
     try {
       const response = await fetch(
-        "http://172.17.2.247:8080/intranetapp/entity-registration-summary/?entity_id=1"
+        "https://api.cuintranet.in/intranetapp/entity-registration-summary/?entity_id=1"
       );
       const data = await response.json();
       setSocieties(data);
@@ -283,7 +283,7 @@ const ClubList = () => {
   const approvedMedia = async (regId) => {
     try {
       const fetch = await axios.get(
-        `http://172.17.2.247:8080/intranetapp/entity_media_approved/${regId}/`
+        `https://api.cuintranet.in/intranetapp/entity_media_approved/${regId}/`
       );
       setMediaData(fetch?.data[0]);
     } catch (error) {

@@ -231,7 +231,7 @@ function AppContent() {
               }
             />
 
-            <Route
+            {/* <Route
               path="/grouped-events-by-entity-form"
               element={
                 <ProtectedRoute
@@ -241,7 +241,7 @@ function AppContent() {
                   <GrpEvententity onShowLogin={handleShowLogin} />
                 </ProtectedRoute>
               }
-            />
+            /> */}
 
             {isCo && (
               <>
@@ -461,10 +461,10 @@ function AppContent() {
               path="/media-request"
               element={<MediaRequest onShowLogin={handleShowLogin} />}
             />
-            <Route
+            {/* <Route
               path="/Register-New-Entity"
               element={<RegisterNewEntity onShowLogin={handleShowLogin} />}
-            />
+            /> */}
             <Route
               path="/paynow"
               element={<Payment onShowLogin={handleShowLogin} />}

@@ -38,7 +38,7 @@ const ClubRatingPage = () => {
   useEffect(() => {
     // Fetch clubs data from API
     fetch(
-      "http://172.17.2.247:8080/intranetapp/entity-registration-summary/?entity_id=1"
+      "https://api.cuintranet.in/intranetapp/entity-registration-summary/?entity_id=1"
     )
       .then((response) => {
         if (!response.ok) {
@@ -116,7 +116,7 @@ const ClubRatingPage = () => {
     try {
       // Send the rating data to the API
       const response = await fetch(
-        "http://172.17.2.247:8080/intranetapp/overall-rating/",
+        "https://api.cuintranet.in/intranetapp/overall-rating/",
         {
           method: "POST",
           headers: {

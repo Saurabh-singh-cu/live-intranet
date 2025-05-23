@@ -139,12 +139,12 @@ const routes = [
     icon: <MdOutlineDashboardCustomize />,
     allowedRoles: ["Student Secretary"],
   },
-  {
-    path: "/grouped-events-by-entity-form",
-    name: "Club Nomination Form",
-    icon: <FaTrophy />,
-    allowedRoles: ["Student Secretary"],
-  },
+  // {
+  //   path: "/grouped-events-by-entity-form",
+  //   name: "Club Nomination Form",
+  //   icon: <FaTrophy />,
+  //   allowedRoles: ["Student Secretary"],
+  // },
   {
     path: "/proposed-calendarby-secretary",
     name: "Proposed Calendar",

@@ -1,297 +1,338 @@
-.profileContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+.pageWrapper {
+  min-height: 100vh;
+  background-color: #f5f7fa;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  margin-top: 5rem;
 }
 
-.profileHeader {
-  position: relative;
-  margin-bottom: 80px;
+.profileContainer {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+  margin-top: 4rem;
 }
 
-.coverPhoto {
-  height: 250px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
-  position: relative;
-  overflow: hidden;
+/* Sidebar Styles */
+.sidebar {
+  width: 300px;
+  background: linear-gradient(to bottom, #c1c1c1, #0a0808);
+  color: white;
+  padding: 30px 0;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.editCoverButton {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 2;
+.profileAvatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
 }
 
-.editButton {
-  background-color: #ffffff;
-  color: #333;
+.avatarImage {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+}
+
+.userName {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 10px 0 5px;
+  text-align: center;
+}
+
+.userRole {
+  font-size: 14px;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.sidebarMenu {
+  margin-top: 20px;
+  padding: 0 15px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menuItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menuIcon {
+  margin-right: 12px;
+  font-size: 18px;
+}
+
+.certificateButtonsContainer {
+  margin-top: auto;
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.certificateTitle {
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.certificateButton {
+  width: 100%;
+  padding: 12px 15px;
   border: none;
-  padding: 10px 20px;
-  border-radius: 30px;
+  border-radius: 8px;
+  margin-bottom: 12px;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  justify-content: center;
   transition: all 0.3s ease;
+  font-size: 14px;
 }
 
-.editButton:hover {
-  background-color: #f8f8f8;
+.buttonIcon {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.establishmentButton {
+  background-color: #ffffff;
+  color: #9e1c20;
+  position: relative;
+  z-index: 1;
+}
+
+.establishmentButton:hover {
+  background-color: #f0f0f0;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.profilePhotoContainer {
-  position: absolute;
-  bottom: -60px;
-  left: 50px;
+.excellenceButton {
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
-.profilePhoto {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-color: #764ba2;
-  border: 5px solid white;
+.excellenceButton:hover {
+  background-color: #000000;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Main Content Styles */
+.mainContent {
+  flex: 1;
+  /* padding: 30px; */
+  overflow-y: auto;
+}
+
+.headerBanner {
+  height: 200px;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  margin-bottom: 30px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 48px;
+  padding: 0 40px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  justify-content: space-between;
+}
+
+.headerBanner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.bannerContent {
+  position: relative;
+  z-index: 1;
   color: white;
-  font-weight: bold;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.profileContent {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+.bannerContent h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  font-weight: 700;
 }
 
-.profileCard {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  padding: 30px;
-  margin-bottom: 30px;
+.bannerContent p {
+  font-size: 18px;
+  opacity: 0.9;
 }
 
-.profileInfo {
-  display: flex;
-  flex-direction: column;
+.infoCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 25px;
 }
 
-.profileName {
-  font-size: 28px;
-  font-weight: 700;
+.card {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.cardHeader h3 {
+  margin: 0;
+  font-size: 18px;
   color: #333;
 }
 
-.profileRole {
-  font-size: 18px;
-  color: #666;
-  margin-top: -5px;
+.cardContent {
+  padding: 20px;
 }
 
-.profileDepartment {
-  font-size: 16px;
-  color: #888;
-  margin-top: -15px;
-}
-
-.profileSection {
-  margin-top: 10px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-}
-
-.sectionTitle {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.infoGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 15px;
-}
-
-.infoItem {
+.infoRow {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  margin-bottom: 12px;
+  align-items: center;
 }
 
 .infoLabel {
+  font-weight: 600;
+  width: 150px;
+  color: #666;
   font-size: 14px;
-  color: #888;
 }
 
 .infoValue {
-  font-size: 16px;
+  flex: 1;
   color: #333;
 }
 
-.profileBio {
-  font-size: 16px;
-  color: #555;
-  line-height: 1.6;
+.clubInfo {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
 }
 
-.skillsContainer {
+.clubLogo {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background-color: #e41e26;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.clubDetails {
+  flex: 1;
+}
+
+.clubDetails h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.permissionsContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.skillBadge {
-  background-color: #f0f0f0;
-  color: #555;
-  padding: 6px 12px;
+.permissionBadge {
+  background-color: #f0f7ff;
+  color: #0066cc;
+  padding: 8px 15px;
   border-radius: 20px;
   font-size: 14px;
-  font-weight: 500;
-}
-
-.socialLinks {
   display: flex;
-  gap: 15px;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.socialLink {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #f5f5f5;
-  color: #555;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.socialLink:hover {
-  background-color: #e0e0e0;
-  color: #333;
-}
-
-/* Edit Form Styles */
-.editForm {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.editTitle {
-  font-size: 24px;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.formRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.formGroup label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #555;
-}
-
-.formGroup input,
-.formGroup textarea {
-  padding: 12px 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  color: #333;
-  transition: border-color 0.2s ease;
-}
-
-.formGroup input:focus,
-.formGroup textarea:focus {
-  border-color: #764ba2;
-  outline: none;
-}
-
-.socialTitle {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-  margin-top: 10px;
-  margin-bottom: -10px;
-}
-
-.formActions {
-  display: flex;
-  gap: 15px;
-  margin-top: 10px;
-}
-
-.saveButton {
-  background-color: #764ba2;
+.entityBadge {
+  background-color: #0066cc;
   color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.activeStatus {
+  background-color: #e6f7e6;
+  color: #28a745;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.saveButton:hover {
-  background-color: #663d91;
-}
-
-.cancelButton {
-  background-color: #f5f5f5;
-  color: #555;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.cancelButton:hover {
-  background-color: #e0e0e0;
-}
-
-/* Loading State */
-.loadingContainer {
+/* Loading and Error States */
+.loadingContainer,
+.errorContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 400px;
-  gap: 20px;
+  height: 100vh;
+  text-align: center;
 }
 
 .loadingSpinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
   border-radius: 50%;
-  border-top-color: #764ba2;
+  border-top-color: #e41e26;
   animation: spin 1s ease-in-out infinite;
+  margin-bottom: 20px;
 }
 
 @keyframes spin {
@@ -301,21 +342,43 @@
 }
 
 /* Responsive Styles */
+@media (max-width: 1024px) {
+  .profileContainer {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    padding: 20px;
+  }
+
+  .certificateButtonsContainer {
+    margin-top: 20px;
+    border-top: none;
+  }
+
+  .infoCards {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
-  .profilePhotoContainer {
-    left: 50%;
-    transform: translateX(-50%);
+  .headerBanner {
+    height: 150px;
+    padding: 0 20px;
   }
 
-  .formRow {
-    grid-template-columns: 1fr;
+  .bannerContent h1 {
+    font-size: 24px;
   }
 
-  .infoGrid {
-    grid-template-columns: 1fr;
+  .bannerContent p {
+    font-size: 16px;
   }
 
-  .profileHeader {
-    margin-bottom: 100px;
+  .infoLabel {
+    width: 120px;
   }
 }

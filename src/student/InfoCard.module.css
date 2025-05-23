@@ -15,8 +15,6 @@
   vertical-align: middle;
 }
 
-
-
 /* Card styling */
 .infoCard {
   flex: 1;
@@ -144,7 +142,11 @@
 
 .cardDivider {
   height: 1px;
-  background: linear-gradient(to right, rgba(139, 0, 0, 0.2), rgba(139, 0, 0, 0.05));
+  background: linear-gradient(
+    to right,
+    rgba(139, 0, 0, 0.2),
+    rgba(139, 0, 0, 0.05)
+  );
   margin: 0;
 }
 
@@ -361,7 +363,6 @@
   font-weight: 600;
   color: #8b0000;
 
-
   border-bottom: 1px solid rgba(139, 0, 0, 0.1);
 }
 
@@ -379,6 +380,9 @@
 :global(.notification-message) {
   margin: 0 0 8px 0;
   font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 :global(.notification-meta) {
@@ -461,4 +465,3 @@
     gap: 5px;
   }
 }
-

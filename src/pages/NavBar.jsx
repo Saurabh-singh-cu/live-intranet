@@ -606,12 +606,12 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
                     >
                       Join as Member
                     </button>
-                    <button
+                    {/* <button
                       onClick={() => navigate("/Register-New-Entity")}
                       className={styles.registerButton}
                     >
                       Register Entity
-                    </button>
+                    </button> */}
                   </>
                 )}
               </div>

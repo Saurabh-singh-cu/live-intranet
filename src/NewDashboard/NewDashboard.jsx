@@ -61,7 +61,7 @@
 //     const fetchEntityCounts = async () => {
 //       try {
 //         const response = await fetch(
-//           "http://172.17.2.247:8080/intranetapp/entity_count/"
+//           "https://api.cuintranet.in/intranetapp/entity_count/"
 //         );
 //         const data = await response.json();
 
@@ -1559,7 +1559,7 @@ const NewDashboard = () => {
     const fetchEntityCounts = async () => {
       try {
         const response = await fetch(
-          "http://172.17.2.247:8080/intranetapp/entity_count/"
+          "https://api.cuintranet.in/intranetapp/entity_count/"
         );
         const data = await response.json();
 
