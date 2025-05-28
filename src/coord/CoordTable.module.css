@@ -1,0 +1,160 @@
+.tableContainer {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .tableTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .tableWrapper {
+    overflow-x: auto;
+  }
+  
+  .dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dataTable th,
+  .dataTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .dataTable th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .dataTable tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .approved {
+    background-color: #e6f7e6;
+    color: #2e7d32;
+  }
+  
+  .pending {
+    background-color: #fff8e1;
+    color: #f57c00;
+  }
+  
+  .rejected {
+    background-color: #fde0e0;
+    color: #c62828;
+  }
+  
+  .viewMoreButton {
+    background-color: #1890ff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .viewMoreButton:hover {
+    background-color: #40a9ff;
+  }
+  
+  .loading,
+  .error {
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+  }
+  
+  .error {
+    color: #c62828;
+  }
+  
+  /* Custom styles for Ant Design Drawer */
+  .customDrawer {
+    font-family: Arial, sans-serif;
+  }
+  
+  .customDrawer :global(.ant-drawer-header) {
+    background-color: #f0f2f5;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  
+  .customDrawer :global(.ant-drawer-title) {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .customDrawer :global(.ant-drawer-body) {
+    padding: 24px;
+  }
+  
+  .drawerContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .detailItem {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .detailLabel {
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+  }
+  
+  .detailValue {
+    font-size: 16px;
+    color: #333;
+  }
+
+  /* Add this to your existing CSS */
+.statusDropdown {
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .statusDropdown:hover {
+    border-color: #888;
+  }
+  
+  .statusDropdown:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0,102,204,0.2);
+  }
+  
+  /* You may want to remove or adjust these status-specific styles */
+  .status.pending { background-color: #ffd700; }
+  .status.approved { background-color: #90ee90; }
+  .status.rejected { background-color: #ff6347; }
+  .status.cancelled { background-color: #d3d3d3; }
+  
+  

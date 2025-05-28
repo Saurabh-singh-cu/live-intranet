@@ -1,0 +1,1803 @@
+/* Add these base styles at the top of the file to set better default font sizes */
+:root {
+  --base-font-size: 16px;
+  --heading-font-size: 1.5rem;
+  --card-title-font-size: 1.2rem;
+  --card-count-font-size: 2.8rem;
+  --content-font-size: 1rem;
+  --small-font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --base-font-size: 16px;
+    --heading-font-size: 1.4rem;
+    --card-title-font-size: 1.1rem;
+    --card-count-font-size: 2.5rem;
+    --content-font-size: 1rem;
+    --small-font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --base-font-size: 16px;
+    --heading-font-size: 1.3rem;
+    --card-title-font-size: 1rem;
+    --card-count-font-size: 2.2rem;
+    --content-font-size: 1rem;
+    --small-font-size: 0.9rem;
+  }
+}
+.navbarContainer p {
+  font-family: monospace !important;
+}
+/* Dashboard Container */
+.dashboardContainer {
+  padding: 24px;
+  /* padding-top: 9rem; */
+  background-color: #f8fafc;
+  background-image: linear-gradient(
+      to right,
+      lab(91.84% -0.19 -4.46 / 0.7) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(224, 229, 238, 0.7) 1px, transparent 1px);
+  background-size: 20px 20px;
+  min-height: 100vh;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  position: relative;
+  font-size: var(--base-font-size);
+}
+
+.dashboardContainerLoggedOut {
+  padding-top: 9rem;
+  width: 99vw;
+}
+.dashboardContainerLoggedIn {
+  padding-top: 4rem;
+  
+
+}
+
+/* Add overlay for depth */
+.dashboardContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(230, 240, 255, 0.3) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Dashboard Header */
+.dashboardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.dashboardHeader h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  background: linear-gradient(90deg, #1a1a1a, #4a4a4a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.actionButton:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+  padding-right: 15px;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.contentGridSecond {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+  padding-right: 15px;
+  padding-top: 20px;
+  overflow-x: hidden;
+}
+
+
+.announcementSection {
+  grid-column: 1;
+  background-color: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.announcementCarousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  height: 320px;
+  width: 100%;
+}
+
+.announcementSlides {
+  display: flex;
+  transition: transform 0.5s ease;
+  height: 100%;
+  width: 100%;
+}
+
+/* Category Filters */
+.categoryFilters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.categoryButton {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+.categoryButton:hover {
+  background-color: #e0e0e0;
+}
+
+.activeCategory {
+  background-color: #ff7e5f;
+  color: white;
+}
+
+/* Metrics Section */
+.metricsSection {
+  grid-column: 2;
+  display: grid;
+  grid-template-rows: auto;
+  gap: 24px;
+}
+
+.metricCardsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  padding: 22px;
+}
+
+.metricCard {
+  position: relative;
+  border-radius: 20px;
+  height: 140px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.metricCard:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.card1 {
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  color: white;
+}
+
+.card2 {
+  background: linear-gradient(135deg, #7f7fd5, #86a8e7, #91eae4);
+  color: white;
+}
+
+.card3 {
+  background: linear-gradient(135deg, #7f7fd5, #86a8e7, #91eae4);
+  color: white;
+}
+
+.card3 {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  color: white;
+}
+
+.card4 {
+  background: linear-gradient(135deg, #43cea2, #185a9d);
+  color: white;
+}
+
+.cardContent {
+  position: relative;
+  height: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.cardInfo {
+  position: relative;
+  z-index: 2;
+}
+
+.cardCount {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cardCategory {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity: 0.9;
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+
+.cardTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.cardIconContainer {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2;
+}
+
+.iconCircle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.metricCard:hover .iconCircle {
+  transform: scale(1.1) rotate(10deg);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.cardIcon {
+  width: 28px;
+  height: 28px;
+  color: white;
+}
+
+.cardShine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 50%
+  );
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.metricCard:hover .cardShine {
+  opacity: 1;
+}
+
+/* Section Styles */
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.sectionHeader h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #5f5c56;
+  margin: 0;
+}
+
+.carouselControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.carouselButton {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.carouselButton:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.carouselIndicators {
+  display: flex;
+  gap: 6px;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ddd;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.activeIndicator {
+  background-color: #ff7e5f;
+  width: 24px;
+  border-radius: 4px;
+}
+
+.announcementCarousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  height: 320px;
+}
+
+.announcementSlides {
+  display: flex;
+  transition: transform 0.5s ease;
+  height: 100%;
+}
+
+.announcementCard {
+  min-width: 100%;
+  border-radius: 16px;
+  background-color: #f9f9f9;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.announcementCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.announcementImageContainer {
+  width: 60%;
+  position: relative;
+  overflow: hidden;
+}
+
+.announcementImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.announcementCard:hover .announcementImage {
+  transform: scale(1.05);
+}
+
+.announcementBadge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: #ff4757;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
+  z-index: 10;
+}
+
+.publicBadge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: #4caf50;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+  z-index: 10;
+}
+
+.announcementCardContent {
+  width: 40%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 5;
+}
+
+.priorityhigh {
+  border-left: 4px solid #ff4757;
+}
+
+.prioritymedium {
+  border-left: 4px solid #ff9f43;
+}
+
+.prioritylow {
+  border-left: 4px solid #2ed573;
+}
+
+.publicNotification {
+  border-left: 4px solid #4caf50;
+  background-color: #f0fff0;
+}
+
+.announcementTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #333;
+}
+
+.announcementContent {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+  flex: 1;
+  margin: 0 0 16px 0;
+}
+
+.announcementFooter {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #777;
+  margin-top: auto;
+}
+
+.announcementFrom {
+  font-weight: 500;
+}
+
+.announcementTime {
+  font-style: italic;
+}
+
+/* Calendar Section */
+.calendarSection {
+  grid-column: span 1;
+  background-color: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.calendarHeader {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.calendarHeader:hover {
+  background-color: #f5f7fa;
+}
+
+.monthSelector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.monthSelector h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.monthButton {
+  background: none;
+  border: none;
+  color: #5f5c56;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+.monthButton h2 {
+  color: #5f5c56;
+}
+.monthSelector h2 {
+  color: #5f5c56;
+}
+.monthButton:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.calendarIcon {
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.calendarHeader:hover .calendarIcon {
+  color: #333;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.dayHeader {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #777;
+  padding: 8px 0;
+}
+
+.calendarDay {
+  position: relative;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendarDay:hover {
+  background-color: #f0f4f8;
+}
+
+.otherMonth {
+  color: #bbb;
+}
+
+.hasEvents {
+  background-color: #f0f4f8;
+}
+
+.hasEvents:hover {
+  background-color: #e0e8f0;
+}
+
+.dayNumber {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.eventIndicators {
+  display: flex;
+  gap: 3px;
+  margin-top: 4px;
+  align-items: center;
+}
+
+.eventDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.moreEvents {
+  font-size: 0.7rem;
+  color: #777;
+}
+
+/* Tabs Section */
+.tabsSection {
+  grid-column: span 1;
+  background-color: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.tabsHeader {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  overflow-x: auto;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: #333;
+}
+
+.activeTab {
+  color: #ff7e5f;
+  border-bottom: 2px solid #ff7e5f;
+}
+
+.tabContent {
+  min-height: 300px;
+}
+
+/* Announcement Tab Content */
+.announcementTabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.announcementTabItem {
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  transition: all 0.2s ease;
+}
+
+.announcementTabItem:hover {
+  background-color: #f0f4f8;
+  transform: translateY(-2px);
+}
+
+.announcementTabHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.announcementTabHeader h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.announcementTabBadge {
+  background-color: #ff7e5f;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.publicNotificationBadge {
+  background-color: #4caf50;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+p.announcementTabDescription {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0 0 12px 0;
+}
+
+
+.announcementTabFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.viewDetailsButton {
+  background: none;
+  border: none;
+  color: #ff7e5f;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.viewDetailsButton:hover {
+  color: #ff5f3f;
+  text-decoration: underline;
+}
+
+/* Discussion Section */
+.discussionSection {
+  grid-column: span 1;
+  background-color: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.discussionList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.discussionItem {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  transition: all 0.2s ease;
+}
+
+.discussionItem:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.discussionButton {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: white;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.discussionButton:hover {
+  background-color: #f9f9f9;
+}
+
+.discussionButton.active {
+  background-color: #f0f4f8;
+  border-bottom: 1px solid #eee;
+}
+
+.discussionTitle {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.discussionMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.participantAvatars {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-left: -8px;
+  border: 2px solid white;
+}
+
+.avatar:first-child {
+  margin-left: 0;
+}
+
+.additionalCount {
+  font-size: 0.8rem;
+  color: #777;
+  margin-left: 4px;
+}
+
+.accordionIcon {
+  color: #777;
+}
+
+.discussionContent {
+  padding: 16px;
+  background-color: #f9f9f9;
+}
+
+.discussionContent p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #555;
+  margin: 0 0 16px 0;
+  cursor: pointer;
+}
+
+.discussionContent p:hover {
+  color: #ff7e5f;
+}
+
+.joinButton {
+  background-color: #ff7e5f;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.joinButton:hover {
+  background-color: #ff5f3f;
+  transform: translateY(-2px);
+}
+
+/* News Section */
+.newsSection {
+  grid-column: span 1;
+  background-color: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.newsCarousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  height: 300px;
+}
+
+.newsSlides {
+  display: flex;
+  transition: transform 0.5s ease;
+  height: 100%;
+}
+
+.newsCard {
+  min-width: 100%;
+  border-radius: 16px;
+  background-color: #f9f9f9;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.newsCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.newsImageContainer {
+  width: 40%;
+  position: relative;
+  overflow: hidden;
+}
+
+.newsImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.newsCard:hover .newsImage {
+  transform: scale(1.05);
+}
+
+.newsCategory {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.newsCardContent {
+  width: 60%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.newsTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #333;
+}
+
+.newsContent {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #555;
+  flex: 1;
+  margin: 0 0 16px 0;
+}
+
+.newsFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.newsDate {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.readMoreButton {
+  background: none;
+  border: none;
+  color: #ff7e5f;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.readMoreButton:hover {
+  color: #ff5f3f;
+  text-decoration: underline;
+}
+
+/* Calendar Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.calendarModal {
+  background-color: white;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: modalFadeIn 0.3s ease;
+}
+
+.announcementModal {
+  background-color: white;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.modalHeader h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #777;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.modalContent {
+  padding: 24px;
+  overflow-y: auto;
+  max-height: calc(90vh - 80px);
+}
+
+.calendarModalGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.calendarModalDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.modalDayHeader {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #777;
+  padding: 8px 0;
+}
+
+.modalCalendarDay {
+  position: relative;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modalCalendarDay:hover {
+  background-color: #f0f4f8;
+}
+
+.modalOtherMonth {
+  color: #bbb;
+}
+
+.modalHasEvents {
+  background-color: #f0f4f8;
+}
+
+.modalHasEvents:hover {
+  background-color: #e0e8f0;
+}
+
+.modalSelectedDay {
+  background-color: #ff7e5f !important;
+  color: white;
+}
+
+.modalDayNumber {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.modalEventIndicators {
+  display: flex;
+  gap: 3px;
+  margin-top: 4px;
+  align-items: center;
+}
+
+.modalEventDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.modalMoreEvents {
+  font-size: 0.7rem;
+  color: #777;
+}
+
+.eventsListTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #333;
+}
+
+.eventsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.eventItem {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.eventItem:hover {
+  background-color: #f0f4f8;
+  transform: translateY(-2px);
+}
+
+.selectedEvent {
+  background-color: #f0f4f8;
+  border-left: 4px solid #ff7e5f;
+}
+
+.eventHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.eventTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.eventTime {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #777;
+  background-color: #e8eef7;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.eventDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.eventAttendees {
+  display: flex;
+  align-items: center;
+}
+
+.attendeeAvatars {
+  display: flex;
+  align-items: center;
+}
+
+.attendeeAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-left: -8px;
+  border: 2px solid white;
+}
+
+.attendeeAvatar:first-child {
+  margin-left: 0;
+}
+
+.moreAttendees {
+  font-size: 0.8rem;
+  color: #777;
+  margin-left: 4px;
+}
+
+.eventPrice {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ff7e5f;
+}
+
+.eventExpandedDetails {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ticketsInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ticketsLabel {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.ticketsCount {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.progressBar {
+  height: 6px;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #ff7e5f;
+  border-radius: 3px;
+}
+
+.registerButton {
+  width: 100%;
+  background-color: #ff7e5f;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.registerButton:hover {
+  background-color: #ff5f3f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 126, 95, 0.2);
+}
+
+.noEvents {
+  text-align: center;
+  padding: 32px 0;
+  color: #777;
+}
+
+.noDateSelected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+  color: #777;
+  text-align: center;
+}
+
+.calendarPlaceholderIcon {
+  color: #ddd;
+  margin-bottom: 16px;
+}
+
+/* Announcement Modal */
+.announcementModalContent {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.announcementModalImageContainer {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+}
+
+.announcementModalImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.announcementModalDetails {
+  padding: 24px;
+}
+
+.announcementModalInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.announcementModalInfoItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.infoIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.announcementModalDescription {
+  margin-bottom: 24px;
+}
+
+.announcementModalDescription h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: #333;
+}
+
+.announcementModalDescription p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+}
+
+.announcementModalFrom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+
+
+@media (max-width: 768px) {
+.announcementSection {
+    padding: 16px;
+  }
+
+  .announcementCard {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .announcementImageContainer,
+  .announcementCardContent,
+  .newsImageContainer,
+  .newsCardContent {
+    width: 100%;
+  }
+.mainContent{
+  padding-top: 2rem;
+}
+  .announcementImageContainer {
+    height: 200px;
+  }
+
+  .announcementCardContent {
+    position: relative;
+    margin-top: -60px;
+    background-color: white;
+    border-radius: 16px 16px 0 0;
+    z-index: 10;
+  }
+
+  .newsCard {
+    flex-direction: column;
+  }
+
+  .newsImageContainer {
+    height: 160px;
+  }
+
+  .calendarDay {
+    height: 40px;
+  }
+
+  .tabsHeader {
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .tab {
+    white-space: nowrap;
+  }
+
+  .dashboardContainer {
+    padding: 16px;
+    padding-top: 9rem;
+  }
+
+  .dashboardHeader h1 {
+    font-size: 1.8rem;
+  }
+
+  .sectionHeader h2 {
+    font-size: var(--heading-font-size);
+  }
+
+  .announcementTitle {
+    font-size: var(--card-title-font-size);
+  }
+
+  .announcementContent {
+    font-size: var(--content-font-size);
+    line-height: 1.5;
+  }
+
+  .announcementFooter {
+    font-size: var(--small-font-size);
+  }
+
+  .cardCount {
+    font-size: var(--card-count-font-size);
+  }
+
+  .cardTitle {
+    font-size: var(--card-title-font-size);
+  }
+
+  .cardCategory {
+    font-size: 0.8rem;
+  }
+
+  /* Increase padding for better touch targets */
+  .tab {
+    padding: 12px 16px;
+    font-size: var(--content-font-size);
+  }
+
+  .appointmentHeader h3,
+  .sectionHeader h3,
+  .announcementTabHeader h3,
+  .discussionTitle,
+  .newsTitle {
+    font-size: var(--content-font-size);
+  }
+
+  .appointmentFrom,
+  .sectionDescription,
+  .announcementTabDescription,
+  .discussionContent p,
+  .newsContent {
+    font-size: var(--content-font-size);
+    line-height: 1.5;
+  }
+
+  .categoryFilters {
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+  .contentGrid {
+    grid-template-columns: 1fr;
+    padding-right: 0;
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .metricCardsGrid {
+    grid-template-columns: 1fr;
+  }
+  .dashboardContainerLoggedOut {
+    padding-top: 3rem;
+    width: 99vw;
+  }
+  .mainContent{
+    padding-top: 1rem;
+  }
+  .metricCardsGrid {
+    padding: 0px;
+  }
+  .dashboardContainer {
+    padding: 12px;
+    padding-top: 3.5rem;
+  }
+
+  .contentGrid {
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 12px;
+    margin: 0;
+  }
+  .contentGridSecond {
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 12px;
+    margin: 0;
+  }
+
+  .announcementSection,
+  .metricsSection,
+  .calendarSection,
+  .tabsSection,
+  .discussionSection,
+  .newsSection {
+    padding: 0px;
+    display: grid;
+  }
+
+  /* Increase card height for better readability */
+  .metricCard {
+    height: 160px;
+  }
+
+  /* Increase padding for better touch targets */
+  .cardContent {
+    padding: 16px;
+  }
+
+  /* Increase font sizes for better readability */
+  .cardCount {
+    font-size: 2.2rem;
+  }
+
+  .cardTitle {
+    font-size: 1.1rem;
+  }
+
+  .cardCategory {
+    font-size: 0.8rem;
+  }
+
+  /* Improve calendar readability */
+  .calendarGrid {
+    gap: 4px;
+  }
+
+  .calendarDay {
+    height: 40px;
+    padding: 4px 0;
+  }
+
+  .dayHeader {
+    font-size: 0.8rem;
+  }
+
+  .dayNumber {
+    font-size: 0.9rem;
+  }
+
+  /* Improve tab readability */
+  .tabsHeader {
+    gap: 4px;
+  }
+
+  .tab {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  /* Improve modal readability */
+  .modalHeader h2 {
+    font-size: 1.2rem;
+  }
+
+  .eventsListTitle {
+    font-size: 1.1rem;
+  }
+
+  .eventTitle {
+    font-size: 1rem;
+  }
+
+  .eventTime {
+    font-size: 0.9rem;
+  }
+
+  /* Improve announcement modal readability */
+  .announcementModalDescription h3 {
+    font-size: 1.1rem;
+  }
+
+  .announcementModalDescription p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .announcementModalInfoItem {
+    font-size: 0.95rem;
+  }
+
+  .categoryFilters {
+    flex-wrap: wrap;
+  }
+
+  .categoryButton {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+  }
+}
+/* Category filter styles */
+.categoryFilters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.categoryButton {
+  background-color: #f5f5f5;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.categoryButton:hover {
+  background-color: #e0e0e0;
+}
+
+.activeCategory {
+  background-color: #ff7e5f;
+  color: white;
+}
+
+.unreadBadge {
+  background-color: #ff4757;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+}
+
+.newIndicator {
+  background-color: #ff4757;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+.unreadItem {
+  border-left: 3px solid #ff4757;
+}

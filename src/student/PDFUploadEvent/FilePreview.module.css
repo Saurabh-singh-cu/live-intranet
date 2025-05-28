@@ -1,0 +1,126 @@
+.previewContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+  
+  .fileDetails {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+  }
+  
+  .fileDetails:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+  }
+  
+  .fileIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    border-radius: 10px;
+    color: white;
+  }
+  
+  .fileInfo {
+    flex: 1;
+  }
+  
+  .fileName {
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 0.25rem 0;
+    word-break: break-all;
+  }
+  
+  .fileMetadata {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #666;
+  }
+  
+  .fileDivider {
+    margin: 0 0.5rem;
+  }
+  
+  .pdfPreview {
+    width: 100%;
+    height: 400px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .pdfPreview:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .embedContainer {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .pdfObject {
+    border: none;
+  }
+  
+  .previewLoading, .previewError {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    text-align: center;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .previewSpinner {
+    border: 3px solid rgba(106, 17, 203, 0.1);
+    border-radius: 50%;
+    border-top: 3px solid #6a11cb;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .previewError {
+    color: #d32f2f;
+  }
+  
+  .downloadLink {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #6a11cb;
+    text-decoration: underline;
+  }
+  
+  .downloadLink:hover {
+    color: #2575fc;
+  }
+  
+  @media (max-width: 768px) {
+    .pdfPreview {
+      height: 300px;
+    }
+  }

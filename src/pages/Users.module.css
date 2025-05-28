@@ -1,0 +1,281 @@
+.userConfigInterface {
+  font-family: Arial, sans-serif;
+  padding-top: 6rem;
+  padding-right: 1rem;
+
+}
+
+.header {
+  background: linear-gradient(135deg, #d7e3eb, #8e9396);
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.optionCard {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+}
+
+.optionCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.activeCard {
+  background-color: #e1f5fe;
+  border: 2px solid #3498db;
+}
+
+.cardIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.optionCard h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.contentContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 992px) {
+  .contentContainer {
+    grid-template-columns: 1fr;
+  }
+}
+
+.formContainer,
+.tableContainer {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.formTitle,
+.tableTitle {
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #3498db;
+}
+
+.configForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.textInput,
+.selectInput {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.textInput:focus,
+.selectInput:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.submitButton,
+.editButton,
+.deleteButton,
+.viewButton,
+.cancelButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.submitButton {
+  background-color: #2ecc71;
+  color: white;
+  flex: 1;
+}
+
+.submitButton:hover {
+  background-color: #27ae60;
+}
+
+.cancelButton {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.cancelButton:hover {
+  background-color: #7f8c8d;
+}
+
+.editButton {
+  background-color: #3498db;
+  color: white;
+}
+
+.editButton:hover {
+  background-color: #2980b9;
+}
+
+.deleteButton {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.deleteButton:hover {
+  background-color: #c0392b;
+}
+
+.viewButton {
+  background-color: #f39c12;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.2rem;
+}
+
+.viewButton:hover {
+  background-color: #d35400;
+}
+
+.configTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.configTable th,
+.configTable td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.configTable th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  color: #333;
+}
+
+.configTable tr:hover {
+  background-color: #f9f9f9;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.userForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.userDetailsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.userDetailsTable td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.userDetailsTable tr:last-child td {
+  border-bottom: none;
+}
+
+.userActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.userActions button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+}
+
+.statusActive {
+  color: #2ecc71;
+  font-weight: bold;
+}
+
+.statusInactive {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
