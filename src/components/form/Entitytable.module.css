@@ -16,7 +16,21 @@
   overflow-x: auto;
   scrollbar-width: thin;
 }
+.registerButton {
+  padding: 6px 12px;
+  background-color: #52c41a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
 
+.registerButton:hover {
+  background-color: #389e0d;
+}
 .tab {
   padding: 12px 16px;
   cursor: pointer;

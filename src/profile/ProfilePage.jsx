@@ -275,13 +275,13 @@ const ProfilePage = () => {
                     <span className={styles.buttonIcon}>📜</span>
                     Download Establishment Certificate
                   </button> */}
-                  <button
+                  {/* <button
                     className={`${styles.certificateButton} ${styles.excellenceButton}`}
                     onClick={downloadExcellenceCertificate}
                   >
                     <span className={styles.buttonIcon}>🏅</span>
                     Download Excellence Certificate
-                  </button>
+                  </button> */}
                 </div>
               )}
             </div>
