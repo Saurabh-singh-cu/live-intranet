@@ -145,16 +145,17 @@ const routes = [
   //   icon: <FaTrophy />,
   //   allowedRoles: ["Student Secretary"],
   // },
-  {
-    path: "/proposed-calendarby-secretary",
-    name: "Proposed Calendar",
-    icon: <FaCalendarAlt />,
-    allowedRoles: ["Student Secretary"],
-  },
+
   {
     path: "/faculty-advisory-dashboard",
     name: "Dashboard",
     icon: <MdOutlineDashboardCustomize />,
+    allowedRoles: ["Faculty Advisory"],
+  },
+    {
+    path: "/proposed-calendarby-secretary",
+    name: "Proposed Calendar",
+    icon: <FaCalendarAlt />,
     allowedRoles: ["Faculty Advisory"],
   },
   {

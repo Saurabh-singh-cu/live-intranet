@@ -30,15 +30,17 @@ const MemberCard = ({ member, role, department, registrationName, profilePic, em
           <div className={styles.profileImageContainer}>
             <img src={profilePic || defaultProfileImage} alt={member} className={styles.profileImage} />
           </div>
-          <div className={`${styles.roleBadge} ${getBadgeClass()}`}>{role}</div>
+          <div className={`${styles.roleBadge} ${getBadgeClass()}`}>
+            <span className={styles.roleBadgeText}>{role}</span>
+          </div>
         </div>
         <div className={styles.cardContent}>
-          <h3 className={styles.memberName}>{member}</h3>
-          <p className={styles.memberDepartment}>{department}</p>
-          <p className={styles.registrationName}>{registrationName}</p>
+          <h3 className={styles.memberName} title={member}>{member}</h3>
+          <p className={styles.memberDepartment} title={department}>{department}</p>
+          <p className={styles.registrationName} title={registrationName}>{registrationName}</p>
 
           {email && (
-            <a href={`mailto:${email}`} className={styles.emailLink}>
+            <a href={`mailto:${email}`} className={styles.emailLink} title={email}>
               <CgMail className={styles.emailIcon} />
               <span className={styles.emailText}>{email}</span>
             </a>
@@ -181,4 +183,3 @@ const CommitteeCards = () => {
 }
 
 export default CommitteeCards
-

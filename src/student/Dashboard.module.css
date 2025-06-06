@@ -8,13 +8,13 @@
 /* Main Content Areas */
 .dashboardContent {
   padding: 24px;
-
+  max-width: 1400px;
   margin: 0 auto;
 }
 
 .dashboardContentUser {
   padding: 24px;
-
+  max-width: 1400px;
   margin: 0 auto;
   padding-top: 5rem;
 }

@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
-
-import "./FacultyDashboard.css";
-
+import styles from "./FacultyDashboard.module.css";
 import apiClient from "../config/apiClient";
 import CommitteeCards from "./CommitteeCards";
+import ActivityPieChartFac from "./ActivityPieChartFac";
+import ActivityBarGraphFac from "./ActivityBarGraphFac";
 
 const FacultyDashboard = () => {
   const [userDetails, setUserDetails] = useState(null);
@@ -12,23 +12,11 @@ const FacultyDashboard = () => {
   const [commity, setCommity] = useState([]);
   const [userName, setUserName] = useState([]);
   const [availableEntities, setAvailableEntities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [mediaLoading, setMediaLoading] = useState(false);
 
-  useEffect(() => {
-    if (regId) {
-      approvedMedia(regId);
-    }
-  }, [regId]);
 
-  const approvedMedia = async (regId) => {
-    try {
-      const fetch = await apiClient.get(`entity_media_approved/${regId}/`);
-      const media = fetch?.data?.length > 0 ? fetch.data[0] : {}; // Ensure it doesn't break if empty
-      setMediaData(media);
-      console.log(media, "FETCH MEDIA");
-    } catch (error) {
-      console.error("Error fetching media:", error);
-    }
-  };
 
   useEffect(() => {
     if (regId && regId.length > 0) {
@@ -37,30 +25,41 @@ const FacultyDashboard = () => {
   }, [regId]);
 
   useEffect(() => {
-    const getuser = JSON.parse(localStorage.getItem("user"));
-    setUserName(getuser);
-    console.log(getuser, "USER NAME");
-    // Check if the user is a Student Secretary
-    if (getuser && getuser.role_name === "Faculty Advisory") {
-      setUserDetails(getuser);
+    const initializeUser = () => {
+      try {
+        const getuser = JSON.parse(localStorage.getItem("user"));
+        setUserName(getuser);
+        console.log(getuser, "USER NAME");
+        
+        if (getuser && getuser.role_name === "Faculty Advisory") {
+          setUserDetails(getuser);
 
-      if (
-        getuser.faculty_advisory_details &&
-        getuser.faculty_advisory_details.length > 0
-      ) {
-        const entities = getuser.faculty_advisory_details.map((entity) => ({
-          value: entity.reg_id,
-          label: entity.entity_name || entity.registration_name,
-        }));
-        setAvailableEntities(entities);
+          if (
+            getuser.faculty_advisory_details &&
+            getuser.faculty_advisory_details.length > 0
+          ) {
+            const entities = getuser.faculty_advisory_details.map((entity) => ({
+              value: entity.reg_id,
+              label: entity.entity_name || entity.registration_name,
+            }));
+            setAvailableEntities(entities);
+          }
+        }
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        setError("Failed to load user data");
+      } finally {
+        setLoading(false);
       }
-    }
+    };
+
+    initializeUser();
   }, []);
 
   const grtCommitiData = useCallback(
     async (regIds) => {
       try {
-        if (!regIds || regIds.length === 0) return; // Prevent empty calls
+        if (!regIds || regIds.length === 0) return;
 
         const allCommityMember = [];
         for (const regId of regIds) {
@@ -76,86 +75,148 @@ const FacultyDashboard = () => {
         }
 
         if (JSON.stringify(allCommityMember) !== JSON.stringify(commity)) {
-          setCommity(allCommityMember); // Only update if data is different
+          setCommity(allCommityMember);
         }
 
         console.log(allCommityMember, "[commityMember]");
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching committee data:", error);
+        setError("Failed to fetch committee data");
       }
     },
     [commity]
-  ); // Dependency added to avoid unnecessary re-fetches
+  );
 
   useEffect(() => {
-    const storedData = localStorage.getItem("user"); // Replace with actual key
+    const storedData = localStorage.getItem("user");
     if (storedData) {
       const parsedData = JSON.parse(storedData);
       console.log("Parsed LocalStorage Data:", parsedData);
 
-      // Extract reg_id array from secretary_details
       const regIds =
         parsedData?.faculty_advisory_details?.map((item) => item.reg_id) || [];
 
-      console.log("Extracted regIds:", regIds); // Debugging
+      console.log("Extracted regIds:", regIds);
 
       if (regIds.length > 0) {
-        setRegId(regIds); // Set the state with extracted reg_id array
+        setRegId(regIds);
       }
     }
   }, []);
 
-  return (
-    <>
-      <div style={{ height: "100vh", overflow: "scroll" }}>
-        <div
-          style={{ paddingRight: "2rem", paddingTop: "5rem" }}
-          className="secretary-info-container"
-        >
-          <div className="secretary-info">
-            <div className="secretary-header">
-              <h2>Welcome, {userDetails?.user_name}!</h2>
-              <span className="role-badge1">{userName?.role_name}</span>
-            </div>
+  if (loading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}></div>
+        <p className={styles.loadingText}>Loading dashboard...</p>
+      </div>
+    );
+  }
 
+  if (error) {
+    return (
+      <div className={styles.errorContainer}>
+        <div className={styles.errorContent}>
+          <h3>Something went wrong</h3>
+          <p>{error}</p>
+          <button 
+            className={styles.retryButton}
+            onClick={() => window.location.reload()}
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.dashboardWrapper}>
+      <div className={styles.dashboardContainer}>
+        {/* Header Section */}
+        <div className={styles.headerSection}>
+          <div className={styles.welcomeCard}>
+            <div className={styles.welcomeHeader}>
+              <div className={styles.welcomeContent}>
+                <h1 className={styles.welcomeTitle}>
+                  Welcome back, {userDetails?.user_name}!
+                </h1>
+                <span className={styles.roleBadge}>
+                  {userName?.role_name}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Faculty Details Section */}
+        <div className={styles.detailsSection}>
+         
+          <div className={styles.entitiesGrid}>
             {userDetails?.faculty_advisory_details?.map((detail, index) => (
-              <div key={index} className="secretary-details">
-                <div className="detail-item">
-                  <span className="detail-label">Entity:</span>
-                  <span className="detail-value">{detail.entity_name}</span>
+              <div key={index} className={styles.entityCard}>
+                <div className={styles.entityHeader}>
+                  <h3 className={styles.entityName}>{detail.entity_name}</h3>
+                  <div className={styles.entityBadge}>Entity {index + 1}</div>
                 </div>
-                <div className="detail-item">
-                  <span className="detail-label">Registration Code:</span>
-                  <span className="detail-value">
-                    {detail?.registration_code}
-                  </span>
+                
+                <div className={styles.entityDetails}>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Registration Code</span>
+                    <span className={styles.detailValue}>
+                      {detail?.registration_code || 'N/A'}
+                    </span>
+                  </div>
+                  
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Registration Name</span>
+                    <span className={styles.detailValue} title={detail.registration_name}>
+                      {detail.registration_name}
+                    </span>
+                  </div>
+                  
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Department</span>
+                    <span className={styles.detailValue} title={detail.department}>
+                      {detail.department}
+                    </span>
+                  </div>
                 </div>
-                <div className="detail-item">
-                  <span className="detail-label">Registration Name:</span>
-                  <span className="detail-value">
-                    {detail.registration_name}
-                  </span>
-                </div>
-                <div className="detail-item">
-                  <span className="detail-label">Department:</span>
-                  <span className="detail-value">{detail.department}</span>
-                </div>
-                {/* <div className="detail-item">
-                  <span className="detail-label">Members:</span>
-                  <span className="detail-value">{detail.membership_count}</span>
-                </div> */}
               </div>
             ))}
           </div>
         </div>
 
-        <div style={{ marginTop: "-27px" }} className="club-details-page-1">
-          <div className="faculty-committee-container">
+         <div className={styles.chartsContainer}>
+                <div className={styles.chartRow}>
+                  <ActivityPieChartFac />
+                  <ActivityBarGraphFac />
+                </div>
+              
+          </div>
+
+        {/* Committee Section */}
+        <div className={styles.committeeSection}>
+          <div className={styles.committeeSectionHeader}>
+            <h2 className={styles.sectionTitle}>Committee Overview</h2>
+            {mediaLoading && (
+              <div className={styles.mediaLoadingIndicator}>
+                <div className={styles.smallSpinner}></div>
+                <span>Loading media...</span>
+              </div>
+            )}
+          </div>
+
+          
+            
+          
+          <div className={styles.committeeContainer}>
             <CommitteeCards />
+
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -391,7 +391,7 @@ function AppContent() {
               path="/proposed-calendarby-secretary"
               element={
                 <ProtectedRoute
-                  allowedRoles={["Student Secretary"]}
+                  allowedRoles={["Faculty Advisory"]}
                   user={user}
                 >
                   <ProposedCalendar onShowLogin={handleShowLogin} />

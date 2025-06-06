@@ -10,6 +10,8 @@ const ProposedCalendarRegDet = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [activeFilter, setActiveFilter] = useState('all');
 
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,7 +31,10 @@ const ProposedCalendarRegDet = () => {
     };
 
     fetchData();
+
   }, []);
+
+
 
   const filteredData = useMemo(() => {
     if (activeFilter === 'all') return data;

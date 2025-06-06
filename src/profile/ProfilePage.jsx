@@ -268,13 +268,13 @@ const ProfilePage = () => {
             <div>
               {canDownloadCertificates() && (
                 <div className={styles.certificateButtonsContainer}>
-                  {/* <button
+                  <button
                     className={`${styles.certificateButton} ${styles.establishmentButton}`}
                     onClick={downloadEstablishmentCertificate}
                   >
                     <span className={styles.buttonIcon}>📜</span>
                     Download Establishment Certificate
-                  </button> */}
+                  </button>
                   {/* <button
                     className={`${styles.certificateButton} ${styles.excellenceButton}`}
                     onClick={downloadExcellenceCertificate}

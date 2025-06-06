@@ -31,7 +31,7 @@ function RegisteredEntities() {
   const [entityTypes, setEntityTypes] = useState([])
   const [activeTab, setActiveTab] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
-  const [showFilters, setShowFilters] = useState(true)
+  const [showFilters, setShowFilters] = useState(false)
 
   // Filter states
   const [entityNameFilter, setEntityNameFilter] = useState("")
@@ -96,11 +96,11 @@ function RegisteredEntities() {
   const getTotalCount = () => filteredEntities.length
 
   const getEntityTypeCount = (entityType) => {
-    return filteredEntities.filter((entity) => entity.entity_name === entityType).length
+    return entities.filter((entity) => entity.entity_name === entityType).length
   }
 
   const getDepartmentCount = (department) => {
-    return filteredEntities.filter((entity) => entity.department_name === department).length
+    return entities.filter((entity) => entity.department_name === department).length
   }
 
   // Get top entity types and departments for cards
@@ -139,9 +139,57 @@ function RegisteredEntities() {
     [form],
   )
 
-  const handleDelete = useCallback((row) => {
-    console.log("Delete clicked for entity with ID:", row.original.reg_id)
-    // Add your delete logic here
+  const handleDelete = useCallback(async (row) => {
+    const entityId = row.original.reg_id
+    const entityName = row.original.registeration_name || "this entity"
+
+    // Show confirmation dialog
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `You are about to delete "${entityName}". This action cannot be undone!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    })
+
+    if (result.isConfirmed) {
+      try {
+        const response = await apiClient.delete(`entity-registration/${entityId}/`)
+
+        if (response.status === 200 || response.status === 204) {
+          // Remove the entity from both entities and filteredEntities state
+          setEntities((prevEntities) => prevEntities.filter((entity) => entity.reg_id !== entityId))
+          setFilteredEntities((prevEntities) => prevEntities.filter((entity) => entity.reg_id !== entityId))
+
+          message.success("Entity deleted successfully")
+          Swal.fire({
+            title: "Deleted!",
+            text: "The entity has been deleted successfully.",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          })
+        } else {
+          message.error("Failed to delete entity")
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to delete the entity. Please try again.",
+            icon: "error",
+          })
+        }
+      } catch (error) {
+        console.error("Error deleting entity:", error)
+        message.error("An error occurred while deleting entity")
+        Swal.fire({
+          title: "Error!",
+          text: "An error occurred while deleting the entity. Please try again.",
+          icon: "error",
+        })
+      }
+    }
   }, [])
 
   const onFinish = async (values) => {
@@ -158,7 +206,10 @@ function RegisteredEntities() {
       const response = await apiClient.put(`update-entity/${editingEntity.reg_id}/`, values)
 
       if (response.status === 200) {
-        message.success("Entity updated successfully")
+       Swal.fire({
+        title:`${response?.data?.message}`,
+        icon: "success"
+       })
 
         setEntities((prevEntities) =>
           prevEntities.map((entity) => (entity.reg_id === editingEntity.reg_id ? { ...entity, ...values } : entity)),
@@ -267,6 +318,26 @@ function RegisteredEntities() {
         Header: "Entity",
         accessor: "entity_name",
       },
+        {
+        Header: "Actions",
+        Cell: ({ row }) => (
+          <div className={styles.actionButtons}>
+            <button className={styles.actionButton} onClick={() => handleEdit(row)} title="Edit">
+              Edit
+            </button>
+            <button className={styles.actionButton} onClick={() => handleDelete(row)} title="Delete">
+              Delete
+            </button>
+            <button className={styles.actionButton} onClick={() => handleSendMail(row)} title="Send Mail">
+              <img style={{ width: "16px", marginRight: "4px" }} src={mail || "/placeholder.svg"} alt="mail" />
+              Mail
+            </button>
+            <button className={styles.actionButton} onClick={() => handleViewMore(row)} title="View More">
+              Details
+            </button>
+          </div>
+        ),
+      },
       {
         Header: "Department",
         accessor: "department_name",
@@ -274,6 +345,14 @@ function RegisteredEntities() {
       {
         Header: "Registration Code",
         accessor: "registeration_code",
+      },
+      {
+        Header: "Coordinator",
+        accessor: "is_cordinator",
+      },
+      {
+        Header: "Faculty Co Mobile",
+        accessor: "faculty_co_advisory_mobile",
       },
       {
         Header: "Registration Name",
@@ -315,26 +394,7 @@ function RegisteredEntities() {
         Header: "Session",
         accessor: "session_code",
       },
-      {
-        Header: "Actions",
-        Cell: ({ row }) => (
-          <div className={styles.actionButtons}>
-            <button className={styles.actionButton} onClick={() => handleEdit(row)} title="Edit">
-              Edit
-            </button>
-            <button className={styles.actionButton} onClick={() => handleDelete(row)} title="Delete">
-              Delete
-            </button>
-            <button className={styles.actionButton} onClick={() => handleSendMail(row)} title="Send Mail">
-              <img style={{ width: "16px", marginRight: "4px" }} src={mail || "/placeholder.svg"} alt="mail" />
-              Mail
-            </button>
-            <button className={styles.actionButton} onClick={() => handleViewMore(row)} title="View More">
-              Details
-            </button>
-          </div>
-        ),
-      },
+    
     ],
     [handleEdit, handleDelete, handleSendMail],
   )
@@ -550,19 +610,18 @@ function RegisteredEntities() {
   const topEntityTypes = getTopEntityTypes()
   const topDepartments = getTopDepartments()
 
-
   const bulkUploadUser = async () => {
     try {
-      const response = await apiClient.post("/api/bulk-upload-users/");
+      const response = await apiClient.post("/api/bulk-upload-users/")
       if (response?.status === 201) {
-        message.success("User uploaded successfully");
+        message.success("User uploaded successfully")
         Swal.fire({
           icon: "success",
           title: "User uploaded successfully",
           text: "User creation process completed",
-        });
+        })
       } else {
-        message.error("Failed to upload user");
+        message.error("Failed to upload user")
         Swal.fire({
           icon: "error",
           title: "Something went wrong!",
@@ -570,36 +629,19 @@ function RegisteredEntities() {
         })
       }
     } catch (error) {
-      console.error("Error uploading user:", error);
+      console.error("Error uploading user:", error)
       Swal.fire({
         icon: "error",
         title: "Something went wrong!",
         text: "Please try again later.",
       })
     }
-  };
-
+  }
 
   return (
     <div className={styles.entityTableContainer}>
       <h3>Registered Entities</h3>
-      <div className={styles.tabsContainer}>
-        <div
-          className={`${styles.tab} ${activeTab === "all" ? styles.activeTab : ""}`}
-          onClick={() => handleTabChange("all")}
-        >
-          All Entities
-        </div>
-        {topEntityTypes.map((entityType) => (
-          <div
-            key={entityType}
-            className={`${styles.tab} ${activeTab === `entity:${entityType}` ? styles.activeTab : ""}`}
-            onClick={() => handleTabChange(`entity:${entityType}`)}
-          >
-            {entityType}
-          </div>
-        ))}
-      </div>
+
 
       <div className={styles.searchAndFilterContainer}>
         <div className={styles.searchContainer}>
@@ -622,39 +664,14 @@ function RegisteredEntities() {
             Download CSV
           </button>
           <Popover title="Bulk user creation for registered entities.">
-          <button onClick={bulkUploadUser} className={styles.downloadButton}>
-            Bulk Upload User
-          </button>
+            <button onClick={bulkUploadUser} className={styles.downloadButton}>
+              Bulk Upload User
+            </button>
           </Popover>
         </div>
       </div>
 
-      <div className={styles.summaryCardsContainer}>
-        <div className={styles.summaryCard}>
-          <div className={styles.cardCount}>{getTotalCount()}</div>
-          <div className={styles.cardLabel}>Total Entities</div>
-        </div>
-        {topEntityTypes.slice(0, 2).map((entityType) => (
-          <div
-            key={entityType}
-            className={`${styles.summaryCard} ${activeTab === `entity:${entityType}` ? styles.activeCard : ""}`}
-            onClick={() => handleTabChange(`entity:${entityType}`)}
-          >
-            <div className={styles.cardCount}>{getEntityTypeCount(entityType)}</div>
-            <div className={styles.cardLabel}>{entityType}</div>
-          </div>
-        ))}
-        {topDepartments.slice(0, 3).map((department) => (
-          <div
-            key={department}
-            className={`${styles.summaryCard} ${activeTab === `dept:${department}` ? styles.activeCard : ""}`}
-            onClick={() => handleTabChange(`dept:${department}`)}
-          >
-            <div className={styles.cardCount}>{getDepartmentCount(department)}</div>
-            <div className={styles.cardLabel}>{department}</div>
-          </div>
-        ))}
-      </div>
+ 
 
       {showFilters && (
         <div className={styles.filtersContainer}>
@@ -851,6 +868,9 @@ function RegisteredEntities() {
             </Select>
           </Form.Item>
           <Form.Item name="registeration_name" label="Registration Name">
+            <Input />
+          </Form.Item>
+          <Form.Item name="is_cordinator" label="Is Coordinator">
             <Input />
           </Form.Item>
           <Form.Item name="registeration_code" label="Registration Code">

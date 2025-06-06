@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 import cf from "../assets/images/cf.jpg";
 import am from "../assets/images/am.jpg";
 import news1 from "../assets/images/news1.jpg";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 import {
   Badge,
@@ -33,7 +33,6 @@ import {
 import {
   InboxOutlined,
   NotificationOutlined,
-
 } from "@ant-design/icons";
 import Scroller from "../components/Scroller";
 
@@ -46,12 +45,13 @@ import not1 from "../assets/images/not1.png";
 import not2 from "../assets/images/not2.png";
 import apiClient from "../config/apiClient";
 import EntitySelectorPopup from "./EntitySelectorPopup";
-import "./Dashboard.css";
 
 import UpdatedCarousel from "./drawerNotification/UpdatedCarousel";
 import InfoCard from "./InfoCard";
 import ActivityBarGraph from "./ActivityBarGraph";
 import ActivityPieChart from "./ActivityPieChart";
+
+import styles from './Dashboard.module.css';
 
 const Dashboard = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -100,8 +100,6 @@ const Dashboard = () => {
   });
   const [bannerPreview, setBannerPreview] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
-
-
 
   // Ref for the scrollable content
   const contentRef = useRef(null);
@@ -235,7 +233,7 @@ const Dashboard = () => {
     {
       title: (
         <span>
-          Live <span style={{ color: "red" }} className="live-icon"></span>
+          Live <span style={{ color: "red" }} className={styles.liveIcon}></span>
         </span>
       ),
       image: news1,
@@ -244,10 +242,6 @@ const Dashboard = () => {
     { title: "Student Activities", image: diljeet },
     { title: "Academic Excellence", image: c4 },
   ];
-
-
-
-
 
   const toggleAccordion = (index) => {
     setActiveAccordion(activeAccordion === index ? null : index);
@@ -419,8 +413,6 @@ const Dashboard = () => {
     }, 2000);
   };
 
-
-
   const onCloseDrawer = () => {
     setDrawerVisible(false);
     setDrawerContent(null);
@@ -450,8 +442,6 @@ const Dashboard = () => {
       message.error("No file selected or action undefined");
     }
   };
-
-
 
   // New function to handle update submission
   const handleUpdateSubmit = async () => {
@@ -626,7 +616,7 @@ const Dashboard = () => {
             <h3>Update Banner</h3>
             <AntUpload.Dragger
               name="banner"
-              className="banner-box"
+              className={styles.bannerBox}
               multiple={false}
               accept="image/jpeg,image/png,image/gif,image/webp"
               beforeUpload={(file) => {
@@ -675,7 +665,7 @@ const Dashboard = () => {
             </AntUpload.Dragger>
 
             {bannerPreview && (
-              <div className="image-preview">
+              <div className={styles.imagePreview}>
                 <h4>Preview:</h4>
                 <img
                   src={bannerPreview || "/placeholder.svg"}
@@ -705,7 +695,7 @@ const Dashboard = () => {
           <>
             <AntUpload.Dragger
               name="bannerImage"
-              className="banner-box"
+              className={styles.bannerBox}
               multiple={false}
               accept="image/jpeg,image/png,image/gif,image/webp"
               beforeUpload={(file) => {
@@ -747,7 +737,7 @@ const Dashboard = () => {
               </p>
             </AntUpload.Dragger>
             {bannerPreview && (
-              <div className="image-preview">
+              <div className={styles.imagePreview}>
                 <h4>Preview:</h4>
                 <img
                   src={bannerPreview || "/placeholder.svg"}
@@ -821,7 +811,7 @@ const Dashboard = () => {
               </p>
             </AntUpload.Dragger>
             {logoPreview && (
-              <div className="image-preview">
+              <div className={styles.imagePreview}>
                 <h4>Preview:</h4>
                 <img
                   src={logoPreview || "/placeholder.svg"}
@@ -915,8 +905,6 @@ const Dashboard = () => {
     }
   };
 
-
-
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
@@ -948,51 +936,48 @@ const Dashboard = () => {
     }
   };
 
-
   return (
     <>
-      <div className="dashboard-home">
-        {/* <div className="dashboard-content" ref={contentRef}> */}
-        <div className={userDetails ? "dashboard-content-user" : "dashboard-content"} ref={contentRef}>
+      <div className={styles.dashboardHome}>
+        <div className={userDetails ? styles.dashboardContentUser : styles.dashboardContent} ref={contentRef}>
           {userDetails && (
             <div
-              className={`secretary-info-container ${
-                scrollPosition > 50 ? "scrolled" : ""
-              } ${scrollPosition > 200 ? "hidden" : ""}`}
+              className={`${styles.secretaryInfoContainer} ${
+                scrollPosition > 50 ? styles.scrolled : ""
+              } ${scrollPosition > 200 ? styles.hidden : ""}`}
             >
-              <div className="secretary-info">
-                <div className="secretary-header">
+              <div className={styles.secretaryInfo}>
+                <div className={styles.secretaryHeader}>
                   <h2>Welcome, {userDetails.user_name}!</h2>
-                  <span className="role-badge1">{userName?.role_name}</span>
+                  <span className={styles.roleBadge}>{userName?.role_name}</span>
                 </div>
                 {userDetails?.secretary_details &&
                   userDetails?.secretary_details.map((item, key) => (
                     <div
-                      style={{ marginTop: "10px" }}
-                      className="secretary-details"
+                      className={styles.secretaryDetails}
                       key={key}
                     >
-                      <div className="detail-item">
-                        <span className="detail-label">Entity:</span>
-                        <span className="detail-value">
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Entity:</span>
+                        <span className={styles.detailValue}>
                           {item?.entity_name}
                         </span>
                       </div>
-                      <div className="detail-item">
-                        <span className="detail-label">Registration Name:</span>
-                        <span className="detail-value">
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Registration Name:</span>
+                        <span className={styles.detailValue}>
                           {item?.registration_name}
                         </span>
                       </div>
-                      <div className="detail-item">
-                        <span className="detail-label">Registration Code:</span>
-                        <span className="detail-value">
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Registration Code:</span>
+                        <span className={styles.detailValue}>
                           {item?.registration_code}
                         </span>
                       </div>
-                      <div className="detail-item">
-                        <span className="detail-label">Owner:</span>
-                        <span className="detail-value">{item?.department}</span>
+                      <div className={styles.detailItem}>
+                        <span className={styles.detailLabel}>Owner:</span>
+                        <span className={styles.detailValue}>{item?.department}</span>
                       </div>
                     </div>
                   ))}
@@ -1004,142 +989,113 @@ const Dashboard = () => {
           userName?.role_name === "Student Secretary" ? (
             <>
               <InfoCard />
-              <div className="charts-container">
-                <div className="chart-row">
+              <div className={styles.chartsContainer}>
+                <div className={styles.chartRow}>
                   <ActivityPieChart />
                   <ActivityBarGraph />
                 </div>
               </div>
-              <div className="club-details-page-1">
-                <div className="update-cards-container">
-             
+              <div className={styles.clubDetailsPage}>
+                <div className={styles.updateCardsContainer}>
                 </div>
-
-    
               </div>
             </>
           ) : (
             <>
-              <div className="metric-cards-home">
+              <div className={styles.metricCardsHome}>
                 <div
                   onClick={redirectClubs}
-                  className="metric-card-home card1h"
+                  className={`${styles.metricCardHome} ${styles.card1}`}
                 >
-                  <img src={circle || "/placeholder.svg"} />
-                  <h2 className="cardCount">{filteredData?.club}</h2>
-
-                  <div style={{ fontSize: "16px", margin: "10px 0px" }}>
-                    Co-Curricular
+                  <div className={styles.cardIcon}>
+                    <PiFlagBanner size={32} />
                   </div>
-                  <p style={{ fontSize: "23px", fontWeight: "bold" }}>Club</p>
-
-                  <span className="icon-home">
-                    <PiFlagBanner size={50} />
-                  </span>
+                  <div className={styles.cardContent}>
+                    <h2 className={styles.cardCount}>{filteredData?.club}</h2>
+                    <p className={styles.cardTitle}>Club</p>
+                    <span className={styles.cardSubtitle}>Co-Curricular</span>
+                  </div>
                 </div>
 
-                <div onClick={redirectComm} className="metric-card-home card4h">
-                  <img src={circle || "/placeholder.svg"} />
-                  <h2 className="cardCount">{filteredData?.community}</h2>
-
-                  <div style={{ fontSize: "16px", margin: "10px 0px" }}>
-                    Co-Curricular
+                <div onClick={redirectComm} className={`${styles.metricCardHome} ${styles.card2}`}>
+                  <div className={styles.cardIcon}>
+                    <FaUnity size={32} />
                   </div>
-                  <p style={{ fontSize: "23px", fontWeight: "bold" }}>
-                    Community
-                  </p>
-
-                  <span className="icon-home">
-                    {" "}
-                    <FaUnity size={50} />
-                  </span>
+                  <div className={styles.cardContent}>
+                    <h2 className={styles.cardCount}>{filteredData?.community}</h2>
+                    <p className={styles.cardTitle}>Community</p>
+                    <span className={styles.cardSubtitle}>Co-Curricular</span>
+                  </div>
                 </div>
 
                 <div
                   onClick={redirectSociety}
-                  className="metric-card-home card2h"
+                  className={`${styles.metricCardHome} ${styles.card3}`}
                 >
-                  <img src={circle || "/placeholder.svg"} />
-                  <h2 className="cardCount">
-                    {filteredData?.departmentSociety}
-                  </h2>
-
-                  <div style={{ fontSize: "16px", margin: "10px 0px" }}>
-                    Co-Curricular
+                  <div className={styles.cardIcon}>
+                    <FaHouseFlag size={32} />
                   </div>
-                  <p style={{ fontSize: "23px", fontWeight: "bold" }}>
-                    Department Society
-                  </p>
-
-                  <span className="icon-home">
-                    {" "}
-                    <FaHouseFlag size={50} />
-                  </span>
+                  <div className={styles.cardContent}>
+                    <h2 className={styles.cardCount}>
+                      {filteredData?.departmentSociety}
+                    </h2>
+                    <p className={styles.cardTitle}>Department Society</p>
+                    <span className={styles.cardSubtitle}>Co-Curricular</span>
+                  </div>
                 </div>
-                <div onClick={redirectPro} className="metric-card-home card3h">
-                  <img src={circle || "/placeholder.svg"} />
-                  <h2 className="cardCount">
-                    {filteredData?.professionalSociety}
-                  </h2>
 
-                  <div style={{ fontSize: "16px", margin: "10px 0px" }}>
-                    Professional Society
+                <div onClick={redirectPro} className={`${styles.metricCardHome} ${styles.card4}`}>
+                  <div className={styles.cardIcon}>
+                    <BiSolidBuildingHouse size={32} />
                   </div>
-                  <p style={{ fontSize: "23px", fontWeight: "bold" }}>
-                    Student Chapters
-                  </p>
-
-                  <span className="icon-home">
-                    {" "}
-                    <BiSolidBuildingHouse size={50} />
-                  </span>
+                  <div className={styles.cardContent}>
+                    <h2 className={styles.cardCount}>
+                      {filteredData?.professionalSociety}
+                    </h2>
+                    <p className={styles.cardTitle}>Student Chapters</p>
+                    <span className={styles.cardSubtitle}>Professional Society</span>
+                  </div>
                 </div>
               </div>
-              <div className="content-columns-home">
-                <div className="left-column-home">
+
+              <div className={styles.contentColumnsHome}>
+                <div className={styles.leftColumnHome}>
                   <UpdatedCarousel images={carouselImages} />
                 </div>
 
-                <div className="right-column-home">
-                  <div className="calendar-card-home">
+                <div className={styles.rightColumnHome}>
+                  <div className={styles.calendarCardHome}>
                     <Calendar />
                   </div>
                 </div>
               </div>
-              <div className="bottom-cards-home">
-                <div className="notification-card-home">
-                  <div className="card-header-home">
+
+              <div className={styles.bottomCardsHome}>
+                <div className={styles.notificationCardHome}>
+                  <div className={styles.cardHeaderHome}>
                     <h4>Announcement</h4>
                   </div>
-                  <div className="notification-list">
-                    <div
-                      style={{ display: "flex", padding: "0px" }}
-                      className="notification-item"
-                    >
+                  <div className={styles.notificationList}>
+                    <div className={styles.tabContainer}>
                       {Object.keys(tabData1)?.map((tab) => (
                         <button
                           key={tab}
-                          className={`tab ${
-                            activeTab1 === tab ? "activee" : ""
+                          className={`${styles.tab} ${
+                            activeTab1 === tab ? styles.activeTab : ""
                           }`}
                           onClick={() => setActiveTab1(tab)}
                         >
-                          <div style={{ fontSize: "15px" }}>
-                            {tab.charAt(0).toUpperCase() + tab.slice(1)}{" "}
+                          <div className={styles.tabText}>
+                            {tab.charAt(0).toUpperCase() + tab.slice(1)}
                           </div>
-                          <div>
-                            {" "}
-                            <Badge style={{ marginBottom: "5px" }} count={2}>
+                          <div className={styles.tabBadge}>
+                            <Badge count={2}>
                               <NotificationOutlined
-                                className={`${
+                                className={
                                   activeTab1 === tab
-                                    ? "anno-ico-white"
-                                    : "anno-ico"
-                                }`}
-                                style={{
-                                  fontSize: 16,
-                                  color: "white",
-                                }}
+                                    ? styles.annoIcoWhite
+                                    : styles.annoIco
+                                }
                               />
                             </Badge>
                           </div>
@@ -1147,61 +1103,46 @@ const Dashboard = () => {
                       ))}
                     </div>
                     {tabData1[activeTab1]?.map((message, index) => (
-                      <div key={index} className="message">
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            overflow: "hidden",
-                          }}
-                          className="message-header"
-                        >
-                          <p className="announcement-message ">
+                      <div key={index} className={styles.message}>
+                        <div className={styles.messageHeader}>
+                          <p className={styles.announcementMessage}>
                             {message.content}
                           </p>
                         </div>
-
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <p className="author-name">From: {message.from}</p>
-                          <p className="author-name">{message?.messageTime}</p>
+                        <div className={styles.messageFooter}>
+                          <p className={styles.authorName}>From: {message.from}</p>
+                          <p className={styles.messageTime}>{message?.messageTime}</p>
                         </div>
                       </div>
                     ))}
                   </div>
-
-                  <div className="card-footer-home">
-                    <button className="view-more-btn-home">View More</button>
+                  <div className={styles.cardFooterHome}>
+                    <button className={styles.viewMoreBtnHome}>View More</button>
                   </div>
                 </div>
 
-                <div className="notification-card-home">
-                  <div className="card-header-home">
+                <div className={styles.notificationCardHome}>
+                  <div className={styles.cardHeaderHome}>
                     <h4>Discussion Forum</h4>
                   </div>
-                  <div className="discussion-wrapper">
+                  <div className={styles.discussionWrapper}>
                     {discussions.map((discussion, index) => (
-                      <div key={index} className="accordion-item">
+                      <div key={index} className={styles.accordionItem}>
                         <button
-                          className={`accordion-title ${
-                            activeAccordion === index ? "active" : ""
+                          className={`${styles.accordionTitle} ${
+                            activeAccordion === index ? styles.active : ""
                           }`}
                           onClick={() => toggleAccordion(index)}
                         >
                           <span>{discussion.title}</span>
-                          <div className="accordion-right">
-                            <div className="participants">
-                              <div className="avatar-stack">
+                          <div className={styles.accordionRight}>
+                            <div className={styles.participants}>
+                              <div className={styles.avatarStack}>
                                 {discussion.participants.map((letter, i) => (
                                   <div
                                     key={i}
-                                    className="participant-avatar"
+                                    className={styles.participantAvatar}
                                     style={{
-                                      cursor: "pointer",
                                       backgroundColor: getRandomColor(),
                                     }}
                                   >
@@ -1210,12 +1151,12 @@ const Dashboard = () => {
                                 ))}
                               </div>
                               {discussion.additionalCount > 0 && (
-                                <span className="additional-count">
+                                <span className={styles.additionalCount}>
                                   +{discussion.additionalCount}
                                 </span>
                               )}
                             </div>
-                            <span className="accordion-icon">
+                            <span className={styles.accordionIcon}>
                               {activeAccordion === index ? (
                                 <ChevronUp />
                               ) : (
@@ -1225,7 +1166,7 @@ const Dashboard = () => {
                           </div>
                         </button>
                         {activeAccordion === index && (
-                          <div className="accordion-content">
+                          <div className={styles.accordionContent}>
                             <p
                               onClick={() => redirectToLogin()}
                               style={{ cursor: "pointer" }}
@@ -1237,35 +1178,28 @@ const Dashboard = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="card-footer-home">
-                    <button className="view-more-btn-home">View More</button>
+                  <div className={styles.cardFooterHome}>
+                    <button className={styles.viewMoreBtnHome}>View More</button>
                   </div>
                 </div>
 
-                <div className="carousel-card-home">
+                <div className={styles.carouselCardHome}>
                   <NewsViews />
                 </div>
               </div>
             </>
           )}
 
-          <footer
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            className="dashboard-footer"
-          >
+          <footer className={styles.dashboardFooter}>
             <div>@Curriculum Portal</div>
           </footer>
         </div>
 
         {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
+          <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
               <button
-                className="modal-close"
+                className={styles.modalClose}
                 onClick={() => setIsModalOpen(false)}
               >
                 ×
@@ -1281,7 +1215,8 @@ const Dashboard = () => {
           </div>
         )}
       </div>
-      <div className="scroller-i">
+
+      <div className={styles.scrollerI}>
         <Scroller />
       </div>
 
@@ -1316,8 +1251,8 @@ const Dashboard = () => {
         ]}
         width={800}
       >
-        <div className="update-modal-content">
-          <div className="entity-selector">
+        <div className={styles.updateModalContent}>
+          <div className={styles.entitySelector}>
             <label htmlFor="entity-select">Select Entity:</label>
             <Select
               id="entity-select"
@@ -1332,7 +1267,7 @@ const Dashboard = () => {
             />
           </div>
 
-          <div className="update-content" style={{ marginTop: "20px" }}>
+          <div className={styles.updateContent}>
             <label htmlFor="about-editor">About:</label>
             <ReactQuill
               id="about-editor"
@@ -1345,7 +1280,6 @@ const Dashboard = () => {
                   ["bold", "italic", "underline", "strike"],
                   [{ color: [] }, { background: [] }],
                   [{ list: "ordered" }, { list: "bullet" }],
-
                   ["clean"],
                 ],
               }}
@@ -1353,7 +1287,7 @@ const Dashboard = () => {
             />
           </div>
 
-          <div className="update-content" style={{ marginTop: "40px" }}>
+          <div className={styles.updateContent}>
             <label htmlFor="eligibility-editor">Eligibility:</label>
             <ReactQuill
               id="eligibility-editor"
@@ -1366,7 +1300,6 @@ const Dashboard = () => {
                   ["bold", "italic", "underline", "strike"],
                   [{ color: [] }, { background: [] }],
                   [{ list: "ordered" }, { list: "bullet" }],
-
                   ["clean"],
                 ],
               }}
@@ -1374,7 +1307,7 @@ const Dashboard = () => {
             />
           </div>
 
-          <div className="update-content" style={{ marginTop: "40px" }}>
+          <div className={styles.updateContent}>
             <label htmlFor="categories-select">Categories:</label>
             <Select
               id="categories-select"
