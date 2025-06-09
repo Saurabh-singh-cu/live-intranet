@@ -41,9 +41,9 @@ const EntityRegistrationForm = () => {
   });
 
   const apiUrls = {
-    "entity-types": "https://api.cuintranet.in/intranetapp/entity-types/",
-    departments: "https://api.cuintranet.in/intranetapp/departments/",
-    currentSession: "https://api.cuintranet.in/intranetapp/current_session/",
+    "entity-types": "http://172.17.2.247:8080/intranetapp/entity-types/",
+    departments: "http://172.17.2.247:8080/intranetapp/departments/",
+    currentSession: "http://172.17.2.247:8080/intranetapp/current_session/",
   };
 
   const handleChange = (e) => {
@@ -77,7 +77,7 @@ const EntityRegistrationForm = () => {
     setFormSubmitting(true);
     try {
       const response = await axios.post(
-        "https://api.cuintranet.in/intranetapp/entity-registration/",
+        "http://172.17.2.247:8080/intranetapp/entity-registration/",
         {
           ...formData,
           // session_code: currentSession,

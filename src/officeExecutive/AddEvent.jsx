@@ -1,9 +1,11 @@
-import { useState, useEffect, useMemo } from "react";
-import styles from "./AddEvent.module.css";
-import apiClient from "../config/apiClient";
-import Swal from "sweetalert2";
-import { Button, Drawer, Popover } from "antd";
-import { FaEye } from "react-icons/fa";
+"use client"
+
+import { useState, useEffect, useMemo } from "react"
+import styles from "./AddEvent.module.css"
+import apiClient from "../config/apiClient"
+import Swal from "sweetalert2"
+import { Button, Drawer, Popover } from "antd"
+import { FaEye } from "react-icons/fa"
 
 const AddEvent = () => {
   const [formData, setFormData] = useState({
@@ -22,113 +24,111 @@ const AddEvent = () => {
     budget: "",
     receivedOn: "",
     levelActivity: "",
-  });
+  })
 
-  const [entityTypes, setEntityTypes] = useState([]);
-  const [entityNames, setEntityNames] = useState([]);
-  const [activityTypes, setActivityTypes] = useState([]);
-  const [descriptionCount, setDescriptionCount] = useState(0);
-  const [errors, setErrors] = useState({});
-  const [eventList, setEventList] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [collectedOn, setCollectedOn] = useState("");
-  const [collectedBy, setCollectedBy] = useState("");
-  const [comment, setComment] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [statusOptions, setStatusOptions] = useState([]); // Added statusOptions state
+  const [entityTypes, setEntityTypes] = useState([])
+  const [entityNames, setEntityNames] = useState([])
+  const [activityTypes, setActivityTypes] = useState([])
+  const [proposedEvents, setProposedEvents] = useState([]) // New state for proposed events
+  const [isCustomEvent, setIsCustomEvent] = useState(false) // Track if "Other" is selected
+  const [descriptionCount, setDescriptionCount] = useState(0)
+  const [errors, setErrors] = useState({})
+  const [eventList, setEventList] = useState([])
+  const [searchTerm, setSearchTerm] = useState("")
+  const [openDrawer, setOpenDrawer] = useState(false)
+  const [selectedEvent, setSelectedEvent] = useState(null)
+  const [collectedOn, setCollectedOn] = useState("")
+  const [collectedBy, setCollectedBy] = useState("")
+  const [comment, setComment] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const [statusOptions, setStatusOptions] = useState([])
 
   const [sortConfig, setSortConfig] = useState({
     key: null,
     direction: "ascending",
-  });
-  const itemsPerPage = 10;
+  })
+  const itemsPerPage = 10
 
   useEffect(() => {
-    fetchEntityTypes();
-    // Fetch status options on component mount
-  }, []);
+    fetchEntityTypes()
+  }, [])
 
   const fetchEntityTypes = async () => {
     try {
-      const response = await apiClient.get("entity-types/");
-      setEntityTypes(response.data);
+      const response = await apiClient.get("entity-types/")
+      setEntityTypes(response.data)
     } catch (error) {
-      console.error("Error fetching entity types:", error);
+      console.error("Error fetching entity types:", error)
     }
-  };
+  }
 
   const fetchEntityNames = async (entityId) => {
     try {
-      const response = await apiClient.get(
-        `entity-registration-name/?entity_id=${entityId}`
-      );
-      setEntityNames(response.data);
+      const response = await apiClient.get(`entity-registration-name/?entity_id=${entityId}`)
+      setEntityNames(response.data)
     } catch (error) {
-      console.error("Error fetching entity names:", error);
+      console.error("Error fetching entity names:", error)
     }
-  };
+  }
 
   const fetchActivityTypes = async (entityId) => {
     try {
-      const response = await apiClient.get(
-        `entity-activities/?entity_id=${entityId}`
-      );
-      setActivityTypes(response.data);
+      const response = await apiClient.get(`entity-activities/?entity_id=${entityId}`)
+      setActivityTypes(response.data)
     } catch (error) {
-      console.error("Error fetching activity types:", error);
+      console.error("Error fetching activity types:", error)
     }
-  };
+  }
+
+  const fetchProposedCalender = async (regId) => {
+    try {
+      const response = await apiClient.get(`proposed-events/${regId}/`)
+      console.log(response, "PROPOSED CAL")
+      setProposedEvents(response.data || [])
+    } catch (error) {
+      console.log(error)
+      setProposedEvents([])
+    }
+  }
 
   const validateForm = () => {
-    const newErrors = {};
-    if (!formData.entityType) newErrors.entityType = "Entity Type is required";
-    if (!formData.entityName) newErrors.entityName = "Entity Name is required";
-    if (!formData.activityType)
-      newErrors.activityType = "Activity Type is required";
-    if (!formData.eventName) newErrors.eventName = "Event Name is required";
-    if (!formData.startDateProposed)
-      newErrors.startDateProposed = "Start Date is required";
-    if (!formData.startTimeProposed)
-      newErrors.startTimeProposed = "Start Time is required";
-    if (!formData.endDateProposed)
-      newErrors.endDateProposed = "End Date is required";
-    if (!formData.endTimeProposed)
-      newErrors.endTimeProposed = "End Time is required";
-    if (!formData.limit) newErrors.limit = "Expected Participation is required";
-    if (!formData.description)
-      newErrors.description = "Description is required";
-    if (!formData.levelActivity)
-      newErrors.levelActivity = "level Of Activity is required";
-    if (!formData.organiserGuestName)
-      newErrors.organiserGuestName = "Organizer/Guest Name is required";
-    if (!formData.budget) newErrors.budget = "Budget is required";
-    if (!formData.receivedOn)
-      newErrors.receivedOn = "Received On date is required";
+    const newErrors = {}
+    if (!formData.entityType) newErrors.entityType = "Entity Type is required"
+    if (!formData.entityName) newErrors.entityName = "Entity Name is required"
+    if (!formData.activityType) newErrors.activityType = "Activity Type is required"
+    if (!formData.eventName) newErrors.eventName = "Event Name is required"
+    if (!formData.startDateProposed) newErrors.startDateProposed = "Start Date is required"
+    if (!formData.startTimeProposed) newErrors.startTimeProposed = "Start Time is required"
+    if (!formData.endDateProposed) newErrors.endDateProposed = "End Date is required"
+    if (!formData.endTimeProposed) newErrors.endTimeProposed = "End Time is required"
+    if (!formData.limit) newErrors.limit = "Expected Participation is required"
+    if (!formData.description) newErrors.description = "Description is required"
+    if (!formData.levelActivity) newErrors.levelActivity = "level Of Activity is required"
+    if (!formData.organiserGuestName) newErrors.organiserGuestName = "Organizer/Guest Name is required"
+    if (!formData.budget) newErrors.budget = "Budget is required"
+    if (!formData.receivedOn) newErrors.receivedOn = "Received On date is required"
 
     // Date validation
     if (formData.startDateProposed && formData.endDateProposed) {
-      const startDate = new Date(formData.startDateProposed);
-      const endDate = new Date(formData.endDateProposed);
+      const startDate = new Date(formData.startDateProposed)
+      const endDate = new Date(formData.endDateProposed)
       if (endDate < startDate) {
-        newErrors.endDateProposed =
-          "End Date cannot be earlier than Start Date";
+        newErrors.endDateProposed = "End Date cannot be earlier than Start Date"
       }
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
 
     if (name === "description") {
-      const words = value.trim().split(/\s+/).length;
+      const words = value.trim().split(/\s+/).length
       if (words <= 200) {
-        setDescriptionCount(words);
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        setDescriptionCount(words)
+        setFormData((prev) => ({ ...prev, [name]: value }))
       }
     } else if (name === "entityType") {
       setFormData((prev) => ({
@@ -136,22 +136,48 @@ const AddEvent = () => {
         [name]: value,
         entityName: "",
         activityType: "",
-      }));
-      fetchEntityNames(value);
-      fetchActivityTypes(value);
+        eventName: "",
+      }))
+      setProposedEvents([])
+      setIsCustomEvent(false)
+      fetchEntityNames(value)
+      fetchActivityTypes(value)
+    } else if (name === "entityName") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+        eventName: "",
+      }))
+      setIsCustomEvent(false)
+      if (value) {
+        fetchProposedCalender(value)
+      } else {
+        setProposedEvents([])
+      }
+    } else if (name === "eventName") {
+      if (value === "other") {
+        setIsCustomEvent(true)
+        setFormData((prev) => ({ ...prev, [name]: "" })) // Clear the event name to accept custom input
+      } else if (isCustomEvent) {
+        // When in custom mode, allow typing
+        setFormData((prev) => ({ ...prev, [name]: value }))
+      } else {
+        setIsCustomEvent(false)
+        setFormData((prev) => ({ ...prev, [name]: value }))
+      }
     } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      setFormData((prev) => ({ ...prev, [name]: value }))
     }
 
     // Clear the error for the field being edited
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
+    setErrors((prev) => ({ ...prev, [name]: "" }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
+    e.preventDefault()
+    if (!validateForm()) return
 
-    const userId = JSON.parse(localStorage.getItem("user"))?.user_id;
+    const userId = JSON.parse(localStorage.getItem("user"))?.user_id
 
     const payload = {
       user_id: userId,
@@ -169,18 +195,18 @@ const AddEvent = () => {
       budget: formData.budget,
       received_on: formData.receivedOn,
       reg_id: formData.entityName,
-    };
+    }
 
     try {
-      const response = await apiClient.post("event_entry_create/", payload);
-      console.log("Event created:", response);
+      const response = await apiClient.post("event_entry_create/", payload)
+      console.log("Event created:", response)
 
       Swal.fire({
         title: "Success!",
         text: "Event has been successfully created.",
         icon: "success",
         confirmButtonText: "OK",
-      });
+      })
 
       setFormData({
         entityType: "",
@@ -198,70 +224,68 @@ const AddEvent = () => {
         budget: "",
         receivedOn: "",
         levelActivity: "",
-      });
-      setDescriptionCount(0);
-      fetchEventList();
+      })
+      setDescriptionCount(0)
+      setProposedEvents([])
+      setIsCustomEvent(false)
+      fetchEventList()
     } catch (error) {
-      console.error("Error creating event:", error);
+      console.error("Error creating event:", error)
       Swal.fire({
         title: "Error!",
         text: "Something went wrong while creating the event. Please try again.",
         icon: "error",
         confirmButtonText: "OK",
-      });
+      })
     }
-  };
+  }
 
   const fetchEventList = async () => {
     try {
-      const userId = JSON.parse(localStorage.getItem("user"))?.user_id;
-      const response = await apiClient.get(
-        `event_entry_request_list/?user_id=${userId}`
-      );
-      setEventList(response.data);
+      const userId = JSON.parse(localStorage.getItem("user"))?.user_id
+      const response = await apiClient.get(`event_entry_request_list/?user_id=${userId}`)
+      setEventList(response.data)
     } catch (error) {
-      console.error("Error fetching event list:", error);
+      console.error("Error fetching event list:", error)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchEventList();
-  }, []);
+    fetchEventList()
+  }, [])
 
   const filteredEvents = eventList.filter((event) =>
     Object.values(event).some((value) =>
-      value
-        ? value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-        : false
-    )
-  );
+      value ? value.toString().toLowerCase().includes(searchTerm.toLowerCase()) : false,
+    ),
+  )
 
   const sortedEvents = useMemo(() => {
-    const sortableEvents = [...filteredEvents];
+    const sortableEvents = [...filteredEvents]
     if (sortConfig.key !== null) {
       sortableEvents.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
+          return sortConfig.direction === "ascending" ? -1 : 1
         }
         if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
+          return sortConfig.direction === "ascending" ? 1 : -1
         }
-        return 0;
-      });
+        return 0
+      })
     }
-    return sortableEvents;
-  }, [filteredEvents, sortConfig]);
+    return sortableEvents
+  }, [filteredEvents, sortConfig])
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+    setCurrentPage(newPage)
+  }
 
-  const totalPages = Math.ceil(sortedEvents.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedEvents = sortedEvents.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(sortedEvents.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const paginatedEvents = sortedEvents.slice(startIndex, endIndex)
 
-  console.log(eventList, "LOST");
+  console.log(eventList, "LOST")
 
   const handleStatusChange = async (er_id, newStatus) => {
     try {
@@ -273,35 +297,32 @@ const AddEvent = () => {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, change it!",
-      });
+      })
 
       if (result.isConfirmed) {
         await apiClient.put(`event-request/${er_id}/update-file-status/`, {
           file_status: newStatus,
-        });
+        })
         setEventList((prevList) =>
-          prevList.map((item) =>
-            item.er_id === er_id ? { ...item, status: newStatus } : item
-          )
-        );
+          prevList.map((item) => (item.er_id === er_id ? { ...item, status: newStatus } : item)),
+        )
 
-        Swal.fire("Updated!", "The event status has been updated.", "success");
+        Swal.fire("Updated!", "The event status has been updated.", "success")
 
-        // We're not opening the drawer here anymore
         if (newStatus === "Submitted To Department") {
-          setSelectedEvent(eventList.find((item) => item.er_id === er_id));
+          setSelectedEvent(eventList.find((item) => item.er_id === er_id))
         }
       }
     } catch (error) {
-      console.error("Error updating status:", error);
+      console.error("Error updating status:", error)
       Swal.fire({
         title: "Error!",
         text: `${error?.response?.data?.error}`,
         icon: "error",
         confirmButtonText: "OK",
-      });
+      })
     }
-  };
+  }
 
   const handleCollectedDetails = async (er_id) => {
     try {
@@ -310,36 +331,33 @@ const AddEvent = () => {
         collected_on: collectedOn,
         collected_by: collectedBy,
         comment: comment,
-      };
-      await apiClient.put(
-        `event-request/${er_id}/update-file-status/`,
-        payload
-      );
+      }
+      await apiClient.put(`event-request/${er_id}/update-file-status/`, payload)
       Swal.fire({
         title: "Success!",
         text: "Collected details have been updated.",
         icon: "success",
         confirmButtonText: "OK",
-      });
-      setCollectedOn("");
-      setCollectedBy("");
-      setComment("");
-      fetchEventList(); // Refresh data
+      })
+      setCollectedOn("")
+      setCollectedBy("")
+      setComment("")
+      fetchEventList()
     } catch (error) {
-      console.error("Error updating collected details:", error);
+      console.error("Error updating collected details:", error)
       Swal.fire({
         title: "Error!",
         text: "Failed to update collected details. Please try again.",
         icon: "error",
         confirmButtonText: "OK",
-      });
+      })
     }
-  };
+  }
 
   const handleViewMore = (event) => {
-    setSelectedEvent(event);
-    setOpenDrawer(true);
-  };
+    setSelectedEvent(event)
+    setOpenDrawer(true)
+  }
 
   return (
     <div className={styles.container}>
@@ -361,11 +379,9 @@ const AddEvent = () => {
                 </option>
               ))}
             </select>
-            {console.log(errors)}
-            {errors.entityType && (
-              <span className={styles.errorText}>{errors.entityType}</span>
-            )}
+            {errors.entityType && <span className={styles.errorText}>{errors.entityType}</span>}
           </div>
+
           <div className={styles.formGroup}>
             <label>Entity Name</label>
             <select
@@ -381,10 +397,9 @@ const AddEvent = () => {
                 </option>
               ))}
             </select>
-            {errors.entityName && (
-              <span className={styles.errorText}>{errors.entityName}</span>
-            )}
+            {errors.entityName && <span className={styles.errorText}>{errors.entityName}</span>}
           </div>
+
           <div className={styles.formGroup}>
             <label>Level Of Activity</label>
             <select
@@ -398,10 +413,7 @@ const AddEvent = () => {
               <option value="Monthly">Monthly</option>
               <option value="Regularly">Regularly</option>
             </select>
-            {console.log(errors)}
-            {errors.levelActivity && (
-              <span className={styles.errorText}>{errors.levelActivity}</span>
-            )}
+            {errors.levelActivity && <span className={styles.errorText}>{errors.levelActivity}</span>}
           </div>
 
           <div className={styles.formGroup}>
@@ -419,23 +431,50 @@ const AddEvent = () => {
                 </option>
               ))}
             </select>
-            {errors.activityType && (
-              <span className={styles.errorText}>{errors.activityType}</span>
-            )}
+            {errors.activityType && <span className={styles.errorText}>{errors.activityType}</span>}
           </div>
+
           <div className={styles.formGroup}>
             <label>Event Name</label>
-            <input
-              type="text"
-              name="eventName"
-              placeholder="Event Name"
-              value={formData.eventName}
-              onChange={handleInputChange}
-              className={errors.eventName ? styles.errorInput : ""}
-            />
-            {errors.eventName && (
-              <span className={styles.errorText}>{errors.eventName}</span>
+            {!isCustomEvent ? (
+              <select
+                name="eventName"
+                value={formData.eventName}
+                onChange={handleInputChange}
+                className={errors.eventName ? styles.errorInput : ""}
+                disabled={!formData.entityName}
+              >
+                <option value="">Select Event</option>
+                {proposedEvents.map((event, index) => (
+                  <option key={index} value={event.event_name}>
+                    {event.event_name}
+                  </option>
+                ))}
+                <option value="other">Other</option>
+              </select>
+            ) : (
+              <input
+                type="text"
+                name="eventName"
+                placeholder="Enter event name"
+                value={formData.eventName}
+                onChange={handleInputChange}
+                className={errors.eventName ? styles.errorInput : ""}
+              />
             )}
+            {isCustomEvent && (
+              <button
+                type="button"
+                className={styles.backToSelectBtn}
+                onClick={() => {
+                  setIsCustomEvent(false)
+                  setFormData((prev) => ({ ...prev, eventName: "" }))
+                }}
+              >
+                Back to select
+              </button>
+            )}
+            {errors.eventName && <span className={styles.errorText}>{errors.eventName}</span>}
           </div>
 
           <div className={styles.formGroup}>
@@ -448,11 +487,7 @@ const AddEvent = () => {
               onChange={handleInputChange}
               className={errors.startDateProposed ? styles.errorInput : ""}
             />
-            {errors.startDateProposed && (
-              <span className={styles.errorText}>
-                {errors.startDateProposed}
-              </span>
-            )}
+            {errors.startDateProposed && <span className={styles.errorText}>{errors.startDateProposed}</span>}
           </div>
 
           <div className={styles.formGroup}>
@@ -465,11 +500,7 @@ const AddEvent = () => {
               onChange={handleInputChange}
               className={errors.startTimeProposed ? styles.errorInput : ""}
             />
-            {errors.startTimeProposed && (
-              <span className={styles.errorText}>
-                {errors.startTimeProposed}
-              </span>
-            )}
+            {errors.startTimeProposed && <span className={styles.errorText}>{errors.startTimeProposed}</span>}
           </div>
 
           <div className={styles.formGroup}>
@@ -482,9 +513,7 @@ const AddEvent = () => {
               onChange={handleInputChange}
               className={errors.endDateProposed ? styles.errorInput : ""}
             />
-            {errors.endDateProposed && (
-              <span className={styles.errorText}>{errors.endDateProposed}</span>
-            )}
+            {errors.endDateProposed && <span className={styles.errorText}>{errors.endDateProposed}</span>}
           </div>
 
           <div className={styles.formGroup}>
@@ -497,9 +526,7 @@ const AddEvent = () => {
               onChange={handleInputChange}
               className={errors.endTimeProposed ? styles.errorInput : ""}
             />
-            {errors.endTimeProposed && (
-              <span className={styles.errorText}>{errors.endTimeProposed}</span>
-            )}
+            {errors.endTimeProposed && <span className={styles.errorText}>{errors.endTimeProposed}</span>}
           </div>
 
           <div className={styles.formGroup}>
@@ -512,11 +539,7 @@ const AddEvent = () => {
               onChange={handleInputChange}
               className={errors.organiserGuestName ? styles.errorInput : ""}
             />
-            {errors.organiserGuestName && (
-              <span className={styles.errorText}>
-                {errors.organiserGuestName}
-              </span>
-            )}
+            {errors.organiserGuestName && <span className={styles.errorText}>{errors.organiserGuestName}</span>}
           </div>
 
           <div className={styles.formGroup}>
@@ -530,9 +553,7 @@ const AddEvent = () => {
               min="1"
               className={errors.limit ? styles.errorInput : ""}
             />
-            {errors.limit && (
-              <span className={styles.errorText}>{errors.limit}</span>
-            )}
+            {errors.limit && <span className={styles.errorText}>{errors.limit}</span>}
           </div>
 
           <div className={styles.formGroup}>
@@ -546,9 +567,7 @@ const AddEvent = () => {
               min="0"
               className={errors.budget ? styles.errorInput : ""}
             />
-            {errors.budget && (
-              <span className={styles.errorText}>{errors.budget}</span>
-            )}
+            {errors.budget && <span className={styles.errorText}>{errors.budget}</span>}
           </div>
 
           <div className={styles.formGroup}>
@@ -561,10 +580,9 @@ const AddEvent = () => {
               onChange={handleInputChange}
               className={errors.receivedOn ? styles.errorInput : ""}
             />
-            {errors.receivedOn && (
-              <span className={styles.errorText}>{errors.receivedOn}</span>
-            )}
+            {errors.receivedOn && <span className={styles.errorText}>{errors.receivedOn}</span>}
           </div>
+
           <div className={styles.formGroup}>
             <label>Description</label>
             <textarea
@@ -576,10 +594,9 @@ const AddEvent = () => {
               className={errors.description ? styles.errorInput : ""}
             />
             <div className={styles.wordCount}>{descriptionCount}/200 words</div>
-            {errors.description && (
-              <span className={styles.errorText}>{errors.description}</span>
-            )}
+            {errors.description && <span className={styles.errorText}>{errors.description}</span>}
           </div>
+
           <div className={styles.formGroup}>
             <button type="submit" className={styles.submitButton}>
               Add New Event
@@ -590,7 +607,6 @@ const AddEvent = () => {
 
       <div className={styles.tableContainer}>
         <span className={styles.headingspan}>
-          {" "}
           <h2 style={{ margin: "20px" }}>Event List</h2>
           <input
             type="text"
@@ -621,35 +637,29 @@ const AddEvent = () => {
             <tbody>
               {paginatedEvents.map((event) => (
                 <tr key={event.er_id}>
-                  <td><Popover title={event?.event_name}>{event.event_name && event?.event_name.slice(0, 30)}...</Popover></td>
+                  <td>
+                    <Popover title={event?.event_name}>{event.event_name && event?.event_name.slice(0, 30)}...</Popover>
+                  </td>
                   <td>
                     <select
                       className={
                         event?.file_status === "In Progress"
                           ? styles.partselect
                           : event?.file_status === "Pending With PVC"
-                          ? styles.partselect1
-                          : styles.partselect2
+                            ? styles.partselect1
+                            : styles.partselect2
                       }
                       value={event.status}
-                      onChange={(e) =>
-                        handleStatusChange(event.er_id, e.target.value)
-                      }
+                      onChange={(e) => handleStatusChange(event.er_id, e.target.value)}
                     >
                       <option value="">{event?.file_status}</option>
                       <option style={{ color: "#007BFF " }} value="In Progress">
                         In Progress
                       </option>
-                      <option
-                        style={{ color: "#FFA500  " }}
-                        value="Pending With PVC"
-                      >
+                      <option style={{ color: "#FFA500  " }} value="Pending With PVC">
                         Pending With PVC
                       </option>
-                      <option
-                        style={{ color: "#00FF00" }}
-                        value="Submitted To Department"
-                      >
+                      <option style={{ color: "#00FF00" }} value="Submitted To Department">
                         Submitted To Department
                       </option>
                     </select>
@@ -668,7 +678,6 @@ const AddEvent = () => {
                     </p>
                   </td>
                   <td>
-                    {console.log(event?.status, "SSTSSTSTTS")}
                     {event.status === "Submitted To Department" && (
                       <div
                         style={{
@@ -698,11 +707,7 @@ const AddEvent = () => {
                           placeholder="Comment"
                           className={styles.partselect}
                         />
-                        <Button
-                          onClick={() => handleCollectedDetails(event.er_id)}
-                        >
-                          Send
-                        </Button>
+                        <Button onClick={() => handleCollectedDetails(event.er_id)}>Send</Button>
                       </div>
                     )}
                   </td>
@@ -755,22 +760,18 @@ const AddEvent = () => {
               <div className={styles.eventDetail}>
                 <span className={styles.label}>Start Date:</span>
                 <span className={styles.value}>
-                  {selectedEvent.start_date_proposed}{" "}
-                  {selectedEvent.start_time_proposed}
+                  {selectedEvent.start_date_proposed} {selectedEvent.start_time_proposed}
                 </span>
               </div>
               <div className={styles.eventDetail}>
                 <span className={styles.label}>End Date:</span>
                 <span className={styles.value}>
-                  {selectedEvent.end_date_proposed}{" "}
-                  {selectedEvent.end_time_proposed}
+                  {selectedEvent.end_date_proposed} {selectedEvent.end_time_proposed}
                 </span>
               </div>
               <div className={styles.eventDetail}>
                 <span className={styles.label}>Organizer:</span>
-                <span className={styles.value}>
-                  {selectedEvent.organiser_guest_name}
-                </span>
+                <span className={styles.value}>{selectedEvent.organiser_guest_name}</span>
               </div>
               <div className={styles.eventDetail}>
                 <span className={styles.label}>Budget:</span>
@@ -786,16 +787,14 @@ const AddEvent = () => {
               </div>
               <div className={styles.description}>
                 <div className={styles.descriptionLabel}>Description:</div>
-                <div className={styles.descriptionText}>
-                  {selectedEvent.description}
-                </div>
+                <div className={styles.descriptionText}>{selectedEvent.description}</div>
               </div>
             </div>
           )}
         </Drawer>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddEvent;
+export default AddEvent

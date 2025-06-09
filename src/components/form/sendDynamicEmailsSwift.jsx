@@ -13,7 +13,7 @@ export const sendDynamicEmailsSwift = async (receiverEmails, subject, body) => {
     };
 
     const response = await fetch(
-      `https://api.cuintranet.in/intranetapp/send-email/`,
+      `http://172.17.2.247:8080/intranetapp/send-email/`,
       {
         method: "post",
         headers: {

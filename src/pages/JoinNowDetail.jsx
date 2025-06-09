@@ -170,10 +170,11 @@ const JoinNowDetail = () => {
   // helper function
   const getEffectiveRegId = (reg_id1) => {
     const userData = JSON.parse(localStorage?.getItem("user"));
+    console.log(userData, "YUUUUUSSSSS")
     if (userData) {
       return (
-        userData?.faculty_advisory_details?.reg_id ||
-        userData?.secretary_details?.reg_id
+        userData?.faculty_advisory_details?.[0]?.reg_id ||
+        userData?.secretary_details?.[0]?.reg_id
       );
     }
     return reg_id1;

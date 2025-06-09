@@ -307,7 +307,7 @@ const AcademicAffairsForm = () => {
   useEffect(() => {
     const fetchEntityData = async () => {
       const response = await fetch(
-        "https://api.cuintranet.in/intranetapp/entity-types/"
+        "http://172.17.2.247:8080/intranetapp/entity-types/"
       );
       const data = await response.json();
       setEntityData(data);
