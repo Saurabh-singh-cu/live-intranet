@@ -23,6 +23,7 @@ import {
   MdEmail,
   MdEmojiEvents,
   MdEventNote,
+  MdOutlineCalendarMonth,
   MdOutlineDashboardCustomize,
   MdOutlinePermMedia,
   MdOutlineSettings,
@@ -152,7 +153,7 @@ const routes = [
     icon: <MdOutlineDashboardCustomize />,
     allowedRoles: ["Faculty Advisory"],
   },
-    {
+  {
     path: "/proposed-calendarby-secretary",
     name: "Proposed Calendar",
     icon: <FaCalendarAlt />,
@@ -188,6 +189,7 @@ const routes = [
     icon: <FaUsers />,
     allowedRoles: ["Student Secretary"],
   },
+
   {
     path: "/EntityRegistrationForm",
     name: "Entity Registration Form",
@@ -208,14 +210,20 @@ const routes = [
   },
   {
     path: "/file-manager",
-    name: "Documents",
+    name: "Events",
     icon: <AiTwotoneFileExclamation />,
     allowedRoles: ["Admin"],
     subRoutes: [
       {
         path: "/event-published-request",
-        name: "Event Published Request",
+        name: "On-Going Events ",
         icon: <MdEventNote />,
+      },
+      {
+        path: "/proposed-calender-admin-table",
+        name: "Proposed Calender",
+        icon: <MdOutlineCalendarMonth />,
+        allowedRoles: ["Admin"],
       },
     ],
   },

@@ -38,11 +38,71 @@ import {
   BsFillExplicitFill,
 } from "react-icons/bs";
 
+// Modal Component for Register Now
+const RegisterModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
+        <div className={styles.modalHeader}>
+          <h3>Registration Closed</h3>
+          <button onClick={onClose} className={styles.modalCloseButton}>
+            <FaTimes />
+          </button>
+        </div>
+        <div className={styles.modalBody}>
+          <p>
+            <strong>Thank You!</strong> <br />
+            Entity Renewal and New Registrations are now <strong>closed</strong> for the Academic
+            Session <strong>2025–2026</strong>.
+          </p>
+        </div>
+        <div className={styles.modalFooter}>
+          <button onClick={onClose} className={styles.modalOkButton}>
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const JoinModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
+        <div className={styles.modalHeader}>
+          <h3>Stay Tuned! </h3>
+          <button onClick={onClose} className={styles.modalCloseButton}>
+            <FaTimes />
+          </button>
+        </div>
+        <div className={styles.modalBody}>
+          <p>
+           
+           Membership enrollment will begin at the end of  <strong>June!</strong>.
+          </p>
+        </div>
+        <div className={styles.modalFooter}>
+          <button onClick={onClose} className={styles.modalOkButton}>
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const NavBar = ({ isLoggedIn, onLogout }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [expirationTime, setExpirationTime] = useState(null);
   const [user, setUser] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
@@ -298,6 +358,19 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
       ...prev,
       [index]: !prev[index],
     }));
+  };
+
+  // Handle Register Now button click - show modal instead of redirect
+  const handleRegisterNowClick = () => {
+    setIsRegisterModalOpen(true);
+  };
+
+
+  // Handle Join Now button click - redirect to join-now page
+  const handleJoinNowClick = () => {
+    // setActiveTab("joinnow");
+    // navigate("/join-now");
+    setIsJoinModalOpen(true);
   };
 
   const items = [
@@ -591,19 +664,33 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
                 ].includes(userName?.role_name) && (
                   <>
                     <button
-                      onClick={() => {
-                        setActiveTab("register");
-                        navigate("/Register-New-Entity");
-                      }}
+                      onClick={handleRegisterNowClick}
                       className={`${styles.registerButton} ${
                         activeTab === "register"
                           ? `${styles.activeRegisterButton} ${styles.activeRegisterItem}`
                           : ""
                       } ${styles.registerNavItem}`}
                     >
-                      <span className={styles.registerText}>Register Entity</span>
+                      <span className={styles.registerText}>Register Now</span>
                       {activeTab === "register" && (
-                        <div className={`${styles.activeIndicator} ${styles.registerIndicator}`}></div>
+                        <div
+                          className={`${styles.activeIndicator} ${styles.registerIndicator}`}
+                        ></div>
+                      )}
+                    </button>
+                    <button
+                      onClick={handleJoinNowClick}
+                      className={`${styles.joinButton} ${
+                        activeTab === "joinnow"
+                          ? `${styles.activeRegisterButton} ${styles.activeRegisterItem}`
+                          : ""
+                      } ${styles.registerNavItem}`}
+                    >
+                      <span className={styles.registerText}>Join Now</span>
+                      {activeTab === "joinnow" && (
+                        <div
+                          className={`${styles.activeIndicator} ${styles.registerIndicator}`}
+                        ></div>
                       )}
                     </button>
                   </>
@@ -686,31 +773,16 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
             ].includes(userName?.role_name) && (
               <div className={styles.mobileActionButtons}>
                 <button
-                  className={`${styles.rateButton} ${
-                    animate ? styles.pulse : ""
-                  }`}
-                  onClick={handleRateClubClick}
-                >
-                  <span className={styles.rateText}>Rate Clubs</span>
-                  <span className={styles.rateIcon}>★</span>
-                </button>
-                <button
-                  onClick={() => navigate("/join-now")}
+                  onClick={handleJoinNowClick}
                   className={styles.mobileJoinButton}
                 >
-                  Join as Member
+                  Join Now
                 </button>
                 <button
-                  onClick={() => {
-                    setActiveTab("register");
-                    navigate("/Register-New-Entity");
-                    setIsMenuOpen(false);
-                  }}
-                  className={`${styles.mobileRegisterButton} ${
-                    activeTab === "register" ? styles.activeMobileRegister : ""
-                  }`}
+                  onClick={handleRegisterNowClick}
+                  className={styles.mobileRegisterButton}
                 >
-                  Register Entity
+                  Register Now
                 </button>
               </div>
             )}
@@ -780,6 +852,16 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
       )}
 
       <CreditModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
+      {/* Register Modal */}
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+      />
+      <JoinModal
+        isOpen={isJoinModalOpen}
+        onClose={() => setIsJoinModalOpen(false)}
+      />
     </>
   );
 };

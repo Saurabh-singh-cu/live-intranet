@@ -680,7 +680,8 @@ const NewAdminDashboard = () => {
   const [flagshipFilter, setFlagshipFilter] = useState("monthly")
   const [proposedCalender, setProposedCalendar] = useState([])
   const [loading, setLoading] = useState(false)
-  const [deleting, setDeleting] = useState(null)
+  const [deleting, setDeleting] = useState(null);
+  const [userCount1, setUserCount1] = useState([]);
 
   // Drawer state
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -771,6 +772,20 @@ const NewAdminDashboard = () => {
       { id: 5, title: "Sports Event", date: "2025-05-10", type: "event" },
     ])
   }
+
+  const userCount = async() => {
+    try{
+      const response = await apiClient.get("/user_create");
+      console.log(response, "USERS");
+      setUserCount1(response?.data);
+    }catch(error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    userCount();
+  }, []);
 
   const fetchAdminCalendar = async () => {
     try {
@@ -1046,8 +1061,8 @@ const NewAdminDashboard = () => {
           <div className={styles.overviewLayout}>
             <div className={styles.mainContentArea}>
               <div className={styles.statsGrid}>
-                <StatCard title="MEMBERS" value={userData.totalRegisteredMembers} icon="👥" color="blue" />
-                <StatCard title="EVENTS" value={activityData.eventPublishRequests} icon="📅" color="green" />
+                <StatCard title="USERS" value={userCount1?.length} icon="👥" color="blue" />
+                <StatCard title="EVENTS" value={"1"} icon="📅" color="green" />
                 <StatCard
                   title="ENTITIES"
                   value={
@@ -1118,7 +1133,7 @@ const NewAdminDashboard = () => {
     } else if (activeTab === "proposedcalender") {
       return (
         <>
-          <div>
+          <div >
             <div className={styles.twoColumnSectionPro}>
               <div className={styles.columnCard}>
                 <div className={styles.chartHeader}>

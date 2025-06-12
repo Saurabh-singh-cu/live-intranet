@@ -70,6 +70,7 @@ import CalenderPush from "./Admin/Dashboard/CalenderPush";
 import ProfilePage from "./profile/ProfilePage";
 import PushFeatureEvent from "./pages/PushNotiAndNews/PushFeatureEvent";
 import AllThreeInOne from "./pages/PushNotiAndNews/AllThreeInOne";
+import ProposedCalender from "./Admin/Dashboard/ProposedCalender";
 
 function AppContent() {
   const location = useLocation();
@@ -369,6 +370,14 @@ function AppContent() {
               }
             />
             <Route
+              path="/proposed-calender-admin-table"
+              element={
+                <ProtectedRoute allowedRoles={["Admin"]} user={user}>
+                  <ProposedCalender onShowLogin={handleShowLogin} />  
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/notification-create-feature-news-admin"
               element={
                 <ProtectedRoute allowedRoles={["Admin"]} user={user}>
@@ -461,10 +470,10 @@ function AppContent() {
               path="/media-request"
               element={<MediaRequest onShowLogin={handleShowLogin} />}
             />
-            <Route
+            {/* <Route
               path="/Register-New-Entity"
               element={<RegisterNewEntity onShowLogin={handleShowLogin} />}
-            />
+            /> */}
             <Route
               path="/paynow"
               element={<Payment onShowLogin={handleShowLogin} />}

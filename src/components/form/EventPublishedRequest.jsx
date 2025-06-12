@@ -115,30 +115,35 @@ const EventPublishedRequest = () => {
       key: "event_name",
     },
 
+    // {
+    //   title: "Duration (Hrs.)",
+    //   dataIndex: "duration",
+    //   key: "duration",
+    // },
+    // {
+    //   title: "Start Date",
+    //   dataIndex: "start_date",
+    //   key: "start_date",
+    // },
+    // {
+    //   title: "End Date",
+    //   dataIndex: "end_date",
+    //   key: "end_date",
+    // },
+    // {
+    //   title: "Start Time",
+    //   dataIndex: "start_time",
+    //   key: "start_time",
+    // },
+    // {
+    //   title: "End Time",
+    //   dataIndex: "end_time",
+    //   key: "end_time",
+    // },
     {
-      title: "Duration (Hrs.)",
-      dataIndex: "duration",
-      key: "duration",
-    },
-    {
-      title: "Start Date",
-      dataIndex: "start_date",
-      key: "start_date",
-    },
-    {
-      title: "End Date",
-      dataIndex: "end_date",
-      key: "end_date",
-    },
-    {
-      title: "Start Time",
-      dataIndex: "start_time",
-      key: "start_time",
-    },
-    {
-      title: "End Time",
-      dataIndex: "end_time",
-      key: "end_time",
+      title: "Guest Name",
+      dataIndex: "organiser_guest_name",
+      key: "organiser_guest_name",
     },
 
     {
@@ -223,7 +228,7 @@ const EventPublishedRequest = () => {
       style={{ padding: "40px", marginTop: "40px" }}
       className={styles.adminEventApproval}
     >
-      <h2 className={styles.pageTitle}>Event Published Request</h2>
+      <h2 className={styles.pageTitle}>On-Going Events</h2>
       <Input
         placeholder="Search by Event Name"
         prefix={<SearchOutlined />}
@@ -312,6 +317,10 @@ const EventPublishedRequest = () => {
             <p>
               <strong>Department:</strong>{" "}
               {selectedEvent.reg_details.department}
+            </p>
+            <p>
+              <strong>Organiser Guest:</strong>{" "}
+              {selectedEvent.reg_details.organiser_guest_name}
             </p>
             <p>
               <strong>Status:</strong>{" "}

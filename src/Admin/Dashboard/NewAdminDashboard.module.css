@@ -1133,13 +1133,14 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
 }
 
 .calendarDataTable td {
   padding: 8px 6px;
   border-bottom: 1px solid #dee2e6;
   vertical-align: top;
-
+  text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

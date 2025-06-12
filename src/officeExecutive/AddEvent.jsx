@@ -21,6 +21,7 @@ const AddEvent = () => {
     limit: "",
     description: "",
     organiserGuestName: "",
+    designationAffiliation:"",
     budget: "",
     receivedOn: "",
     levelActivity: "",
@@ -29,8 +30,8 @@ const AddEvent = () => {
   const [entityTypes, setEntityTypes] = useState([])
   const [entityNames, setEntityNames] = useState([])
   const [activityTypes, setActivityTypes] = useState([])
-  const [proposedEvents, setProposedEvents] = useState([]) // New state for proposed events
-  const [isCustomEvent, setIsCustomEvent] = useState(false) // Track if "Other" is selected
+  const [proposedEvents, setProposedEvents] = useState([]) 
+  const [isCustomEvent, setIsCustomEvent] = useState(false) 
   const [descriptionCount, setDescriptionCount] = useState(0)
   const [errors, setErrors] = useState({})
   const [eventList, setEventList] = useState([])
@@ -105,6 +106,7 @@ const AddEvent = () => {
     if (!formData.description) newErrors.description = "Description is required"
     if (!formData.levelActivity) newErrors.levelActivity = "level Of Activity is required"
     if (!formData.organiserGuestName) newErrors.organiserGuestName = "Organizer/Guest Name is required"
+    if (!formData.designationAffiliation) newErrors.designationAffiliation = "Designation/Affiliation is required"
     if (!formData.budget) newErrors.budget = "Budget is required"
     if (!formData.receivedOn) newErrors.receivedOn = "Received On date is required"
 
@@ -192,10 +194,12 @@ const AddEvent = () => {
       limit: formData.limit,
       description: formData.description,
       organiser_guest_name: formData.organiserGuestName,
+      desigination: formData.designationAffiliation,
       budget: formData.budget,
       received_on: formData.receivedOn,
       reg_id: formData.entityName,
     }
+
 
     try {
       const response = await apiClient.post("event_entry_create/", payload)
@@ -221,6 +225,7 @@ const AddEvent = () => {
         limit: "",
         description: "",
         organiserGuestName: "",
+        designationAffiliation: "",
         budget: "",
         receivedOn: "",
         levelActivity: "",
@@ -540,6 +545,18 @@ const AddEvent = () => {
               className={errors.organiserGuestName ? styles.errorInput : ""}
             />
             {errors.organiserGuestName && <span className={styles.errorText}>{errors.organiserGuestName}</span>}
+          </div>
+          <div className={styles.formGroup}>
+            <label>Designation/Affiliation</label>
+            <input
+              type="text"
+              name="designationAffiliation"
+              placeholder="Designation/Affiliation"
+              value={formData.designationAffiliation}
+              onChange={handleInputChange}
+              className={errors.designationAffiliation ? styles.errorInput : ""}
+            />
+            {errors.designationAffiliation && <span className={styles.errorText}>{errors.designationAffiliation}</span>}
           </div>
 
           <div className={styles.formGroup}>

@@ -20,7 +20,7 @@ const ProfessionalSociety = () => {
   const fetchSocieties = async () => {
     try {
       const response = await fetch(
-        "https://api.cuintranet.in/intranetapp/entity-registration-summary/?entity_id=3"
+        "http://172.17.2.247:8080/intranetapp/entity-registration-summary/?entity_id=3"
       );
       const data = await response.json();
       setSocieties(data);

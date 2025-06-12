@@ -351,7 +351,7 @@ const JoinNowDetail = () => {
 
         <div className="details-sidebar">
           <div className="price-section">
-            <span className="price-1">₹ {selectedSociety?.fee}</span>
+            <span className="price-1">Free!</span>
             <div className="action-buttons">
               <button className="share-button">
                 <Share2 />

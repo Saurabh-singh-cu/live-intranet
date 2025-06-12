@@ -13,10 +13,7 @@ const FixedInfoBox = ({ activityCount, remainingBudget, budgetList }) => (
       <span>Total Events:</span>
       <span>{activityCount}</span>
     </div>
-    <div className={styles.infoItem}>
-      <span>Your Current Sum:</span>
-      <span className={remainingBudget < 0 ? styles.redClass : ""}>₹{budgetList[0]?.total_proposed}</span>
-    </div>
+   
   </div>
 )
 
